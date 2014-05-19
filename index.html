@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>witch magick</title>
+
+<!--Load all the scripts to be used-->
+<script type="text/javascript" src="witch/Utils.js"></script>
+<script type="text/javascript" src="witch/managers/KeyManager.js"></script>
+<script type="text/javascript" src="witch/managers/ResourceManager.js"></script>
+<script type="text/javascript" src="witch/managers/MapManager.js"></script>
+<script type="text/javascript" src="witch/Main.js"></script>
+
+<!--Entities-->
+<script type="text/javascript" src="witch/entities/GameObject.js"></script>
+<script type="text/javascript" src="witch/entities/helpers/Animation.js"></script>
+<script type="text/javascript" src="witch/entities/GameSprite.js"></script>
+<script type="text/javascript" src="witch/entities/GameMover.js"></script>
+<script type="text/javascript" src="witch/entities/Tile.js"></script>
+<script type="text/javascript" src="witch/entities/Player.js"></script>
+</head>
+<body>
+    <div style="text-align: center;">
+      <style type="text/css">
+        @font-face { font-family: pixelFont; src: url('witch/04B_03.eot'); }
+        @font-face { font-family: pixelFont; src: url('witch/04B_03.ttf'); }
+		body { background: #000000; color:#ffffff; font-family: "Lucida Console", Monaco, monospace; }
+      </style>
+      <canvas id="game_canvas" class="centerMe">
+      </canvas>
+      <p></p>
+    </div>
+    <!--Player for the background music-->
+    <div id="bgMusicPlayer">
+    <!--<embed src="goblin/sounds/firedraft2.wav" autostart="true" loop="true" hidden="true">-->
+    </div>
+</body>
+</html>
