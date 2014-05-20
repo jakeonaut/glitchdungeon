@@ -10,7 +10,7 @@ if (navigator.userAgent.match(/AppleWebKit/) && !navigator.userAgent.match(/Chro
 }
 
 var GAME_WIDTH=320;
-var GAME_HEIGHT=300;
+var GAME_HEIGHT=288;
 
 var canvas;
 var ctx;
@@ -22,6 +22,7 @@ var fontColor = "rgb(0,0,0)"
 
 //managers
 var key_manager;
+var input_manager;
 var resoure_manager;
 var map_manager;
 
@@ -37,7 +38,7 @@ solids[3] = new Solid(0, GAME_HEIGHT, GAME_WIDTH, 16);*/
 function createEntities(){
 	map_manager = new MapManager();
 
-	player = new Player(GAME_WIDTH/2, GAME_HEIGHT/2, resource_manager.player_sheet);
+	player = new Player(GAME_WIDTH/2, GAME_HEIGHT-Tile.HEIGHT-16, resource_manager.player_sheet);
 }
 
 var init = function(){
@@ -51,8 +52,10 @@ var init = function(){
 	
 	//Handle keyboard controls
 	key_manager = new KeyManager();
-	addEventListener("keydown", key_manager.KeyDown.bind(key_manager), false);
-	addEventListener("keyup", key_manager.KeyUp.bind(key_manager), false);
+	window.onkeydown = key_manager.KeyDown.bind(key_manager);
+	window.onkeyup = key_manager.KeyUp.bind(key_manager);
+	
+	input_manager = new InputManager(key_manager);
 	
 	//When load resources is finished, it will trigger startGame
 	resource_manager = new ResourceManager();
@@ -65,8 +68,8 @@ var startGame = function(){
 	console.log("start");
 	//Let's play the game!
 	then = Date.now();
-	//setInterval(main,17); //Execute as fast as possible!!!
-	main();
+	setInterval(main,17); //Execute as fast as possible!!!
+	//main();
 };
 
 //main game loop
@@ -81,8 +84,10 @@ var main = function(){
 }
 
 var update = function(delta){
-	key_manager.ForgetKeysPressed();
+	input_manager.Update(player);
     player.Update(delta/1000, map_manager);
+	
+	key_manager.ForgetKeysPressed();
 };
 
 var render = function(){
@@ -96,6 +101,7 @@ var render = function(){
 	
 	//draw the game
 	ctx.drawImage(resource_manager.bg_image, 0, 0, 640, 480, 0, 60, 320, 240);
+	map_manager.Render(ctx);
 	player.Render(ctx);
 };
 

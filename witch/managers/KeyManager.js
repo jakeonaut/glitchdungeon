@@ -1,7 +1,8 @@
 function KeyManager(){
-	this.keys_pressed = {};
-	this.keys_down = {};
-	this.keys_up = {};
+	this.keys_down = [];
+	this.keys_pressed = [];
+	this.keys_have_pressed = [];
+	this.keys_up = [];
 }
 
 //KEY STATIC NAMES
@@ -15,12 +16,18 @@ KeyManager.SPACE = 32;
 
 KeyManager.prototype.KeyDown = function(e){
 	this.keys_down[e.keyCode] = true;
-	this.keys_pressed[e.keyCode] = true;
+	if (!this.keys_have_pressed[e.keyCode]){
+		this.keys_pressed[e.keyCode] = true;
+		this.keys_have_pressed[e.keyCode] = true;
+	}
+	
 	this.PreventArrowDefaults(e); 
 }
 
 KeyManager.prototype.KeyUp = function(e){
 	delete this.keys_down[e.keyCode];
+	delete this.keys_have_pressed[e.keyCode];
+	if (this.keys_pressed[e.keyCode]) delete this.keys_pressed[e.keyCode];
 	this.PreventArrowDefaults(e);
 }
 
