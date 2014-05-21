@@ -9,6 +9,7 @@
 <script type="text/javascript" src="witch/managers/InputManager.js"></script>
 <script type="text/javascript" src="witch/managers/ResourceManager.js"></script>
 <script type="text/javascript" src="witch/managers/MapManager.js"></script>
+<script type="text/javascript" src="witch/managers/LevelEditManager.js"></script>
 <script type="text/javascript" src="witch/Main.js"></script>
 
 <!--Entities-->
@@ -28,7 +29,10 @@
       </style>
       <canvas id="game_canvas" class="centerMe">
       </canvas>
-      <p></p>
+      <div id="level_edit_buttons" style="display:none;">
+		<input type="submit" value="export"/>
+		<input type="submit" value="import"/>
+	  </div>
     </div>
     <!--Player for the background music-->
     <div id="bgMusicPlayer">

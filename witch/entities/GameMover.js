@@ -104,7 +104,7 @@ GameMover.prototype.HandleHorizontalCollisions = function(map, left_tile, right_
 			if (!isValidTile(i, j, map)) continue;
 			var tile = map.tiles[i][j];
 			//don't check for collisions if potential tile is "out of bounds" or not solid
-			if (!tile.solid || tile.fallthrough) continue;
+			if (tile.collision != Tile.SOLID) continue;
 			
 			//Reset floor tile
 			if (floor_tile == null || (tile.y > this.y && Math.abs(tile.x-this.x) < Math.abs(floor_tile.x-this.x))){ 
@@ -146,7 +146,7 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 			if (!isValidTile(i, j, map)) continue;
 			var tile = map.tiles[i][j];
 			//don't check for collisions if potential tile is "out of bounds" or not solid
-			if (!tile.solid) continue;
+			if (tile.collision == Tile.GHOST) continue;
 			
 			//Check for top collisions
 			if (this.vel.y < 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
@@ -157,7 +157,7 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 			//Check for bottom collisions
 			if (this.vel.y >= 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.bb, this.x + this.rb - q, this.y + this.bb + this.vel.y + 1)){
 				//Don't count bottom collision for fallthrough platforms if we're not at the top of it
-				if (!tile.fallthrough || tile.y + 4 < this.y + this.bb + 1){
+				if (!tile.collision == Tile.FALLTHROUGH || tile.y + 4 < this.y + this.bb + 1){
 					this.vel.y = 0;
 					this.on_ground = true;
 					this.y = tile.y - this.bb;

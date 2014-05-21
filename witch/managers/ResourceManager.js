@@ -15,9 +15,9 @@ function ResourceManager(){
 }
 
 ResourceManager.prototype.DisplayLoadScreen = function(){
-	ctx.canvas.width = GAME_WIDTH*viewScale;
-	ctx.canvas.height = GAME_HEIGHT*viewScale;
-	ctx.scale(viewScale,viewScale);
+	ctx.canvas.width = GAME_WIDTH*VIEW_SCALE;
+	ctx.canvas.height = GAME_HEIGHT*VIEW_SCALE;
+	ctx.scale(VIEW_SCALE,VIEW_SCALE);
 	
 	//Display the LOADING... screen
 	ctx.fillStyle = "rgb(0, 0, 0)";

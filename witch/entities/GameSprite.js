@@ -24,9 +24,6 @@ GameSprite.prototype.Render = function(ctx){
 	var row = ani.rel_ani_y;
 	var column = ani.rel_ani_x + ani.curr_frame;
 	
-	ctx.imageSmoothingEnabled = false;
-	ctx.mozImageSmoothingEnabled = false;
-	ctx.webkitImageSmoothingEnabled = false;
 	ctx.drawImage(this.image, 
 		//SOURCE RECTANGLE
 		ani.frame_width * column + ani.abs_ani_x + this.base_ani_x,

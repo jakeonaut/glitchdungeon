@@ -7,10 +7,13 @@ Slope.LOW_NEG = -30;
 Slope.MID_NEG = -45;
 Slope.HI_NEG = -60;
 
-function Tile(x, y, solid, fallthrough, slope){
+Tile.GHOST = -1;
+Tile.SOLID = 0;
+Tile.FALLTHROUGH = 1;
+
+function Tile(x, y, collision, slope){
 	GameObject.call(this, x, y, 0, 0, Tile.WIDTH, Tile.HEIGHT);
-	this.solid = defaultValue(solid, false);
-	this.fallthrough = defaultValue(fallthrough, false);
+	this.collision = defaultValue(collision, Tile.GHOST);
 	this.slope = slope;
 	
 	//default to flat
@@ -33,10 +36,16 @@ function Tile(x, y, solid, fallthrough, slope){
 GameSprite.prototype = Object.create(GameObject.prototype);
 
 Tile.prototype.Render = function(ctx){
-	if (this.solid){
-		ctx.fillStyle="#FF00FF";
-		ctx.fillRect(this.x, this.y, Tile.WIDTH, Tile.HEIGHT);
+	switch (this.collision){
+		case Tile.SOLID:
+			ctx.fillStyle="#FF00FF";
+			break;
+		case Tile.FALLTHROUGH:
+			ctx.fillStyle="#00FFFF";
+			break;
+		default: return; break;
 	}
+	ctx.fillRect(this.x, this.y, Tile.WIDTH, Tile.HEIGHT);
 }
 
 Tile.WIDTH = 8;

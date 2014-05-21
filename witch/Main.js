@@ -1,5 +1,6 @@
 var isMSIE = /*@cc_on!@*/0;
 var playSound = true;
+var level_edit = true;
 
 if (isMSIE){
   playSound = false; 
@@ -10,30 +11,24 @@ if (navigator.userAgent.match(/AppleWebKit/) && !navigator.userAgent.match(/Chro
 }
 
 var GAME_WIDTH=320;
-var GAME_HEIGHT=288;
+var GAME_HEIGHT=240;
+var VIEW_SCALE = 2;
 
 var canvas;
 var ctx;
 
 //primitive variables
 var then;
-var viewScale = 2;
 var fontColor = "rgb(0,0,0)"
 
 //managers
 var key_manager;
 var input_manager;
-var resoure_manager;
+var resource_manager;
 var map_manager;
 
 //object variables
 var player;
-
-/*var solids = new Array();
-solids[0] = new Solid(GAME_WIDTH, 60, 16, GAME_HEIGHT);
-solids[1] = new Solid(0, 44, GAME_WIDTH, 16);
-solids[2] = new Solid(-16, 60, 16, GAME_HEIGHT);
-solids[3] = new Solid(0, GAME_HEIGHT, GAME_WIDTH, 16);*/
 
 function createEntities(){
 	map_manager = new MapManager();
@@ -44,7 +39,7 @@ function createEntities(){
 var init = function(){
 	console.log("init");
 	
-	canvas = document.getElementById("game_canvas");
+	canvas = $("game_canvas");
 	canvas.tabIndex = 1;
 	canvas.width = GAME_WIDTH;
 	canvas.height = GAME_HEIGHT;
@@ -54,8 +49,10 @@ var init = function(){
 	key_manager = new KeyManager();
 	window.onkeydown = key_manager.KeyDown.bind(key_manager);
 	window.onkeyup = key_manager.KeyUp.bind(key_manager);
+	canvas.onmousedown = LevelEditMouseDown;
 	
 	input_manager = new InputManager(key_manager);
+	if (level_edit) InitLevelEdit();
 	
 	//When load resources is finished, it will trigger startGame
 	resource_manager = new ResourceManager();
@@ -69,7 +66,6 @@ var startGame = function(){
 	//Let's play the game!
 	then = Date.now();
 	setInterval(main,17); //Execute as fast as possible!!!
-	//main();
 };
 
 //main game loop
@@ -91,17 +87,20 @@ var update = function(delta){
 };
 
 var render = function(){
-	ctx.canvas.width = GAME_WIDTH*viewScale;
-	ctx.canvas.height = GAME_HEIGHT*viewScale;
-	ctx.scale(viewScale,viewScale);
+	ctx.canvas.width = GAME_WIDTH*VIEW_SCALE;
+	ctx.canvas.height = GAME_HEIGHT*VIEW_SCALE;
+	ctx.scale(VIEW_SCALE,VIEW_SCALE);
 	
 	//Erase screen
 	ctx.fillStyle = "rgb(0, 0, 0)";
 	ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 	
 	//draw the game
-	ctx.drawImage(resource_manager.bg_image, 0, 0, 640, 480, 0, 60, 320, 240);
+	sharpen(ctx);
+	ctx.drawImage(resource_manager.bg_image, 0, 0);
 	map_manager.Render(ctx);
+	if (level_edit) DrawLevelEditGrid(ctx, map_manager);
+	
 	player.Render(ctx);
 };
 
