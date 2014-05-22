@@ -1,24 +1,22 @@
-//Inheritance
-GameSprite.prototype = Object.create(GameObject.prototype);
-
 function GameSprite(x, y, lb, tb, rb, bb, image){
 	GameObject.call(this, x, y, lb, tb, rb, bb);
 	this.image = image;
-	this.animation = new Animation(1, 0);
+	this.animation = new Animation(1, 8);
 	this.base_ani_x = 0;
 	this.base_ani_y = 0;
 	this.visible = true;
+	
+	GameSprite.prototype.Update = function(delta, map){
+		this.animation.Update(delta);
+		GameObject.prototype.Update.call(this, delta, map);
+	}
 }
+extend(GameObject, GameSprite);
 
 /** FUNCTION DEFINITIONS****************************************/
 /**????????????????????????????????????????????????????????????*/
-GameSprite.prototype.Update = function(delta, map)
-{
-	this.animation.Update(delta);
-	GameObject.prototype.Update.call(this, delta, map);
-}
 
-GameSprite.prototype.Render = function(ctx){	
+GameSprite.prototype.Render = function(ctx){
 	if (this.image === null || !this.visible) return;
 	var ani = this.animation;
 	var row = ani.rel_ani_y;

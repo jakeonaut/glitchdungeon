@@ -6,11 +6,11 @@ function DrawLevelEditGrid(ctx, map){
 	var color = "#000000";
 	
 	for (var i = 1; i < map.MAP_WIDTH; i++){
-		drawLine(ctx, color, i * Tile.WIDTH, 0, i * Tile.WIDTH, map.MAP_HEIGHT * Tile.HEIGHT);
+		drawLine(ctx, color, i * Tile.WIDTH, 0, i * Tile.WIDTH, map.MAP_HEIGHT * Tile.HEIGHT, 0.5);
 	}
 	
 	for (var i = 1; i < map.MAP_HEIGHT; i++){
-		drawLine(ctx, color, 0, i * Tile.HEIGHT, map.MAP_WIDTH * Tile.WIDTH, i * Tile.HEIGHT);
+		drawLine(ctx, color, 0, i * Tile.HEIGHT, map.MAP_WIDTH * Tile.WIDTH, i * Tile.HEIGHT, 0.5);
 	}
 }
 

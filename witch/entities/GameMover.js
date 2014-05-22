@@ -8,12 +8,9 @@ function Facing(){}
 Facing.LEFT = 0;
 Facing.RIGHT = 1;
 
-//Inheritance
-GameMover.prototype = Object.create(GameSprite.prototype);
-
 function GameMover(x, y, lb, tb, rb, bb, image, max_run_vel, jump_vel, terminal_vel){
 	GameSprite.call(this, x, y, lb, tb, rb, bb, image);
-	this.max_run_vel = defaultValue(max_run_vel, 3.0); //pixels/second
+	this.max_run_vel = defaultValue(max_run_vel, 2.0); //pixels/second
 	this.gnd_run_acc = this.max_run_vel/3.0;
 	this.gnd_run_dec = this.max_run_vel/3.0;
 	this.air_run_acc = this.max_run_vel/3.0;
@@ -23,12 +20,17 @@ function GameMover(x, y, lb, tb, rb, bb, image, max_run_vel, jump_vel, terminal_
 	this.left_flip_offset = 0;
 	this.horizontal_collision = false;
 	this.vertical_collision = false;
+	this.pressing_down = false;
 	
 	this.vel = {x: 0, y: 0};
 	
-	this.grav_acc = 0.8;//35.1; //pixels/second
-	this.jump_vel = defaultValue(jump_vel, 8.0);
-	this.terminal_vel = defaultValue(terminal_vel, 8.0);
+	this.original_grav_acc = 0.8;
+	this.grav_acc = this.original_grav_acc;//35.1; //pixels/second
+	this.jump_vel = defaultValue(jump_vel, 5.2);
+	this.is_jumping = false;
+	this.jump_timer = 0;
+	this.jump_time_limit = 15;
+	this.terminal_vel = defaultValue(terminal_vel, 7.0);
 	this.jump_acc = 35.0; 
 	this.on_ground = true;
 	this.previous_bottom = this.y + this.bb;
@@ -36,6 +38,8 @@ function GameMover(x, y, lb, tb, rb, bb, image, max_run_vel, jump_vel, terminal_
 	this.move_state = MoveState.STANDING;
 	this.facing = Facing.RIGHT;
 }
+extend(GameSprite, GameMover);
+
 
 /** FUNCTION DEFINITIONS****************************************/
 /**????????????????????????????????????????????????????????????*/
@@ -149,7 +153,7 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 			if (tile.collision == Tile.GHOST) continue;
 			
 			//Check for top collisions
-			if (this.vel.y < 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
+			if (this.vel.y < 0 && tile.collision != Tile.FALLTHROUGH && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
 				this.vel.y = 0;
 				this.y = tile.y + Tile.HEIGHT - this.tb;
 			}
@@ -157,11 +161,11 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 			//Check for bottom collisions
 			if (this.vel.y >= 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.bb, this.x + this.rb - q, this.y + this.bb + this.vel.y + 1)){
 				//Don't count bottom collision for fallthrough platforms if we're not at the top of it
-				if (!tile.collision == Tile.FALLTHROUGH || tile.y + 4 < this.y + this.bb + 1){
-					this.vel.y = 0;
-					this.on_ground = true;
-					this.y = tile.y - this.bb;
-				}
+				if (tile.collision == Tile.FALLTHROUGH && (tile.y < this.y + this.bb || this.pressing_down))
+					continue;
+				this.vel.y = 0;
+				this.on_ground = true;
+				this.y = tile.y - this.bb;
 			}
 		}
 	}
@@ -184,19 +188,31 @@ GameMover.prototype.CompensateForSlopes = function(was_on_ground, floor_tile){
 }
 
 /******************RENDER AND ANIMATION FUNCTIONS***********************/
-GameMover.prototype.UpdateAnimationFromState = function(){}
-
-/*GameMover.prototype.Render = function(ctx){
-	GameSprite.prototype.Render.call(this, ctx);
-}*/
-
-/*******************FUNCTIONS FOR MOVEMENT INPUT BY OBJECT*****************/
-GameMover.prototype.Jump = function(){
-	if (this.on_ground){
-		this.vel.y = -this.jump_vel;
+GameMover.prototype.UpdateAnimationFromState = function(){
+	switch (this.move_state){
+		case MoveState.STANDING:
+			this.animation.Change(0, 0, 1);
+			break;
+		case MoveState.RUNNING: 
+			this.animation.Change(2, 0, 4);
+			break;
+		case MoveState.JUMPING:
+			this.animation.Change(0, 1, 2);
+			break;
+		case MoveState.FALLING:
+			this.animation.Change(4, 1, 2);
+			break;
+		default: break;
+	}
+	
+	if (this.facing == Facing.LEFT){
+		this.animation.abs_ani_y = 2 * this.animation.frame_height;
+	}else if (this.facing == Facing.RIGHT){
+		this.animation.abs_ani_y = 0;
 	}
 }
 
+/*******************FUNCTIONS FOR MOVEMENT INPUT BY OBJECT*****************/
 GameMover.prototype.MoveLeft = function(){
 	this.facing = Facing.LEFT;
 	this.Move(-1);
@@ -277,5 +293,37 @@ GameMover.prototype.Nudge = function(mult, gnd_speed, air_speed){
 	CorrectVelocity(mult);
 }
 
+GameMover.prototype.StartJump = function(){
+	if (this.on_ground){
+		this.vel.y = -this.jump_vel;
+		this.is_jumping = true;
+		this.jump_timer = 0;
+	}
+}
 
+GameMover.prototype.Jump = function(){
+	if (this.is_jumping){
+		this.jump_timer++;
+		if (this.jump_timer >= this.jump_time_limit){
+			this.jump_timer = 0;
+			this.is_jumping = false;
+			this.grav_acc = this.original_grav_acc;
+		}else{
+			this.grav_acc = 0.4;
+			this.vel.y += -this.jump_vel * ((this.jump_time_limit - (this.jump_timer/2)) / (this.jump_time_limit * 80));
+		}
+	}
+}
 
+GameMover.prototype.StopJump = function(){
+	this.is_jumping = false;
+	this.grav_acc = this.original_grav_acc;
+}
+
+GameMover.prototype.PressDown = function(){
+	this.pressing_down = true;
+}
+
+GameMover.prototype.StopPressingDown = function(){
+	this.pressing_down = false;
+}

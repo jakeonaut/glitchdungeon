@@ -45,7 +45,7 @@ ResourceManager.prototype.LoadResources = function(ctx){
 
 	//Load Images
 	this.bg_image.onload = this.ImageLoad.bind(this); 				this.bg_image.src = "witch/assets/images/background.png";
-	this.player_sheet.onload = this.ImageLoad.bind(this); 			this.player_sheet.src = "witch/assets/images/heroSheet.png";
+	this.player_sheet.onload = this.ImageLoad.bind(this); 			this.player_sheet.src = "witch/assets/images/witch_sheet.png";
 	
 	//Load Sounds
 	this.catch_sound.oncanplaythrough = this.SoundLoad.bind(this);	this.catch_sound.src = "witch/assets/sounds/catch.wav";

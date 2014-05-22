@@ -25,6 +25,8 @@ KeyManager.prototype.KeyDown = function(e){
 }
 
 KeyManager.prototype.KeyUp = function(e){
+	this.keys_up[e.keyCode] = true;
+	
 	delete this.keys_down[e.keyCode];
 	delete this.keys_have_pressed[e.keyCode];
 	if (this.keys_pressed[e.keyCode]) delete this.keys_pressed[e.keyCode];
@@ -33,6 +35,7 @@ KeyManager.prototype.KeyUp = function(e){
 
 KeyManager.prototype.ForgetKeysPressed = function(){
 	this.keys_pressed = {};
+	this.keys_up = {};
 }
 
 KeyManager.prototype.PreventArrowDefaults = function(e){

@@ -24,6 +24,15 @@ Animation.prototype.Restart = function(){
 	this.frame_change = false;
 }
 
+Animation.prototype.Change = function(rax, ray, mf){
+	if (!(this.rel_ani_x == rax && this.rel_ani_y == ray && this.max_frame == mf)){
+		this.rel_ani_x = rax;
+		this.rel_ani_y = ray;
+		this.max_frame = mf;
+		this.Restart();
+	}
+}
+
 Animation.prototype.Update = function(gameTime){
 	//TODO:: This should do something with gameTime???
 	this.frame_change = false;
