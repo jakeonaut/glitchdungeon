@@ -33,7 +33,7 @@ function Tile(x, y, collision, slope){
 	}
 }
 //Inheritance
-GameSprite.prototype = Object.create(GameObject.prototype);
+Tile.prototype = Object.create(GameObject.prototype);
 
 Tile.prototype.Render = function(ctx){
 	switch (this.collision){

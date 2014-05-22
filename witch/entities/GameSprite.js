@@ -5,16 +5,15 @@ function GameSprite(x, y, lb, tb, rb, bb, image){
 	this.base_ani_x = 0;
 	this.base_ani_y = 0;
 	this.visible = true;
-	
-	GameSprite.prototype.Update = function(delta, map){
-		this.animation.Update(delta);
-		GameObject.prototype.Update.call(this, delta, map);
-	}
 }
 extend(GameObject, GameSprite);
 
 /** FUNCTION DEFINITIONS****************************************/
 /**????????????????????????????????????????????????????????????*/
+GameSprite.prototype.Update = function(delta, map){
+	this.animation.Update(delta);
+	GameObject.prototype.Update.call(this, delta, map);
+}
 
 GameSprite.prototype.Render = function(ctx){
 	if (this.image === null || !this.visible) return;
