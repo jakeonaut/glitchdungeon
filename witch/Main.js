@@ -25,16 +25,8 @@ var fontColor = "rgb(0,0,0)"
 var key_manager;
 var input_manager;
 var resource_manager;
-var map_manager;
 
-//object variables
-var player;
-
-function createEntities(){
-	map_manager = new MapManager();
-
-	player = new Player(GAME_WIDTH/2, GAME_HEIGHT-Tile.HEIGHT-16, resource_manager.player_sheet);
-}
+var room;
 
 var init = function(){
 	console.log("init");
@@ -60,7 +52,7 @@ var init = function(){
 };
 
 var startGame = function(){
-	createEntities();
+	room = new Room();
 
 	console.log("start");
 	//Let's play the game!
@@ -80,9 +72,7 @@ var main = function(){
 }
 
 var update = function(delta){
-	input_manager.Update(player);
-    player.Update(delta/1000, map_manager);
-	
+    room.Update(input_manager, delta);
 	key_manager.ForgetKeysPressed();
 };
 
@@ -92,16 +82,12 @@ var render = function(){
 	ctx.scale(VIEW_SCALE,VIEW_SCALE);
 	
 	//Erase screen
-	ctx.fillStyle = "rgb(0, 0, 0)";
+	ctx.fillStyle = "rgb(128, 128, 128)";
 	ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 	
 	//draw the game
 	sharpen(ctx);
-	ctx.drawImage(resource_manager.bg_image, 0, 0);
-	map_manager.Render(ctx);
-	if (level_edit) DrawLevelEditGrid(ctx, map_manager);
-	
-	player.Render(ctx);
+	room.Render(ctx, level_edit);
 };
 
 window.onload=init;

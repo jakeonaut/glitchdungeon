@@ -36,6 +36,7 @@ function GameMover(x, y, lb, tb, rb, bb, image, max_run_vel, jump_vel, terminal_
 	this.previous_bottom = this.y + this.bb;
 	
 	this.move_state = MoveState.STANDING;
+	this.prev_move_state = this.move_state;
 	this.facing = Facing.RIGHT;
 }
 extend(GameSprite, GameMover);
@@ -191,10 +192,14 @@ GameMover.prototype.CompensateForSlopes = function(was_on_ground, floor_tile){
 GameMover.prototype.UpdateAnimationFromState = function(){
 	switch (this.move_state){
 		case MoveState.STANDING:
-			this.animation.Change(0, 0, 1);
+			if (this.pressing_down)
+				this.animation.Change(1, 0, 1);
+			else this.animation.Change(0, 0, 1);
 			break;
 		case MoveState.RUNNING: 
 			this.animation.Change(2, 0, 4);
+			if (this.prev_move_state == MoveState.FALLING || this.prev_move_state == MoveState.JUMPING)
+				this.animation.curr_frame = 1;
 			break;
 		case MoveState.JUMPING:
 			this.animation.Change(0, 1, 2);
@@ -210,6 +215,7 @@ GameMover.prototype.UpdateAnimationFromState = function(){
 	}else if (this.facing == Facing.RIGHT){
 		this.animation.abs_ani_y = 0;
 	}
+	this.prev_move_state = this.move_state;
 }
 
 /*******************FUNCTIONS FOR MOVEMENT INPUT BY OBJECT*****************/

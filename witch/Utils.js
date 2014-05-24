@@ -1,3 +1,17 @@
+//http://stackoverflow.com/questions/3808808/how-to-get-element-by-class-in-javascript
+function getElementsByClass(matchClass) {
+    var elems = document.getElementsByTagName('*'), i;
+	var class_objects = [];
+    for (i in elems) {
+        if((' ' + elems[i].className + ' ').indexOf(' ' + matchClass + ' ')
+                > -1) {
+            class_objects.push(elems[i]);
+        }
+    }
+	return class_objects;
+}
+
+//http://stackoverflow.com/questions/4152931/javascript-inheritance-call-super-constructor-or-use-prototype-chain
 function extend(base, sub){
 	// Avoid instantiating the base class just to setup inheritance
 	// See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
