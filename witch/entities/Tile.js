@@ -13,6 +13,7 @@ Tile.FALLTHROUGH = 1;
 
 function Tile(x, y, collision, slope){
 	GameObject.call(this, x, y, 0, 0, Tile.WIDTH, Tile.HEIGHT);
+	this.type = "Tile";
 	this.collision = defaultValue(collision, Tile.GHOST);
 	this.slope = slope;
 	

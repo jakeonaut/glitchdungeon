@@ -1,5 +1,6 @@
 function GameSprite(x, y, lb, tb, rb, bb, img_name){
 	GameObject.call(this, x, y, lb, tb, rb, bb);
+	this.type = "GameSprite";
 	this.img_name = img_name;
 	this.image = eval("resource_manager." + this.img_name);
 	this.animation = new Animation(1, 8);

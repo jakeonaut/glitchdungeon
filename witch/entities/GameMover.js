@@ -10,6 +10,7 @@ Facing.RIGHT = 1;
 
 function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, terminal_vel){
 	GameSprite.call(this, x, y, lb, tb, rb, bb, img_name);
+	this.type = "GameMover";
 	this.max_run_vel = defaultValue(max_run_vel, 2.0); //pixels/second
 	this.gnd_run_acc = this.max_run_vel/3.0;
 	this.gnd_run_dec = this.max_run_vel/3.0;
@@ -120,7 +121,7 @@ GameMover.prototype.HandleHorizontalCollisions = function(map, left_tile, right_
 	//Check all potentially colliding tiles
 	for (var i = top_tile; i <= bottom_tile; i++){
 		for (var j = left_tile; j <= right_tile; j++){
-			if (!isValidTile(i, j, map)) continue;
+			if (!map.isValidTile(i, j)) continue;
 			var tile = map.tiles[i][j];
 			//don't check for collisions if potential tile is "out of bounds" or not solid
 			if (tile.collision != Tile.SOLID) continue;
@@ -162,7 +163,7 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 	//Check all potentially colliding tiles
 	for (var i = top_tile; i <= bottom_tile; i++){
 		for (var j = left_tile; j <= right_tile; j++){
-			if (!isValidTile(i, j, map)) continue;
+			if (!map.isValidTile(i, j)) continue;
 			var tile = map.tiles[i][j];
 			//don't check for collisions if potential tile is "out of bounds" or not solid
 			if (tile.collision == Tile.GHOST) continue;

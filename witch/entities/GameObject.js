@@ -1,4 +1,5 @@
 function GameObject(x, y, lb, tb, rb, bb){
+	this.type = "GameObject";
 	this.x = x;
 	this.y = y;
 	this.lb = lb;

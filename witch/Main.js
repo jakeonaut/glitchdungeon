@@ -22,6 +22,7 @@ var then;
 var fontColor = "rgb(0,0,0)"
 
 //managers
+var room_manager;
 var key_manager;
 var input_manager;
 var resource_manager;
@@ -54,7 +55,9 @@ var init = function(){
 };
 
 var startGame = function(){
-	room = new Room();
+	room_manager = new House();
+	room_manager.SetUpRooms();
+	room = room_manager.GetRoom();
 
 	console.log("start");
 	//Let's play the game!

@@ -8,6 +8,7 @@ function Room(){
 
 Room.prototype.CreateEntities = function(){
 	this.player = new Player(GAME_WIDTH/2, GAME_HEIGHT-Tile.HEIGHT-16, "player_sheet");
+	this.entities = [];
 }
 
 Room.prototype.InitializeTiles = function(){
@@ -32,24 +33,38 @@ Room.prototype.InitializeTiles = function(){
 	}
 }
 
+Room.prototype.isValidTile = function(i, j){
+	return !(i < 0 || i >= this.MAP_HEIGHT || j < 0 || j >= this.MAP_WIDTH);
+}
+
 Room.prototype.Update = function(input, delta){
 	input.Update(this.player);
 	this.player.Update(delta/1000, this);
+	for (var i = this.entities.length-1; i >= 0; i--){
+		this.entities.Update(delta/1000, this);
+		if (this.entities.delete_me) this.entities.splice(i, 1);
+	}
 }
 
 Room.prototype.Render = function(ctx, level_edit){
 	for (var i = 0; i < this.MAP_HEIGHT; i++){ for (var j = 0; j < this.MAP_WIDTH; j++){
 		this.tiles[i][j].Render(ctx);
 	} }
-	
 	if (level_edit) DrawLevelEditGrid(ctx, this);
+	
+	for (var i = 0; i < this.entities.length; i++){
+		this.entities.Render(ctx);
+	}
 	
 	this.player.Render(ctx);
 }
 
 /************************EXPORTING AND IMPORTING FUNCTIONS************/
 Room.prototype.Export = function(){
-	var tiles = [];
+	var entities = [], tiles = [];
+	for (var i = 0; i < this.entities.length; i++){
+		entities.push({type: this.entities[i].type, obj: this.entities[i].Export()});
+	}
 	for (var i = 0; i < this.tiles.length; i++){
 		var row = [];
 		for (var j = 0; j < this.tiles[i].length; j++){
@@ -60,12 +75,32 @@ Room.prototype.Export = function(){
 
 	return {
 		player: {type: "Player", obj: this.player.Export()}
+		,entities: entities
 		,tiles: tiles
 	};
 }
 
+Room.Import = function(file_name){
+	var room = new Room();
+	var obj_str = readTextFile(file_name);
+	if (obj_str !== null && obj_str !== ""){
+		room.Import(JSON.parse(obj_str));
+	}
+	return room;
+}
+
 Room.prototype.Import = function(room){
 	this.player = new Player(); this.player.Import(room.player.obj);
+	
+	//import entities
+	this.entities = [];
+	if (room.entities){
+		for (var i = 0; i < room.entities.length; i++){
+			var entity = eval(room.entities.length[i].type + "();");
+			entity.Import(room.entities.length[i].obj);
+			this.entities.push(entity);
+		}
+	}
 	
 	//Import tiles!!!
 	this.tiles = [];

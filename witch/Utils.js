@@ -1,3 +1,21 @@
+function readTextFile(file){
+	var text;
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                text = rawFile.responseText;
+            }
+        }
+    }
+    rawFile.send(null);
+	return text;
+}
+
 //http://stackoverflow.com/questions/3808808/how-to-get-element-by-class-in-javascript
 function getElementsByClass(matchClass) {
     var elems = document.getElementsByTagName('*'), i;
@@ -40,10 +58,6 @@ function $(id){
 
 function defaultValue(variable, def_val){
 	return typeof variable !== 'undefined' ? variable : def_val;
-}
-
-function isValidTile(i, j, map){
-	return !(i < 0 || i >= map.MAP_HEIGHT || j < 0 || j >= map.MAP_WIDTH);
 }
 
 function sharpen(ctx){
