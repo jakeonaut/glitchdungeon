@@ -1,12 +1,24 @@
-function GameSprite(x, y, lb, tb, rb, bb, image){
+function GameSprite(x, y, lb, tb, rb, bb, img_name){
 	GameObject.call(this, x, y, lb, tb, rb, bb);
-	this.image = image;
+	this.img_name = img_name;
+	this.image = eval("resource_manager." + this.img_name);
 	this.animation = new Animation(1, 8);
 	this.base_ani_x = 0;
 	this.base_ani_y = 0;
 	this.visible = true;
 }
 extend(GameObject, GameSprite);
+
+GameSprite.prototype.Import = function(obj){
+	GameObject.prototype.Import.call(this, obj);
+	this.img_name = obj.img_name;
+	this.image = eval("resource_manager." + this.img_name);
+}
+GameSprite.prototype.Export = function(){
+	var obj = GameObject.prototype.Export.call(this);
+	obj.img_name = this.img_name;
+	return obj;
+}
 
 /** FUNCTION DEFINITIONS****************************************/
 /**????????????????????????????????????????????????????????????*/

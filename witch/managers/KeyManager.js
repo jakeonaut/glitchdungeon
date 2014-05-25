@@ -12,6 +12,10 @@ KeyManager.RIGHT = 39;
 KeyManager.DOWN = 40;
 KeyManager.ENTER = 13;
 KeyManager.SPACE = 32;
+KeyManager.W = 87;
+KeyManager.A = 65;
+KeyManager.S = 83;
+KeyManager.D = 68;
 
 
 KeyManager.prototype.KeyDown = function(e){

@@ -8,8 +8,8 @@ function Facing(){}
 Facing.LEFT = 0;
 Facing.RIGHT = 1;
 
-function GameMover(x, y, lb, tb, rb, bb, image, max_run_vel, jump_vel, terminal_vel){
-	GameSprite.call(this, x, y, lb, tb, rb, bb, image);
+function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, terminal_vel){
+	GameSprite.call(this, x, y, lb, tb, rb, bb, img_name);
 	this.max_run_vel = defaultValue(max_run_vel, 2.0); //pixels/second
 	this.gnd_run_acc = this.max_run_vel/3.0;
 	this.gnd_run_dec = this.max_run_vel/3.0;
@@ -40,6 +40,20 @@ function GameMover(x, y, lb, tb, rb, bb, image, max_run_vel, jump_vel, terminal_
 	this.facing = Facing.RIGHT;
 }
 extend(GameSprite, GameMover);
+
+GameMover.prototype.Import = function(obj){
+	GameSprite.prototype.Import.call(this, obj);
+	this.max_run_vel = obj.max_run_vel;
+	this.jump_vel = obj.jump_vel;
+	this.terminal_vel = obj.terminal_vel;
+}
+GameMover.prototype.Export = function(){
+	var obj = GameSprite.prototype.Export.call(this);
+	obj.max_run_vel = this.max_run_vel;
+	obj.jump_vel = this.jump_vel;
+	obj.terminal_vel = this.terminal_vel;
+	return obj;
+}
 
 
 /** FUNCTION DEFINITIONS****************************************/

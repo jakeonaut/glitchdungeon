@@ -7,7 +7,7 @@ function Room(){
 }
 
 Room.prototype.CreateEntities = function(){
-	this.player = new Player(GAME_WIDTH/2, GAME_HEIGHT-Tile.HEIGHT-16, resource_manager.player_sheet);
+	this.player = new Player(GAME_WIDTH/2, GAME_HEIGHT-Tile.HEIGHT-16, "player_sheet");
 }
 
 Room.prototype.InitializeTiles = function(){
@@ -45,4 +45,36 @@ Room.prototype.Render = function(ctx, level_edit){
 	if (level_edit) DrawLevelEditGrid(ctx, this);
 	
 	this.player.Render(ctx);
+}
+
+/************************EXPORTING AND IMPORTING FUNCTIONS************/
+Room.prototype.Export = function(){
+	var tiles = [];
+	for (var i = 0; i < this.tiles.length; i++){
+		var row = [];
+		for (var j = 0; j < this.tiles[i].length; j++){
+			row.push(this.tiles[i][j].Export());
+		}
+		tiles.push(row);
+	}
+
+	return {
+		player: {type: "Player", obj: this.player.Export()}
+		,tiles: tiles
+	};
+}
+
+Room.prototype.Import = function(room){
+	this.player = new Player(); this.player.Import(room.player.obj);
+	
+	//Import tiles!!!
+	this.tiles = [];
+	for (var i = 0; i < room.tiles.length; i++){
+		var row = [];
+		for (var j = 0; j < room.tiles[i].length; j++){
+			var tile = new Tile(); tile.Import(room.tiles[i][j]);
+			row.push(tile);
+		}
+		this.tiles.push(row);
+	}
 }

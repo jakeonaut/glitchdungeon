@@ -39,8 +39,9 @@
 		</tr>
 	  </table>
       <div id="level_edit_buttons" style="display:none;">
-		<input type="submit" value="export"/>
-		<input type="submit" value="import"/>
+		<input type="submit" value="export" onclick="ledit_export();"/>
+		<input type="submit" value="import" onclick="ledit_import();"/>
+		<br/><br/><textarea id="level_edit_export_text"></textarea>
 	  </div>
     </center>
     <!--Player for the background music-->

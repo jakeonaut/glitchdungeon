@@ -3,6 +3,7 @@ World.TILE_SOLID = 1;
 World.TILE_FALLTHROUGH = 2;
 function World(){}
 
+var level_edit_mouse_down = false;
 var level_edit_object;
 var level_edit_object_is_tile = false;
 
@@ -33,6 +34,8 @@ function DrawLevelEditGrid(ctx, room){
 }
 
 function LevelEditMouseDown(e){
+	if (!level_edit) return;
+	level_edit_mouse_down = true;
 	var box = canvas.getBoundingClientRect();
 	
 	var x = (e.clientX - box.left) / VIEW_SCALE;
@@ -60,6 +63,31 @@ function LevelEditMouseDown(e){
 		}
 		else{
 		}
+	}
+}
+
+function LevelEditMouseMove(e){
+	if (level_edit_mouse_down){
+		LevelEditMouseDown(e);
+	}
+}
+
+function LevelEditMouseUp(e){
+	level_edit_mouse_down = false;
+}
+
+function ledit_export(){
+	$("level_edit_export_text").value = JSON.stringify(room.Export());
+}
+
+function ledit_import(){
+	var obj_str = $("level_edit_export_text").value;
+	try{
+		if (obj_str !== null && obj_str !== ""){
+			room.Import(JSON.parse(obj_str));
+		}
+	}catch(e){
+		console.log(e);
 	}
 }
 

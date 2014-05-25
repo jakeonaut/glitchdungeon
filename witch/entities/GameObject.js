@@ -11,6 +11,24 @@ function GameObject(x, y, lb, tb, rb, bb){
 	this.delete_me = false;
 }
 
+GameObject.prototype.Import = function(obj){
+	this.x = obj.x;
+	this.y = obj.y;
+	this.lb = obj.lb;
+	this.tb = obj.tb;
+	this.rb = obj.rb;
+	this.bb = obj.bb;
+}
+GameObject.prototype.Export = function(){
+	return {
+		x: this.x,
+		y: this.y,
+		lb: this.lb,
+		tb: this.tb,
+		rb: this.rb,
+		bb: this.bb
+	};
+}
 GameObject.prototype.Update = function(delta, map){}
 GameObject.prototype.Render = function(ctx){}
 

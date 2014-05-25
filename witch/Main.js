@@ -42,6 +42,8 @@ var init = function(){
 	window.onkeydown = key_manager.KeyDown.bind(key_manager);
 	window.onkeyup = key_manager.KeyUp.bind(key_manager);
 	canvas.onmousedown = LevelEditMouseDown;
+	canvas.onmousemove = LevelEditMouseMove;
+	canvas.onmouseup = LevelEditMouseUp;
 	
 	input_manager = new InputManager(key_manager);
 	if (level_edit) InitLevelEdit();

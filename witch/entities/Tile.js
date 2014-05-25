@@ -16,8 +16,39 @@ function Tile(x, y, collision, slope){
 	this.collision = defaultValue(collision, Tile.GHOST);
 	this.slope = slope;
 	
+	this.SetLRHeights();
+}
+extend(GameObject, Tile);
+
+Tile.prototype.Import = function(obj){
+	GameObject.prototype.Import.call(this, obj);
+	this.collision = obj.collision;
+	this.slope = obj.slope;
+	this.SetLRHeights();
+}
+Tile.prototype.Export = function(){
+	var obj = GameObject.prototype.Export.call(this);
+	obj.collision = this.collision;
+	obj.slope = this.slope;
+	return obj;
+}
+
+Tile.prototype.Render = function(ctx){
+	switch (this.collision){
+		case Tile.SOLID:
+			ctx.fillStyle="#FF00FF";
+			break;
+		case Tile.FALLTHROUGH:
+			ctx.fillStyle="#00FFFF";
+			break;
+		default: return; break;
+	}
+	ctx.fillRect(this.x, this.y, Tile.WIDTH, Tile.HEIGHT);
+}
+
+Tile.prototype.SetLRHeights = function(){
 	//default to flat
-	switch (slope){
+	switch (this.slope){
 		case Slope.LOW_POS: case Slope.MID_POS: case Slope.HI_POS:
 			this.l_height = Tile.HEIGHT;
 			this.r_height = Tile.HEIGHT - (Math.tan(slope) * Tile.WIDTH);
@@ -31,20 +62,6 @@ function Tile(x, y, collision, slope){
 			this.r_height = 0;
 		default: break;
 	}
-}
-extend(GameObject, Tile);
-
-Tile.prototype.Render = function(ctx){
-	switch (this.collision){
-		case Tile.SOLID:
-			ctx.fillStyle="#FF00FF";
-			break;
-		case Tile.FALLTHROUGH:
-			ctx.fillStyle="#00FFFF";
-			break;
-		default: return; break;
-	}
-	ctx.fillRect(this.x, this.y, Tile.WIDTH, Tile.HEIGHT);
 }
 
 Tile.WIDTH = 8;
