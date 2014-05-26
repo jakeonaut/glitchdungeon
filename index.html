@@ -15,6 +15,7 @@
 <!--House and Rooms-->
 <script type="text/javascript" src="witch/rooms/House.js"></script>
 <script type="text/javascript" src="witch/rooms/Room.js"></script>
+<script type="text/javascript" src="witch/rooms/Camera.js"></script>
 
 <!--Entities-->
 <script type="text/javascript" src="witch/entities/GameObject.js"></script>
@@ -40,6 +41,11 @@
 		</tr>
 	  </table>
       <div id="level_edit_buttons" style="display:none;">
+		<div style="position: absolute; left: 10px;">
+			width: <input type="text" id="room_width" value="320"/><br/>
+			heght: <input type="text" id="room_height" value="240"/><br/>
+			<input type="submit" value="change height" onclick="ledit_change_room_size();"/>
+		</div>
 		<input type="submit" value="export" onclick="ledit_export();"/>
 		<input type="submit" value="import" onclick="ledit_import();"/>
 		<br/><br/><textarea id="level_edit_export_text"></textarea>

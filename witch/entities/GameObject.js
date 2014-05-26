@@ -31,7 +31,7 @@ GameObject.prototype.Export = function(){
 	};
 }
 GameObject.prototype.Update = function(delta, map){}
-GameObject.prototype.Render = function(ctx){}
+GameObject.prototype.Render = function(ctx, camera){}
 
 /**************************COLLISION DETECTION*************************************/
 //object is of type GameObject

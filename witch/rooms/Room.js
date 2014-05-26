@@ -1,7 +1,11 @@
 function Room(){
-	this.MAP_WIDTH = GAME_WIDTH / Tile.WIDTH;
-	this.MAP_HEIGHT = GAME_HEIGHT / Tile.HEIGHT;
+	this.SCREEN_WIDTH = GAME_WIDTH;
+	this.SCREEN_HEIGHT = GAME_HEIGHT;
 	
+	this.MAP_WIDTH = ~~(GAME_WIDTH / Tile.WIDTH);
+	this.MAP_HEIGHT = ~~(GAME_HEIGHT / Tile.HEIGHT);
+	
+	this.camera = new Camera();
 	this.CreateEntities();
 	this.InitializeTiles();
 }
@@ -40,6 +44,8 @@ Room.prototype.isValidTile = function(i, j){
 Room.prototype.Update = function(input, delta){
 	input.Update(this.player);
 	this.player.Update(delta/1000, this);
+	this.camera.Update(delta/1000, this);
+	
 	for (var i = this.entities.length-1; i >= 0; i--){
 		this.entities.Update(delta/1000, this);
 		if (this.entities.delete_me) this.entities.splice(i, 1);
@@ -48,15 +54,35 @@ Room.prototype.Update = function(input, delta){
 
 Room.prototype.Render = function(ctx, level_edit){
 	for (var i = 0; i < this.MAP_HEIGHT; i++){ for (var j = 0; j < this.MAP_WIDTH; j++){
-		this.tiles[i][j].Render(ctx);
+		this.tiles[i][j].Render(ctx, this.camera);
 	} }
 	if (level_edit) DrawLevelEditGrid(ctx, this);
 	
 	for (var i = 0; i < this.entities.length; i++){
-		this.entities.Render(ctx);
+		this.entities.Render(ctx, this.camera);
 	}
 	
-	this.player.Render(ctx);
+	this.player.Render(ctx, this.camera);
+}
+
+/********************OTHER LEVEL EDITING FUNCTIONS********************/
+Room.prototype.ChangeSize = function(width, height){
+	var old_width = this.MAP_WIDTH;
+	var old_height = this.MAP_HEIGHT;
+	this.MAP_WIDTH = ~~(width / Tile.WIDTH);
+	this.MAP_HEIGHT = ~~(height / Tile.HEIGHT);
+	
+	for (var i = 0; i < this.MAP_HEIGHT; i++){
+		if (i >= old_height) this.tiles[i] = [];
+		for (var j = 0; j < this.MAP_WIDTH; j++){
+			if (i >= old_height) 
+				this.tiles[i].push(new Tile(j * Tile.WIDTH, i * Tile.HEIGHT));
+			else if (j >= old_width)
+				this.tiles[i].push(new Tile(j * Tile.WIDTH, i * Tile.HEIGHT));
+		}
+	}
+	console.log("NEW WIDTH: ", this.MAP_WIDTH);
+	console.log("NEW HEIGHT: ", this.MAP_HEIGHT);
 }
 
 /************************EXPORTING AND IMPORTING FUNCTIONS************/
@@ -104,9 +130,13 @@ Room.prototype.Import = function(room){
 	
 	//Import tiles!!!
 	this.tiles = [];
+	this.MAP_WIDTH = 0;
+	this.MAP_HEIGHT = 0;
 	for (var i = 0; i < room.tiles.length; i++){
+		this.MAP_HEIGHT++;
 		var row = [];
 		for (var j = 0; j < room.tiles[i].length; j++){
+			if (i == 0) this.MAP_WIDTH++;
 			var tile = new Tile(); tile.Import(room.tiles[i][j]);
 			row.push(tile);
 		}

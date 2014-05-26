@@ -28,7 +28,7 @@ GameSprite.prototype.Update = function(delta, map){
 	GameObject.prototype.Update.call(this, delta, map);
 }
 
-GameSprite.prototype.Render = function(ctx){
+GameSprite.prototype.Render = function(ctx, camera){
 	if (this.image === null || !this.visible) return;
 	var ani = this.animation;
 	var row = ani.rel_ani_y;
@@ -40,7 +40,8 @@ GameSprite.prototype.Render = function(ctx){
 		ani.frame_height * row + ani.abs_ani_y + this.base_ani_y,
 		ani.frame_width, ani.frame_height,
 		//DESTINATION RECTANGLE
-		~~(this.x+0.5) + ani.x_offset, ~~(this.y+0.5)+ani.y_offset,
+		~~(this.x-camera.x+0.5) + ani.x_offset, 
+		~~(this.y-camera.y+0.5)+ani.y_offset,
 		ani.frame_width, ani.frame_height
 	);
 }

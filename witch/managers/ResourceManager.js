@@ -48,7 +48,8 @@ ResourceManager.prototype.LoadResources = function(ctx){
 	this.player_sheet.onload = this.ImageLoad.bind(this); 			this.player_sheet.src = "witch/assets/images/witch_sheet.png";
 	
 	//Load Sounds
-	this.catch_sound.oncanplaythrough = this.SoundLoad.bind(this);	this.catch_sound.src = "witch/assets/sounds/catch.wav";
+	this.catch_sound.addEventListener("canplaythrough", this.SoundLoad.bind(this));
+		this.catch_sound.src = "witch/assets/sounds/catch.wav";
 }
 
 ResourceManager.prototype.CheckLoadedResources = function(){

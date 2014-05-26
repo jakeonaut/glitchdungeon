@@ -1,6 +1,7 @@
+var level_edit = true;
+
 var isMSIE = /*@cc_on!@*/0;
 var playSound = true;
-var level_edit = true;
 
 if (isMSIE){
   playSound = false; 
@@ -56,13 +57,13 @@ var init = function(){
 
 var startGame = function(){
 	room_manager = new House();
-	room_manager.SetUpRooms();
 	room = room_manager.GetRoom();
 
 	console.log("start");
 	//Let's play the game!
 	then = Date.now();
-	setInterval(main,17); //Execute as fast as possible!!!
+	
+	setInterval(main, 17);
 };
 
 //main game loop

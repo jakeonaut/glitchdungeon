@@ -24,12 +24,14 @@ function DisableLevelEdit(){
 function DrawLevelEditGrid(ctx, room){
 	var color = "#000000";
 	
-	for (var i = 1; i < room.MAP_WIDTH; i++){
-		drawLine(ctx, color, i * Tile.WIDTH, 0, i * Tile.WIDTH, room.MAP_HEIGHT * Tile.HEIGHT, 0.5);
+	var ax = (-room.camera.x) % Tile.WIDTH;
+	var ay = (-room.camera.y) % Tile.HEIGHT;
+	for (var i = 1; i < ~~(GAME_WIDTH/Tile.WIDTH)+1; i++){
+		drawLine(ctx, color, ax+ i * Tile.WIDTH, 0, ax + i * Tile.WIDTH, room.SCREEN_HEIGHT, 0.5);
 	}
 	
-	for (var i = 1; i < room.MAP_HEIGHT; i++){
-		drawLine(ctx, color, 0, i * Tile.HEIGHT, room.MAP_WIDTH * Tile.WIDTH, i * Tile.HEIGHT, 0.5);
+	for (var i = 1; i < ~~(GAME_HEIGHT/Tile.HEIGHT)+1; i++){
+		drawLine(ctx, color, 0, ay + i * Tile.HEIGHT, room.SCREEN_WIDTH, ay + i * Tile.HEIGHT, 0.5);
 	}
 }
 
@@ -38,8 +40,8 @@ function LevelEditMouseDown(e){
 	level_edit_mouse_down = true;
 	var box = canvas.getBoundingClientRect();
 	
-	var x = (e.clientX - box.left) / VIEW_SCALE;
-	var y = (e.clientY - box.top) / VIEW_SCALE;
+	var x = (e.clientX - box.left) / VIEW_SCALE + room.camera.x;
+	var y = (e.clientY - box.top) / VIEW_SCALE + room.camera.y;
 	var tile_x = Math.floor(x / Tile.WIDTH);
 	var tile_y = Math.floor(y / Tile.HEIGHT);
 	
@@ -74,6 +76,10 @@ function LevelEditMouseMove(e){
 
 function LevelEditMouseUp(e){
 	level_edit_mouse_down = false;
+}
+
+function ledit_change_room_size(){
+	room.ChangeSize($("room_width").value, $("room_height").value);
 }
 
 function ledit_export(){

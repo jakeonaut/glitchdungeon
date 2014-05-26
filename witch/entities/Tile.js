@@ -34,7 +34,7 @@ Tile.prototype.Export = function(){
 	return obj;
 }
 
-Tile.prototype.Render = function(ctx){
+Tile.prototype.Render = function(ctx, camera){
 	switch (this.collision){
 		case Tile.SOLID:
 			ctx.fillStyle="#FF00FF";
@@ -44,7 +44,7 @@ Tile.prototype.Render = function(ctx){
 			break;
 		default: return; break;
 	}
-	ctx.fillRect(this.x, this.y, Tile.WIDTH, Tile.HEIGHT);
+	ctx.fillRect(this.x - camera.x, this.y - camera.y, Tile.WIDTH, Tile.HEIGHT);
 }
 
 Tile.prototype.SetLRHeights = function(){

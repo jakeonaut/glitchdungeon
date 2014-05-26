@@ -1,0 +1,3 @@
+0. make house have multiple "wings" which each have rooms
+1. ;-; make doors that drop only on mouse up (make all non tiles do this actually), that upon mouse up, prompt which room they lead to; {WING: ROOM X Y: PLAYER X Y}
+2. 
