@@ -21,10 +21,10 @@ InputManager.prototype.Update = function(player){
 		player.StopJump();
 	}
 	
-	if (this.key_manager.keys_down[KeyManager.DOWN] || this.key_manager.keys_down[KeyManager.S]){
+	if (this.key_manager.keys_pressed[KeyManager.DOWN] || this.key_manager.keys_pressed[KeyManager.S]){
 		player.PressDown();
 	}
-	else{
+	else if(this.key_manager.keys_up[KeyManager.DOWN] || this.key_manager.keys_up[KeyManager.S]){
 		player.StopPressingDown();
 	}
 }

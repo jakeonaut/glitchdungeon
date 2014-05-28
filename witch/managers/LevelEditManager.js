@@ -1,6 +1,7 @@
 World.PLAYER = 0;
 World.TILE_SOLID = 1;
 World.TILE_FALLTHROUGH = 2;
+World.TILE_GHOST = 3;
 function World(){}
 
 var level_edit_mouse_down = false;
@@ -10,6 +11,16 @@ var level_edit_object_is_tile = false;
 function InitLevelEdit(){
 	$("level_edit_objects").style.display="block";
 	$("level_edit_buttons").style.display="block";
+	
+	function keypress(e){
+		var code = (e.keyCode ? e.keyCode : e.which);
+		if (code == 13) { //Enter keycode                        
+			e.preventDefault();
+			ledit_change_room_size();
+		}
+	}
+	$("room_width").onkeypress = keypress;
+	$("room_height").onkeypress = keypress;
 	level_edit = true;
 	
 	ledit_select($("tile_solid"), World.TILE_SOLID);
@@ -37,6 +48,7 @@ function DrawLevelEditGrid(ctx, room){
 
 function LevelEditMouseDown(e){
 	if (!level_edit) return;
+	e.preventDefault();
 	level_edit_mouse_down = true;
 	var box = canvas.getBoundingClientRect();
 	
@@ -58,23 +70,40 @@ function LevelEditMouseDown(e){
 				tile.collision = Tile.GHOST;
 				break;
 		}
-	}else{
+	}
+	else{
 		if (level_edit_object == World.PLAYER){
 			room.player.x = x - (room.player.rb/2);
 			room.player.y = y - room.player.bb;
 		}
 		else{
+			if (e.which === 3 && e.button === 2){ //RIGHT CLICK. REMOVE OBJ IF UNDER
+				for (var i = room.entities.length-1; i >= 0; i--){
+					if (room.entities[i].IsPointColliding(x, y)){
+						room.entities.splice(i, 1);
+					}
+				}
+			}else{
+				x = tile_x * Tile.WIDTH;
+				y = tile_y * Tile.HEIGHT
+				var obj = eval(level_edit_object);
+				obj.x = x;
+				obj.y = y;
+				room.entities.push(obj);
+			}
 		}
 	}
 }
 
 function LevelEditMouseMove(e){
-	if (level_edit_mouse_down){
+	if (!level_edit) return;
+	if (level_edit_mouse_down && level_edit_object_is_tile){
 		LevelEditMouseDown(e);
 	}
 }
 
 function LevelEditMouseUp(e){
+	if (!level_edit) return;
 	level_edit_mouse_down = false;
 }
 
@@ -95,6 +124,12 @@ function ledit_import(){
 	}catch(e){
 		console.log(e);
 	}
+}
+
+function ledit_reset(){
+	room = new Room();
+	$("room_width").value = room.SCREEN_WIDTH;
+	$("room_height").value = room.SCREEN_HEIGHT;
 }
 
 function ledit_select(box, obj_type){
@@ -118,9 +153,11 @@ function ledit_select(box, obj_type){
 			level_edit_object_is_tile = true;
 			level_edit_object = Tile.FALLTHROUGH;
 			break;
-		default:
+		case World.TILE_GHOST:
 			level_edit_object_is_tile = true;
 			level_edit_object = Tile.GHOST;
 			break;
+		default:
+			level_edit_object = obj_type;
 	}
 }

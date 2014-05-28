@@ -24,6 +24,9 @@
 <script type="text/javascript" src="witch/entities/GameMover.js"></script>
 <script type="text/javascript" src="witch/entities/Tile.js"></script>
 <script type="text/javascript" src="witch/entities/Player.js"></script>
+
+<!--Objects-->
+<script type="text/javascript" src="witch/entities/objects/Door.js"></script>
 </head>
 <body>
     <center>
@@ -32,12 +35,14 @@
 		<td>
 			<div id="level_edit_objects" style="display:none;">
 				<div id="player_object" class="object_box" style="background: url('witch/assets/images/witch_sheet.png');" onclick="ledit_select(this, World.PLAYER);">&nbsp;</div>
+				<div id="door_object" class="object_box" style="background: url('witch/assets/images/obj_sheet.png');" onclick="ledit_select(this, &quot;new Door(0, 0, parseInt(prompt('room x')), parseInt(prompt('room y')))&quot;);">&nbsp;</div>
+				
 				<div id="tile_solid" class="object_box" style="background-color: #ff00ff;" onclick="ledit_select(this, World.TILE_SOLID);">&nbsp;</div>
 				<div id="tile_fallthrough" class="object_box" style="background-color: #00ffff;" onclick="ledit_select(this, World.TILE_FALLTHROUGH);">&nbsp;</div>
-				<div id="tile_ghost" class="object_box" onclick="ledit_select(this, null);">&nbsp;</div>
+				<div id="tile_ghost" class="object_box" onclick="ledit_select(this, World.TILE_GHOST);">&nbsp;</div>
 			</div>
 		</td>
-		<td><canvas id="game_canvas" class="centerMe"></canvas></td>
+		<td><canvas id="game_canvas" class="centerMe" oncontextmenu="return false;"></canvas></td>
 		</tr>
 	  </table>
       <div id="level_edit_buttons" style="display:none;">
@@ -48,6 +53,7 @@
 		</div>
 		<input type="submit" value="export" onclick="ledit_export();"/>
 		<input type="submit" value="import" onclick="ledit_import();"/>
+		<input type="submit" value="reset" onclick="ledit_reset();"/>
 		<br/><br/><textarea id="level_edit_export_text"></textarea>
 	  </div>
     </center>

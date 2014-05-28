@@ -47,8 +47,8 @@ Room.prototype.Update = function(input, delta){
 	this.camera.Update(delta/1000, this);
 	
 	for (var i = this.entities.length-1; i >= 0; i--){
-		this.entities.Update(delta/1000, this);
-		if (this.entities.delete_me) this.entities.splice(i, 1);
+		this.entities[i].Update(delta/1000, this);
+		if (this.entities[i].delete_me) this.entities.splice(i, 1);
 	}
 }
 
@@ -59,7 +59,7 @@ Room.prototype.Render = function(ctx, level_edit){
 	if (level_edit) DrawLevelEditGrid(ctx, this);
 	
 	for (var i = 0; i < this.entities.length; i++){
-		this.entities.Render(ctx, this.camera);
+		this.entities[i].Render(ctx, this.camera);
 	}
 	
 	this.player.Render(ctx, this.camera);
@@ -71,6 +71,9 @@ Room.prototype.ChangeSize = function(width, height){
 	var old_height = this.MAP_HEIGHT;
 	this.MAP_WIDTH = ~~(width / Tile.WIDTH);
 	this.MAP_HEIGHT = ~~(height / Tile.HEIGHT);
+
+	var temp_tiles = this.tiles;
+	this.InitializeTiles();
 	
 	for (var i = 0; i < this.MAP_HEIGHT; i++){
 		if (i >= old_height) this.tiles[i] = [];
@@ -79,6 +82,7 @@ Room.prototype.ChangeSize = function(width, height){
 				this.tiles[i].push(new Tile(j * Tile.WIDTH, i * Tile.HEIGHT));
 			else if (j >= old_width)
 				this.tiles[i].push(new Tile(j * Tile.WIDTH, i * Tile.HEIGHT));
+			else this.tiles[i][j] = temp_tiles[i][j];
 		}
 	}
 	console.log("NEW WIDTH: ", this.MAP_WIDTH);
@@ -122,21 +126,19 @@ Room.prototype.Import = function(room){
 	this.entities = [];
 	if (room.entities){
 		for (var i = 0; i < room.entities.length; i++){
-			var entity = eval(room.entities.length[i].type + "();");
-			entity.Import(room.entities.length[i].obj);
+			var entity = eval("new " + room.entities[i].type + "();");
+			entity.Import(room.entities[i].obj);
 			this.entities.push(entity);
 		}
 	}
 	
 	//Import tiles!!!
 	this.tiles = [];
-	this.MAP_WIDTH = 0;
-	this.MAP_HEIGHT = 0;
+	this.MAP_WIDTH = room.tiles[0].length;
+	this.MAP_HEIGHT = room.tiles.length;
 	for (var i = 0; i < room.tiles.length; i++){
-		this.MAP_HEIGHT++;
 		var row = [];
 		for (var j = 0; j < room.tiles[i].length; j++){
-			if (i == 0) this.MAP_WIDTH++;
 			var tile = new Tile(); tile.Import(room.tiles[i][j]);
 			row.push(tile);
 		}

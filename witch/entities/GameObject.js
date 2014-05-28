@@ -47,6 +47,13 @@ GameObject.prototype.IsRectColliding = function(object, lb,tb,rb,bb){
   return false;
 }
 
+GameObject.prototype.IsPointColliding = function(x, y){
+  if (x <= this.x + this.rb && x >= this.x + this.lb &&
+      y <= this.y + this.bb && y >= this.y + this.tb)
+    return true;
+  return false;
+}
+
 GameObject.prototype.ReturnCollidingObjects = function(objects){
 	var colliding_objects = [];
 	for (var i = 0; i < objects.length; i++){

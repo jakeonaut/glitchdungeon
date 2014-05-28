@@ -19,9 +19,10 @@ Camera.prototype.Update = function(delta, map){
 				this.x = (player.x + player.rb + this.x_lim) - this.width;
 			else{
 				this.x += this.speed;
-				if (this.x >= map.MAP_WIDTH * Tile.WIDTH - this.width)
-					this.x = map.MAP_WIDTH * Tile.WIDTH - this.width;
 			}
+			
+			if (this.x >= map.MAP_WIDTH * Tile.WIDTH - this.width)
+				this.x = map.MAP_WIDTH * Tile.WIDTH - this.width;
 		}
 	} //HOrizontal panning LEFT
 	if (player.x + player.lb - this.x_lim - this.x <= 0){
@@ -30,8 +31,9 @@ Camera.prototype.Update = function(delta, map){
 				this.x = (player.x + player.lb - this.x_lim);
 			else{ 
 				this.x -= this.speed;
-				if (this.x <= 0) this.x = 0;
 			}
+			
+			if (this.x <= 0) this.x = 0;
 		}
 	}
 	
@@ -42,9 +44,10 @@ Camera.prototype.Update = function(delta, map){
 				this.y = (player.y + player.bb + this.y_lim) - this.height;
 			else{
 				this.y += this.speed;
-				if (this.y >= map.MAP_HEIGHT * Tile.HEIGHT - this.height)
-					this.y = map.MAP_HEIGHT * Tile.HEIGHT - this.height;
 			}
+			
+			if (this.y >= map.MAP_HEIGHT * Tile.HEIGHT - this.height)
+				this.y = map.MAP_HEIGHT * Tile.HEIGHT - this.height;
 		}
 	} //vertical panning UPWARD
 	if (player.y + player.tb - this.y_lim - this.y <= 0){
@@ -53,8 +56,9 @@ Camera.prototype.Update = function(delta, map){
 				this.y = (player.y + player.tb - this.y_lim);
 			else{
 				this.y -= this.speed;
-				if (this.y <= 0) this.y = 0;
 			}
+			
+			if (this.y <= 0) this.y = 0;
 		}
 	}
 }

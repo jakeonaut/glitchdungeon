@@ -22,6 +22,7 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.horizontal_collision = false;
 	this.vertical_collision = false;
 	this.pressing_down = false;
+	this.pressed_down = false;
 	
 	this.vel = {x: 0, y: 0};
 	
@@ -245,6 +246,8 @@ GameMover.prototype.MoveRight = function(){
 }
 
 GameMover.prototype.Move = function(mult){
+	this.pressed_down = false;
+
 	this.horizontal_input = true;
 	if (this.on_ground){
 		if (this.vel.x * mult < 0) this.vel.x = 0;
@@ -343,6 +346,7 @@ GameMover.prototype.StopJump = function(){
 
 GameMover.prototype.PressDown = function(){
 	this.pressing_down = true;
+	this.pressed_down = true;
 }
 
 GameMover.prototype.StopPressingDown = function(){

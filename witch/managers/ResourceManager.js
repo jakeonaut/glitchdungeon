@@ -2,14 +2,13 @@
 function ResourceManager(){
 	//IMAGE VARIABLE DECLARATION
 	this.images_loaded = 0;
-	this.num_images = 2;
 	//images
 	this.bg_image = new Image();
 	this.player_sheet = new Image();
+	this.obj_sheet = new Image();
 	
 	//SOUND VARIABLE DECLARATION
 	this.sounds_loaded = 0;
-	this.num_sounds = 1;
 	//sounds
 	this.catch_sound = document.createElement("audio");
 }
@@ -43,10 +42,13 @@ ResourceManager.prototype.SoundLoad = function(){
 ResourceManager.prototype.LoadResources = function(ctx){
 	this.DisplayLoadScreen(ctx);
 
+	this.num_images = 3;
 	//Load Images
 	this.bg_image.onload = this.ImageLoad.bind(this); 				this.bg_image.src = "witch/assets/images/background.png";
 	this.player_sheet.onload = this.ImageLoad.bind(this); 			this.player_sheet.src = "witch/assets/images/witch_sheet.png";
+	this.obj_sheet.onload = this.ImageLoad.bind(this); 			this.obj_sheet.src = "witch/assets/images/obj_sheet.png";
 	
+	this.num_sounds = 1;
 	//Load Sounds
 	this.catch_sound.addEventListener("canplaythrough", this.SoundLoad.bind(this));
 		this.catch_sound.src = "witch/assets/sounds/catch.wav";
