@@ -44,7 +44,7 @@ Tile.prototype.Render = function(ctx, camera){
 			break;
 		default: return; break;
 	}
-	ctx.fillRect(this.x - camera.x, this.y - camera.y, Tile.WIDTH, Tile.HEIGHT);
+	ctx.fillRect(this.x - camera.x + camera.screen_offset_x, this.y - camera.y + camera.screen_offset_y, Tile.WIDTH, Tile.HEIGHT);
 }
 
 Tile.prototype.SetLRHeights = function(){

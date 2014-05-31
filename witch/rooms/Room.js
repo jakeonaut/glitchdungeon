@@ -11,7 +11,7 @@ function Room(){
 }
 
 Room.prototype.CreateEntities = function(){
-	this.player = new Player(GAME_WIDTH/2, GAME_HEIGHT-Tile.HEIGHT-16, "player_sheet");
+	this.player = new Player(GAME_WIDTH/2, GAME_HEIGHT-Tile.HEIGHT-16);
 	this.entities = [];
 }
 
@@ -53,6 +53,10 @@ Room.prototype.Update = function(input, delta){
 }
 
 Room.prototype.Render = function(ctx, level_edit){
+	ctx.fillStyle = "rgb(128, 128, 128)";
+	ctx.fillRect(this.camera.screen_offset_x, this.camera.screen_offset_y, 
+		this.MAP_WIDTH*Tile.WIDTH, this.MAP_HEIGHT*Tile.HEIGHT);
+
 	for (var i = 0; i < this.MAP_HEIGHT; i++){ for (var j = 0; j < this.MAP_WIDTH; j++){
 		this.tiles[i][j].Render(ctx, this.camera);
 	} }
@@ -71,6 +75,13 @@ Room.prototype.ChangeSize = function(width, height){
 	var old_height = this.MAP_HEIGHT;
 	this.MAP_WIDTH = ~~(width / Tile.WIDTH);
 	this.MAP_HEIGHT = ~~(height / Tile.HEIGHT);
+	
+	if (this.MAP_WIDTH * Tile.WIDTH < this.SCREEN_WIDTH)
+		this.camera.screen_offset_x = (this.SCREEN_WIDTH - (this.MAP_WIDTH * Tile.WIDTH))/2;
+	else this.camera.screen_offset_x = 0;
+	if (this.MAP_WIDTH * Tile.HEIGHT < this.SCREEN_HEIGHT)
+		this.camera.screen_offset_y = (this.SCREEN_HEIGHT-(this.MAP_HEIGHT*Tile.HEIGHT))/2;
+	else this.camera.screen_offset_y = 0;
 
 	var temp_tiles = this.tiles;
 	this.InitializeTiles();
@@ -87,6 +98,16 @@ Room.prototype.ChangeSize = function(width, height){
 	}
 	console.log("NEW WIDTH: ", this.MAP_WIDTH);
 	console.log("NEW HEIGHT: ", this.MAP_HEIGHT);
+}
+
+Room.prototype.GetDoor = function(door_id){
+	for (var i = 0; i < this.entities.length; i++){
+		if (this.entities[i].type == "Door"){
+			if (this.entities[i].door_id == door_id)
+				return this.entities[i];
+		}
+	}
+	return null;
 }
 
 /************************EXPORTING AND IMPORTING FUNCTIONS************/

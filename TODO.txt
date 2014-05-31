@@ -1,4 +1,4 @@
-1. MAKE DOORS MAP TO A SPECIFIC PLAYER X Y POSITION... 
-	-or make each door have to have a paired door...
+1. Make you be able to dynamically alter the house (add a new Room if it doesn't exist)
+	-Make it so export and import have a ROOM_X, ROOM_Y variables?
 
 I hope when you die you get to see your stats like how many times you laughed or told a lie or kissed or how many people loved you and how many people hated you and what you meant to people

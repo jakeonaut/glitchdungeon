@@ -1,4 +1,7 @@
 function Camera(x, y){
+	this.screen_offset_x = 0;
+	this.screen_offset_y = 0;
+
 	this.x = x || 0;
 	this.y = y || 0; 
 	this.width = GAME_WIDTH;

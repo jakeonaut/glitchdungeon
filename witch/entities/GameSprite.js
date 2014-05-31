@@ -40,8 +40,8 @@ GameSprite.prototype.Render = function(ctx, camera){
 		ani.frame_height * row + ani.abs_ani_y + this.base_ani_y,
 		ani.frame_width, ani.frame_height,
 		//DESTINATION RECTANGLE
-		~~(this.x-camera.x+0.5) + ani.x_offset, 
-		~~(this.y-camera.y+0.5)+ani.y_offset,
+		~~(this.x-camera.x+camera.screen_offset_x+0.5) + ani.x_offset, 
+		~~(this.y-camera.y+camera.screen_offset_y+0.5)+ani.y_offset,
 		ani.frame_width, ani.frame_height
 	);
 }

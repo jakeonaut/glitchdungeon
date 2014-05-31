@@ -88,7 +88,7 @@ var render = function(){
 	ctx.scale(VIEW_SCALE,VIEW_SCALE);
 	
 	//Erase screen
-	ctx.fillStyle = "rgb(128, 128, 128)";
+	ctx.fillStyle = "rgb(0, 0, 0)";
 	ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 	
 	//draw the game
