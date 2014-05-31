@@ -15,7 +15,7 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.gnd_run_acc = this.max_run_vel/3.0;
 	this.gnd_run_dec = this.max_run_vel/3.0;
 	this.air_run_acc = this.max_run_vel/3.0;
-	this.air_run_dec = this.max_run_vel/10.0;
+	this.air_run_dec = this.max_run_vel/3.0;
 	this.horizontal_input = false;
 	
 	this.left_flip_offset = 0;
@@ -237,39 +237,36 @@ GameMover.prototype.UpdateAnimationFromState = function(){
 /*******************FUNCTIONS FOR MOVEMENT INPUT BY OBJECT*****************/
 GameMover.prototype.MoveLeft = function(){
 	this.facing = Facing.LEFT;
+	//if (this.vel.x > 0) this.vel.x = 0;
 	this.Move(-1);
 }
 
 GameMover.prototype.MoveRight = function(){
 	this.facing = Facing.RIGHT;
+	//if (this.vel.x < 0) this.vel.x = 0;
 	this.Move(1);
 }
 
 GameMover.prototype.Move = function(mult){
 	this.pressed_down = false;
 
+	var acc;
 	this.horizontal_input = true;
+	if ((this.vel.x * mult) < 0) this.vel.x = 0;
 	if (this.on_ground){
-		if (this.vel.x * mult < 0) this.vel.x = 0;
-		if (Math.abs(this.vel.x) < this.max_run_vel){
-			this.vel.x += this.gnd_run_acc * mult;
-			this.CorrectVelocity(mult);
-		}
-		else if (Math.abs(this.vel.x) > this.max_run_vel){
-			this.vel.x -= this.gnd_run_acc * mult;
-			if (Math.abs(this.vel.x) < this.max_run_vel)
-				this.vel.x = this.max_run_vel * mult;
-		}
+		acc = this.gnd_run_acc;
 		this.move_state = MoveState.RUNNING;
 	}
-	else
-	{
-		if (Math.abs(this.vel.x) < this.max_run_vel){
-			if (this.move_state === MoveState.JUMPING)
-				this.vel.x = this.max_run_vel * mult;
-			else this.vel.x += this.air_run_acc * mult;
-			this.CorrectVelocity(mult);
-		}
+	else{ acc = this.air_run_acc; }
+	
+	if (Math.abs(this.vel.x) < this.max_run_vel){
+		this.vel.x += acc * mult;
+		this.CorrectVelocity(mult);
+	}
+	else if (Math.abs(this.vel.x) > this.max_run_vel){
+		this.vel.x -= acc * mult;
+		if (Math.abs(this.vel.x) < this.max_run_vel)
+			this.vel.x = this.max_run_vel * mult;
 	}
 }
 
