@@ -7,10 +7,17 @@ function World(){}
 var level_edit_mouse_down = false;
 var level_edit_object;
 var level_edit_object_is_tile = false;
+var level_edit_tileset_ctx;
+
+var level_edit_tile_img_x = 0;
+var level_edit_tile_img_y = 0;
 
 function InitLevelEdit(){
 	$("level_edit_objects").style.display="block";
 	$("level_edit_buttons").style.display="block";
+	level_edit_tileset_ctx = $("tileset_canvas").getContext("2d");
+	$("tileset_canvas").width = 96;
+	$("tileset_canvas").height = 96;
 	
 	function keypress(e){
 		var code = (e.keyCode ? e.keyCode : e.which);
@@ -46,6 +53,30 @@ function DrawLevelEditGrid(ctx, room){
 	}
 }
 
+function TileSetMouseDown(e){
+	if(!level_edit) return;
+	
+	e.preventDefault();
+	var box = $("tileset_canvas").getBoundingClientRect();
+	var x = (e.clientX - box.left);
+	var y = (e.clientY - box.top);
+	var tile_x = Math.floor(x / Tile.WIDTH);
+	var tile_y = Math.floor(y / Tile.HEIGHT);
+	LeditSetTileImage(tile_x, tile_y);
+}
+
+function LeditSetTileImage(tile_x, tile_y){
+	level_edit_tile_img_x = tile_x;
+	level_edit_tile_img_y = tile_y;
+	
+	level_edit_tileset_ctx.canvas.width = level_edit_tileset_ctx.canvas.width;
+	
+	level_edit_tileset_ctx.lineWidth="1";
+	level_edit_tileset_ctx.strokeStyle = "#ffffff";
+	level_edit_tileset_ctx.rect(tile_x * Tile.WIDTH, tile_y * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
+	level_edit_tileset_ctx.stroke();
+}
+
 function LevelEditMouseDown(e){
 	if (!level_edit) return;
 	e.preventDefault();
@@ -59,6 +90,7 @@ function LevelEditMouseDown(e){
 	
 	if (level_edit_object_is_tile){
 		var tile = room.tiles[tile_y][tile_x];
+		tile.animation.Change(level_edit_tile_img_x, level_edit_tile_img_y, 1);
 		switch (level_edit_object){
 			case Tile.SOLID:
 				tile.collision = Tile.SOLID;
@@ -133,6 +165,9 @@ function ledit_reset(){
 }
 
 function ledit_select(box, obj_type){
+	level_edit_mouse_down = false;
+	$("tileset_canvas").style.display="none";
+
 	var selected = getElementsByClass("selected_object_box");
 	if (selected.length > 0){
 		selected[0].className = "object_box";
@@ -148,16 +183,23 @@ function ledit_select(box, obj_type){
 		case World.TILE_SOLID:
 			level_edit_object_is_tile = true;
 			level_edit_object = Tile.SOLID;
+			LeditSetTileImage(0, 1);
 			break;
 		case World.TILE_FALLTHROUGH:
 			level_edit_object_is_tile = true;
 			level_edit_object = Tile.FALLTHROUGH;
+			LeditSetTileImage(2, 1);
 			break;
 		case World.TILE_GHOST:
 			level_edit_object_is_tile = true;
 			level_edit_object = Tile.GHOST;
+			LeditSetTileImage(0, 0);
 			break;
 		default:
 			level_edit_object = obj_type;
+	}
+	
+	if (level_edit_object_is_tile){
+		$("tileset_canvas").style.display="block";
 	}
 }

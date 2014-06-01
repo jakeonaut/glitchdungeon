@@ -12,39 +12,36 @@ Tile.SOLID = 0;
 Tile.FALLTHROUGH = 1;
 
 function Tile(x, y, collision, slope){
-	GameObject.call(this, x, y, 0, 0, Tile.WIDTH, Tile.HEIGHT);
+	GameSprite.call(this, x, y, 0, 0, Tile.WIDTH, Tile.HEIGHT, "tileset_sheet");
 	this.type = "Tile";
 	this.collision = defaultValue(collision, Tile.GHOST);
+	this.animation.frame_width = 8;
+	this.animation.frame_height = 8;
+	this.animation.rel_ani_x = 0;
+	this.animation.rel_ani_y = 0;
 	this.slope = slope;
 	
 	this.SetLRHeights();
 }
-extend(GameObject, Tile);
+extend(GameSprite, Tile);
 
 Tile.prototype.Import = function(obj){
-	GameObject.prototype.Import.call(this, obj);
+	GameSprite.prototype.Import.call(this, obj);
 	this.collision = obj.collision;
 	this.slope = obj.slope;
 	this.SetLRHeights();
+	
+	this.animation.rel_ani_x = obj.animation_rel_ani_x;
+	this.animation.rel_ani_y = obj.animation_rel_ani_y;
 }
 Tile.prototype.Export = function(){
-	var obj = GameObject.prototype.Export.call(this);
+	var obj = GameSprite.prototype.Export.call(this);
 	obj.collision = this.collision;
 	obj.slope = this.slope;
+	
+	obj.animation_rel_ani_x = this.animation.rel_ani_x;
+	obj.animation_rel_ani_y = this.animation.rel_ani_y;
 	return obj;
-}
-
-Tile.prototype.Render = function(ctx, camera){
-	switch (this.collision){
-		case Tile.SOLID:
-			ctx.fillStyle="#FF00FF";
-			break;
-		case Tile.FALLTHROUGH:
-			ctx.fillStyle="#00FFFF";
-			break;
-		default: return; break;
-	}
-	ctx.fillRect(this.x - camera.x + camera.screen_offset_x, this.y - camera.y + camera.screen_offset_y, Tile.WIDTH, Tile.HEIGHT);
 }
 
 Tile.prototype.SetLRHeights = function(){

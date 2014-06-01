@@ -5,12 +5,13 @@ var snd_path = "witch/assets/sounds/"
 function ResourceManager(){
 	//IMAGE VARIABLE DECLARATION
 	this.images_loaded = 0;
-	this.num_images = 3;
+	this.num_images = 4;
 	//images 
 	this.bg_image = new Image();
 	this.player_sheet = new Image();
 	this.npc_sheet = new Image();
 	this.obj_sheet = new Image();
+	this.tileset_sheet = new Image();
 	
 	//SOUND VARIABLE DECLARATION
 	this.sounds_loaded = 0;
@@ -53,6 +54,7 @@ ResourceManager.prototype.LoadResources = function(ctx){
 	this.player_sheet.onload = this.ImageLoad.bind(this); 			this.player_sheet.src = img_path + "witch_sheet.png";
 	this.npc_sheet.onload = this.ImageLoad.bind(this); 			this.npc_sheet.src = "witch/assets/images/npc_sheet.png";
 	this.obj_sheet.onload = this.ImageLoad.bind(this); 			this.obj_sheet.src = "witch/assets/images/obj_sheet.png";
+	this.tileset_sheet.onload = this.ImageLoad.bind(this); 			this.tileset_sheet.src = "witch/assets/images/solid_tile_sheet.png";
 	
 	//Load Sounds
 	this.catch_sound.oncanplaythrough = this.SoundLoad.bind(this);	this.catch_sound.src = snd_path + "catch.wav";

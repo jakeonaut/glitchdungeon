@@ -27,13 +27,19 @@ Room.prototype.InitializeTiles = function(){
 	//make the top and bottom row solid
 	for (var j = 0; j < this.MAP_WIDTH; j++){
 		this.tiles[0][j].solid = true;
+		this.tiles[0][j].animation.Change(0, 1, 1);
+		
 		this.tiles[this.MAP_HEIGHT-1][j].collision = Tile.SOLID;
+		this.tiles[this.MAP_HEIGHT-1][j].animation.Change(0, 1, 1);
 	}
 	
 	//make left and right rows solid
 	for (var i = 0; i < this.MAP_HEIGHT; i++){
 		this.tiles[i][0].collision = Tile.SOLID;
+		this.tiles[i][0].animation.Change(0, 1, 1);
+		
 		this.tiles[i][this.MAP_WIDTH-1].collision = Tile.SOLID;
+		this.tiles[i][this.MAP_WIDTH-1].animation.Change(0, 1, 1);
 	}
 }
 

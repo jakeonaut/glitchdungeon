@@ -1,4 +1,4 @@
-var level_edit = true;
+var level_edit = false;
 
 var isMSIE = /*@cc_on!@*/0;
 var playSound = true;
@@ -46,6 +46,7 @@ var init = function(){
 	canvas.onmousedown = LevelEditMouseDown;
 	canvas.onmousemove = LevelEditMouseMove;
 	canvas.onmouseup = LevelEditMouseUp;
+	$("tileset_canvas").onmousedown = TileSetMouseDown;
 	
 	input_manager = new InputManager(key_manager);
 	if (level_edit) InitLevelEdit();

@@ -44,9 +44,12 @@
 				<div id="tile_ghost" class="object_box" onclick="ledit_select(this, World.TILE_GHOST);">&nbsp;</div>
 			</div>
 		</td>
-		<td><canvas id="game_canvas" class="centerMe" oncontextmenu="return false;"></canvas></td>
+		<td>
+			<canvas id="game_canvas" class="centerMe" oncontextmenu="return false;"></canvas>
+		</td>
 		</tr>
 	  </table>
+	  <canvas id="tileset_canvas" style="display:none;position:absolute;right:10px;top:10px;background:#aaaaaa url('witch/assets/images/solid_tile_sheet.png')" class="centerMe" oncontextmenu="return false;"></canvas>
       <div id="level_edit_buttons" style="display:none;">
 		<div style="position: absolute; left: 10px;">
 			width: <input type="text" id="room_width" value="320"/><br/>
