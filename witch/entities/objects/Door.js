@@ -1,5 +1,5 @@
 function Door(x, y, room_x, room_y, door_id){
-	GameMover.call(this, x, y, 2, 5, 14, 24, "obj_sheet");
+	GameSprite.call(this, x, y, 2, 5, 14, 24, "obj_sheet");
 	this.type = "Door";
 	this.animation.frame_height = 24;
 	
@@ -8,14 +8,14 @@ function Door(x, y, room_x, room_y, door_id){
 	this.door_id = door_id;
 }
 Door.prototype.Import = function(obj){
-	GameMover.prototype.Import.call(this, obj);
+	GameSprite.prototype.Import.call(this, obj);
 	
 	this.room_x = obj.room_x;
 	this.room_y = obj.room_y;
 	this.door_id = obj.door_id;
 }
 Door.prototype.Export = function(){
-	var obj = GameMover.prototype.Export.call(this);
+	var obj = GameSprite.prototype.Export.call(this);
 	obj.room_x = this.room_x;
 	obj.room_y = this.room_y;
 	obj.door_id = this.door_id;

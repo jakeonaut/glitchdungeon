@@ -64,6 +64,7 @@ GameMover.prototype.Update = function(delta, map)
 {
 	this.ApplyPhysics(delta, map);
 	if (!this.on_ground){
+		this.pressed_down = false;
 		if (this.vel.y < 0) this.move_state = MoveState.JUMPING;
 		else this.move_state = MoveState.FALLING;
 	}

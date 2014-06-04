@@ -1,4 +1,4 @@
-var level_edit = false;
+var level_edit = true;
 
 var isMSIE = /*@cc_on!@*/0;
 var playSound = true;

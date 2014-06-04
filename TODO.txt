@@ -1,4 +1,7 @@
 1. Make you be able to dynamically alter the house (add a new Room if it doesn't exist)
 	-Make it so export and import have a ROOM_X, ROOM_Y variables?
+	
 
 I hope when you die you get to see your stats like how many times you laughed or told a lie or kissed or how many people loved you and how many people hated you and what you meant to people
+
+***GLITCH JAM 9-24::	code-magick academy where you learn the abilities of other videogame creatures and use it to get to the top of the tower and beat the final boss

@@ -28,6 +28,8 @@
 
 <!--Objects-->
 <script type="text/javascript" src="witch/entities/objects/Door.js"></script>
+<script type="text/javascript" src="witch/entities/objects/Glitch.js"></script>
+
 </head>
 <body>
     <center>
@@ -38,6 +40,8 @@
 				<div id="player_object" class="object_box" style="background: url('witch/assets/images/witch_sheet.png');" onclick="ledit_select(this, World.PLAYER);">&nbsp;</div>
 				<div id="npc_object" class="object_box" style="background:url('witch/assets/images/npc_sheet.png');" onclick="ledit_select(this,&quot;new NPC(0, 0, parseInt(prompt('id')))&quot;)">&nbsp;</div>
 				<div id="door_object" class="object_box" style="background: url('witch/assets/images/obj_sheet.png');" onclick="ledit_select(this, &quot;new Door(0, 0, parseInt(prompt('room x')), parseInt(prompt('room y')), parseInt(prompt('door id')))&quot;);">&nbsp;</div>
+				<div id="glitch_object" class="object_box" style="background: url('witch/assets/images/glitch_sheet.png');" onclick="ledit_select(this, &quot;new Glitch(0, 0, parseInt(prompt('glitch type')))&quot;);">&nbsp;</div>
+				
 				
 				<div id="tile_solid" class="object_box" style="background-color: #ff00ff;" onclick="ledit_select(this, World.TILE_SOLID);">&nbsp;</div>
 				<div id="tile_fallthrough" class="object_box" style="background-color: #00ffff;" onclick="ledit_select(this, World.TILE_FALLTHROUGH);">&nbsp;</div>
