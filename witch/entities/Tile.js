@@ -7,40 +7,42 @@ Slope.LOW_NEG = -30;
 Slope.MID_NEG = -45;
 Slope.HI_NEG = -60;
 
+
+Tile.WIDTH = 8;
+Tile.HEIGHT = 8;
+
 Tile.GHOST = -1;
 Tile.SOLID = 0;
 Tile.FALLTHROUGH = 1;
 
 function Tile(x, y, collision, slope){
-	GameSprite.call(this, x, y, 0, 0, Tile.WIDTH, Tile.HEIGHT, "tileset_sheet");
+	GameObject.call(this, x, y, 0, 0, Tile.WIDTH, Tile.HEIGHT);
 	this.type = "Tile";
 	this.collision = defaultValue(collision, Tile.GHOST);
-	this.animation.frame_width = 8;
-	this.animation.frame_height = 8;
-	this.animation.rel_ani_x = 0;
-	this.animation.rel_ani_y = 0;
 	this.slope = slope;
+	this.tileset_x = 0;
+	this.tileset_y = 0;
 	
 	this.SetLRHeights();
 }
-extend(GameSprite, Tile);
+extend(GameObject, Tile);
 
 Tile.prototype.Import = function(obj){
-	GameSprite.prototype.Import.call(this, obj);
+	GameObject.prototype.Import.call(this, obj);
 	this.collision = obj.collision;
 	this.slope = obj.slope;
 	this.SetLRHeights();
 	
-	this.animation.rel_ani_x = obj.animation_rel_ani_x;
-	this.animation.rel_ani_y = obj.animation_rel_ani_y;
+	this.tileset_x = obj.tileset_x;
+	this.tileset_y = obj.tileset_y;
 }
 Tile.prototype.Export = function(){
-	var obj = GameSprite.prototype.Export.call(this);
+	var obj = GameObject.prototype.Export.call(this);
 	obj.collision = this.collision;
 	obj.slope = this.slope;
 	
-	obj.animation_rel_ani_x = this.animation.rel_ani_x;
-	obj.animation_rel_ani_y = this.animation.rel_ani_y;
+	obj.tileset_x = this.tileset_x;
+	obj.tileset_y = this.tileset_y;
 	return obj;
 }
 
@@ -62,5 +64,17 @@ Tile.prototype.SetLRHeights = function(){
 	}
 }
 
-Tile.WIDTH = 8;
-Tile.HEIGHT = 8;
+Tile.prototype.Render = function(ctx, camera, image){
+	if (image === null || (this.tileset_x == 0 && this.tileset_y == 0)) return;
+	var row = this.tileset_y;
+	var column = this.tileset_x;
+	
+	ctx.drawImage(image, 
+		//SOURCE RECTANGLE
+		Tile.WIDTH * column, Tile.HEIGHT * row, Tile.WIDTH, Tile.HEIGHT,
+		//DESTINATION RECTANGLE
+		~~(this.x-camera.x+camera.screen_offset_x+0.5), 
+		~~(this.y-camera.y+camera.screen_offset_y+0.5),
+		Tile.WIDTH, Tile.HEIGHT
+	);
+}

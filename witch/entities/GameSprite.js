@@ -2,7 +2,9 @@ function GameSprite(x, y, lb, tb, rb, bb, img_name){
 	GameObject.call(this, x, y, lb, tb, rb, bb);
 	this.type = "GameSprite";
 	this.img_name = img_name;
-	this.image = eval("resource_manager." + this.img_name);
+	if (this.img_name != undefined)
+		this.image = eval("resource_manager." + this.img_name);
+	else this.image = null;
 	this.animation = new Animation(1, 8);
 	this.base_ani_x = 0;
 	this.base_ani_y = 0;

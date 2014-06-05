@@ -90,17 +90,24 @@ function LevelEditMouseDown(e){
 	
 	if (level_edit_object_is_tile){
 		var tile = room.tiles[tile_y][tile_x];
-		tile.animation.Change(level_edit_tile_img_x, level_edit_tile_img_y, 1);
-		switch (level_edit_object){
-			case Tile.SOLID:
-				tile.collision = Tile.SOLID;
-				break;
-			case Tile.FALLTHROUGH:
-				tile.collision = Tile.FALLTHROUGH;
-				break;
-			default:
-				tile.collision = Tile.GHOST;
-				break;
+		tile.tileset_x = level_edit_tile_img_x;
+		tile.tileset_y = level_edit_tile_img_y;
+		if (e.which === 3 && e.button === 2){ //RIGHT CLICK. REMOVE Tile
+			tile.collision = Tile.GHOST;
+			tile.tileset_x = 0;
+			tile.tileset_y = 0;
+		}else{
+			switch (level_edit_object){
+				case Tile.SOLID:
+					tile.collision = Tile.SOLID;
+					break;
+				case Tile.FALLTHROUGH:
+					tile.collision = Tile.FALLTHROUGH;
+					break;
+				default:
+					tile.collision = Tile.GHOST;
+					break;
+			}
 		}
 	}
 	else{

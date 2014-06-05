@@ -22,12 +22,14 @@ Glitch.prototype.Update = function(delta, map){
 	
 	if (this.IsColliding(map.player)){
 		this.delete_me = true;
-		this.TransformPlayer(map.player);
+		Glitch.TransformPlayer(map.player, this.glitch_type);
 	}
 }
 
-Glitch.prototype.TransformPlayer = function(player){
-	switch (this.glitch_type){
+Glitch.TransformPlayer = function(player, glitch_type){
+	var oldbb = player.bb;
+	player.glitch_type = glitch_type;
+	switch (glitch_type){
 		case Glitch.MARIO:
 			player.animation.frame_height = 16;
 			player.img_name = "mario_sheet";
@@ -41,6 +43,7 @@ Glitch.prototype.TransformPlayer = function(player){
 		default: break;
 	}
 
+	player.y += oldbb - player.bb;
 	player.image = eval("resource_manager." + player.img_name);
 }
 extend(GameSprite, Glitch);
