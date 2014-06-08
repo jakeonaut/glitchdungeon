@@ -23,6 +23,7 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.vertical_collision = false;
 	this.pressing_down = false;
 	this.pressed_down = false;
+	this.has_double_jumped = false;
 	
 	this.vel = {x: 0, y: 0};
 	
@@ -65,7 +66,8 @@ GameMover.prototype.Update = function(delta, map)
 {
 	this.ApplyPhysics(delta, map);
 	if (!this.on_ground){
-		this.pressed_down = false;
+		if (!this.was_on_ground)
+			this.pressed_down = false;
 		if (this.vel.y < 0) this.move_state = MoveState.JUMPING;
 		else this.move_state = MoveState.FALLING;
 	}
@@ -186,6 +188,7 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 					continue;
 				this.vel.y = 0;
 				this.on_ground = true;
+				this.has_double_jumped = false;
 				this.y = tile.y - this.bb;
 			}
 		}

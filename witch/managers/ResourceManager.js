@@ -11,12 +11,15 @@ function ResourceManager(){
 		"player_red_sheet",
 		"player_green_sheet",
 		"player_blue_sheet",
+		"player_zero_sheet",
 		"glitch_sheet",
 		"npc_sheet",
 		"obj_sheet",
 		"grey_tile_sheet",
 		"red_tile_sheet",
-		"green_tile_sheet"
+		"green_tile_sheet",
+		"blue_tile_sheet",
+		"zero_tile_sheet"
 	];
 	this.num_images = this.image_names.length;
 	

@@ -25,22 +25,25 @@ Door.prototype.Export = function(){
 Door.prototype.Update = function(delta, map){
 	GameSprite.prototype.Update.call(this, delta, map);
 	
-	if (this.IsColliding(map.player) && map.player.pressed_down){
-		map.player.pressed_down = false;
+	if (this.IsColliding(map.player)){
+		map.player.touching_door = true;
+		if (map.player.pressed_down){
+			map.player.pressed_down = false;
 		
-		room_manager.room_index_x = this.room_x;
-		room_manager.room_index_y = this.room_y;
-		room = room_manager.GetRoom();
-		
-		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
-		room.player.glitches = map.player.glitches;
-		Glitch.TransformPlayer(room, map.player.glitch_type);
-		
-		var door = room.GetDoor(this.door_id);
-		room.player.x = door.x;
-		room.player.y = door.y + door.bb - room.player.bb;
-		room.player.facing = map.player.facing;
-		room.player.pressing_down = false;
+			room_manager.room_index_x = this.room_x;
+			room_manager.room_index_y = this.room_y;
+			room = room_manager.GetRoom();
+			
+			//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
+			room.player.glitches = map.player.glitches;
+			Glitch.TransformPlayer(room, map.player.glitch_type);
+			
+			var door = room.GetDoor(this.door_id);
+			room.player.x = door.x;
+			room.player.y = door.y + door.bb - room.player.bb;
+			room.player.facing = map.player.facing;
+			room.player.pressing_down = false;
+		}
 	}
 }
 extend(GameSprite, Door);

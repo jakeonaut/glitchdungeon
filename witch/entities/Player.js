@@ -4,6 +4,7 @@ function Player(x, y){
 	this.animation.frame_height = 24;
 	this.glitch_type = 0;
 	this.glitches = [true];
+	this.touching_door = false;
 }
 
 Player.prototype.Import = function(obj){
@@ -18,6 +19,10 @@ Player.prototype.Export = function(){
 	obj.glitch_type = this.glitch_type;
 	obj.glitches = this.glitches;
 	return obj;
+}
+Player.prototype.Update = function(delta, map){
+	GameMover.prototype.Update.call(this, delta, map);
+	this.touching_door = false;
 }
 
 extend(GameMover, Player);
