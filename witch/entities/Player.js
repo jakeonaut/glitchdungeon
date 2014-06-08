@@ -48,3 +48,10 @@ Player.prototype.SwitchGlitch = function(dir){
 	}
 	Glitch.TransformPlayer(room, this.glitch_type);
 }
+
+Player.prototype.SwitchToGlitch = function(index){
+	if (index >= this.glitches || index < 0 || !this.glitches[index])
+		return;
+	this.glitch_type = index;
+	Glitch.TransformPlayer(room, this.glitch_type);
+}

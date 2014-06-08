@@ -64,6 +64,11 @@ extend(GameSprite, Glitch);
 Glitch.RedTransform = function(player){
 	player.img_name = "player_red_sheet";
 	room.tilesheet_name = "red_tile_sheet";
+	player.terminal_vel = 1.0;
+	player.original_grav_acc = 0.4;
+	player.float_grav_acc = 0.4;
+	player.jump_time_limit = 120;
+	player.jump_vel = 4.2;
 			
 	player.HandleCollisionsAndMove = function(map){
 		var left_tile = Math.floor((this.x + this.lb + this.vel.x) / Tile.WIDTH);
