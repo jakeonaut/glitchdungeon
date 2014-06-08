@@ -11,9 +11,9 @@ if (navigator.userAgent.match(/AppleWebKit/) && !navigator.userAgent.match(/Chro
    playSound = false;
 }
 
-var GAME_WIDTH=320;
-var GAME_HEIGHT=240;
-var VIEW_SCALE = 2;
+var GAME_WIDTH=160; //CHANGE TO /2
+var GAME_HEIGHT=120; //CHANGE TO /2
+var VIEW_SCALE = 4; //CHANGE TO *2
 
 var canvas;
 var ctx;

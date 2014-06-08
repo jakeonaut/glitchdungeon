@@ -1,28 +1,30 @@
 var img_path = "witch/assets/images/";
-var snd_path = "witch/assets/sounds/"
+var snd_path = "witch/assets/sounds/";
 
 //Display the loading screen while everything else is loading...
 function ResourceManager(){
 	//IMAGE VARIABLE DECLARATION
 	this.images_loaded = 0;
-	this.num_images = 7;
-	//images 
-	this.bg_image = new Image();
-	this.player_sheet = new Image();
-	this.mario_sheet = new Image();
-	
-	this.glitch_sheet = new Image();
-	this.npc_sheet = new Image();
-	this.obj_sheet = new Image();
-	
-	this.tile_sheet = new Image();
-	this.mario_tile_sheet = new Image();
+	this.image_names = [
+		"bg_image",
+		"player_grey_sheet",
+		"player_red_sheet",
+		"player_green_sheet",
+		"player_blue_sheet",
+		"glitch_sheet",
+		"npc_sheet",
+		"obj_sheet",
+		"grey_tile_sheet",
+		"red_tile_sheet",
+		"green_tile_sheet"
+	];
+	this.num_images = this.image_names.length;
 	
 	//SOUND VARIABLE DECLARATION
 	this.sounds_loaded = 0;
-	this.num_sounds = 1;
-	//sounds
-	this.catch_sound = document.createElement("audio");
+	this.sound_names = [
+	]
+	this.num_sounds = this.sound_names.length;
 }
 
 ResourceManager.prototype.DisplayLoadScreen = function(){
@@ -55,19 +57,20 @@ ResourceManager.prototype.LoadResources = function(ctx){
 	this.DisplayLoadScreen(ctx);
 
 	//Load Images
-	this.bg_image.onload = this.ImageLoad.bind(this); 				this.bg_image.src = img_path + "background.png";
-	this.player_sheet.onload = this.ImageLoad.bind(this); 			this.player_sheet.src = img_path + "witch_sheet.png";
-	this.mario_sheet.onload = this.ImageLoad.bind(this); 			this.mario_sheet.src = img_path + "mario_sheet.png";
-	
-	this.glitch_sheet.onload = this.ImageLoad.bind(this); 			this.glitch_sheet.src = img_path + "glitch_sheet.png";
-	this.npc_sheet.onload = this.ImageLoad.bind(this); 			this.npc_sheet.src = "witch/assets/images/npc_sheet.png";
-	this.obj_sheet.onload = this.ImageLoad.bind(this); 			this.obj_sheet.src = "witch/assets/images/obj_sheet.png";
-	
-	this.tile_sheet.onload = this.ImageLoad.bind(this); 			this.tile_sheet.src = "witch/assets/images/tile_sheet.png";
-	this.mario_tile_sheet.onload = this.ImageLoad.bind(this); 			this.mario_tile_sheet.src = "witch/assets/images/mario_tile_sheet.png";
+	for (var i = 0; i < this.image_names.length; i++){
+		var img = this.image_names[i];
+		this[img] = new Image();
+		this[img].onload = this.ImageLoad.bind(this);
+		this[img].src = img_path + img + ".png";
+	}
 	
 	//Load Sounds
-	this.catch_sound.oncanplaythrough = this.SoundLoad.bind(this);	this.catch_sound.src = snd_path + "catch.wav";
+	for (var i = 0; i < this.sound_names.length; i++){
+		var snd = this.sound_names[i];
+		this[snd] = document.createElement("audio");
+		this[snd].oncanplaythrough = this.SoundLoad.bind(this);
+		this[snd].src = snd_path + snd + ".mp3";
+	}
 }
 
 ResourceManager.prototype.CheckLoadedResources = function(){

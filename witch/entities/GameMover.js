@@ -27,11 +27,12 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.vel = {x: 0, y: 0};
 	
 	this.original_grav_acc = 0.8;
+	this.float_grav_acc = 0.4;
 	this.grav_acc = this.original_grav_acc;//35.1; //pixels/second
 	this.jump_vel = defaultValue(jump_vel, 5.2);
 	this.is_jumping = false;
 	this.jump_timer = 0;
-	this.jump_time_limit = 15;
+	this.jump_time_limit = 30;
 	this.terminal_vel = defaultValue(terminal_vel, 7.0);
 	this.jump_acc = 35.0; 
 	this.on_ground = true;
@@ -77,16 +78,18 @@ GameMover.prototype.ApplyPhysics = function(delta, map)
 {
 	var prev_pos = {x: this.x, y: this.y};
 	
-	if (this.vel.y < this.terminal_vel)
-	{
-		this.vel.y += this.grav_acc;
-		if (this.vel.y > this.terminal_vel) 
-			this.vel.y = this.terminal_vel;
-	}else if (this.vel.y > this.terminal_vel){
-		this.vel.y -= this.grav_acc;
+	if (!this.on_ground){
 		if (this.vel.y < this.terminal_vel)
-			this.vel.y = this.terminal_vel;
-	}
+		{
+			this.vel.y += this.grav_acc;
+			if (this.vel.y > this.terminal_vel) 
+				this.vel.y = this.terminal_vel;
+		}else if (this.vel.y > this.terminal_vel){
+			this.vel.y -= this.grav_acc;
+			if (this.vel.y < this.terminal_vel)
+				this.vel.y = this.terminal_vel;
+		}
+	}else{ this.vel.y = 0; }
 	
 	if (!this.horizontal_input) this.MoveStop();
 	this.horizontal_input = false;
@@ -320,6 +323,7 @@ GameMover.prototype.StartJump = function(){
 		this.vel.y = -this.jump_vel;
 		this.is_jumping = true;
 		this.jump_timer = 0;
+		this.on_ground = false;
 	}
 }
 
@@ -331,8 +335,8 @@ GameMover.prototype.Jump = function(){
 			this.is_jumping = false;
 			this.grav_acc = this.original_grav_acc;
 		}else{
-			this.grav_acc = 0.4;
-			this.vel.y += -this.jump_vel * ((this.jump_time_limit - (this.jump_timer/2)) / (this.jump_time_limit * 80));
+			this.grav_acc = this.float_grav_acc;
+			this.vel.y += -this.jump_vel * ((this.jump_time_limit - (this.jump_timer/2)) / (this.jump_time_limit * 60));
 		}
 	}
 }
@@ -345,6 +349,7 @@ GameMover.prototype.StopJump = function(){
 GameMover.prototype.PressDown = function(){
 	this.pressing_down = true;
 	this.pressed_down = true;
+	this.on_ground = false;
 }
 
 GameMover.prototype.StopPressingDown = function(){

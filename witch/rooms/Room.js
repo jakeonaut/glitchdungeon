@@ -5,6 +5,7 @@ function Room(){
 	this.MAP_WIDTH = ~~(GAME_WIDTH / Tile.WIDTH);
 	this.MAP_HEIGHT = ~~(GAME_HEIGHT / Tile.HEIGHT);
 	
+	this.tilesheet_name = "grey_tile_sheet";
 	this.camera = new Camera();
 	this.CreateEntities();
 	this.InitializeTiles();
@@ -26,7 +27,7 @@ Room.prototype.InitializeTiles = function(){
 	
 	//make the top and bottom row solid
 	for (var j = 0; j < this.MAP_WIDTH; j++){
-		this.tiles[0][j].solid = true;
+		this.tiles[0][j].collision = Tile.SOLID;
 		this.tiles[0][j].tileset_y = 1;
 		
 		this.tiles[this.MAP_HEIGHT-1][j].collision = Tile.SOLID;
@@ -59,11 +60,11 @@ Room.prototype.Update = function(input, delta){
 }
 
 Room.prototype.Render = function(ctx, level_edit){
-	ctx.fillStyle = "rgb(128, 128, 128)";
+	/*ctx.fillStyle = "rgb(128, 128, 128)";
 	ctx.fillRect(this.camera.screen_offset_x, this.camera.screen_offset_y, 
-		this.MAP_WIDTH*Tile.WIDTH, this.MAP_HEIGHT*Tile.HEIGHT);
+		this.MAP_WIDTH*Tile.WIDTH, this.MAP_HEIGHT*Tile.HEIGHT);*/
 
-	var tile_img = eval("resource_manager." + this.player.GetTilesetName());
+	var tile_img = eval("resource_manager." + this.tilesheet_name);
 	for (var i = 0; i < this.MAP_HEIGHT; i++){ for (var j = 0; j < this.MAP_WIDTH; j++){
 		this.tiles[i][j].Render(ctx, this.camera, tile_img);
 	} }
@@ -132,7 +133,9 @@ Room.prototype.Export = function(){
 	}
 
 	return {
-		player: {type: "Player", obj: this.player.Export()}
+		width: this.MAP_WIDTH*Tile.WIDTH
+		,height: this.MAP_HEIGHT*Tile.HEIGHT
+		,player: {type: "Player", obj: this.player.Export()}
 		,entities: entities
 		,tiles: tiles
 	};
@@ -148,6 +151,7 @@ Room.Import = function(file_name){
 }
 
 Room.prototype.Import = function(room){
+	this.ChangeSize(room.width, room.height);
 	this.player = new Player(); this.player.Import(room.player.obj);
 	
 	//import entities

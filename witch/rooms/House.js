@@ -8,7 +8,8 @@ House.prototype.SetUpRooms = function(){
 	var path = "witch/rooms/";
 
 	this.rooms = [
-		[Room.Import(path + "room_0_0.txt"), Room.Import(path + "room_1_0.txt")]
+		[Room.Import(path + "room_0_0.txt"), Room.Import(path + "room_1_0.txt")],
+		[Room.Import(path + "room_0_1.txt"), Room.Import(path + "room_1_1.txt")]
 	];
 }
 

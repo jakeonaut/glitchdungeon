@@ -40,6 +40,8 @@ function DisableLevelEdit(){
 }
 
 function DrawLevelEditGrid(ctx, room){
+	return;
+	
 	var color = "#000000";
 	
 	var ax = (-room.camera.x + room.camera.screen_offset_x) % Tile.WIDTH;

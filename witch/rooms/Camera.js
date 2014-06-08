@@ -7,7 +7,7 @@ function Camera(x, y){
 	this.width = GAME_WIDTH;
 	this.height = GAME_HEIGHT;
 	this.x_lim = 100;
-	this.y_lim = 100;
+	this.y_lim = 50;
 	
 	this.instant = true;
 	this.speed = 1.5;

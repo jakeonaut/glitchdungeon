@@ -25,10 +25,10 @@
 <script type="text/javascript" src="witch/entities/Tile.js"></script>
 <script type="text/javascript" src="witch/entities/NPC.js"></script>
 <script type="text/javascript" src="witch/entities/Player.js"></script>
+<script type="text/javascript" src="witch/entities/helpers/Glitch.js"></script>
 
 <!--Objects-->
 <script type="text/javascript" src="witch/entities/objects/Door.js"></script>
-<script type="text/javascript" src="witch/entities/objects/Glitch.js"></script>
 
 </head>
 <body>
@@ -37,7 +37,7 @@
 		<tr>
 		<td>
 			<div id="level_edit_objects" style="display:none;">
-				<div id="player_object" class="object_box" style="background: url('witch/assets/images/witch_sheet.png');" onclick="ledit_select(this, World.PLAYER);">&nbsp;</div>
+				<div id="player_object" class="object_box" style="background: url('witch/assets/images/player_grey_sheet.png');" onclick="ledit_select(this, World.PLAYER);">&nbsp;</div>
 				<div id="npc_object" class="object_box" style="background:url('witch/assets/images/npc_sheet.png');" onclick="ledit_select(this,&quot;new NPC(0, 0, parseInt(prompt('id')))&quot;)">&nbsp;</div>
 				<div id="door_object" class="object_box" style="background: url('witch/assets/images/obj_sheet.png');" onclick="ledit_select(this, &quot;new Door(0, 0, parseInt(prompt('room x')), parseInt(prompt('room y')), parseInt(prompt('door id')))&quot;);">&nbsp;</div>
 				<div id="glitch_object" class="object_box" style="background: url('witch/assets/images/glitch_sheet.png');" onclick="ledit_select(this, &quot;new Glitch(0, 0, parseInt(prompt('glitch type')))&quot;);">&nbsp;</div>
@@ -53,7 +53,7 @@
 		</td>
 		</tr>
 	  </table>
-	  <canvas id="tileset_canvas" style="display:none;position:absolute;right:10px;top:10px;background:#aaaaaa url('witch/assets/images/tile_sheet.png')" class="centerMe" oncontextmenu="return false;"></canvas>
+	  <canvas id="tileset_canvas" style="display:none;position:absolute;right:10px;top:10px;background:#aaaaaa url('witch/assets/images/grey_tile_sheet.png')" class="centerMe" oncontextmenu="return false;"></canvas>
       <div id="level_edit_buttons" style="display:none;">
 		<div style="position: absolute; left: 10px;">
 			width: <input type="text" id="room_width" value="320"/><br/>

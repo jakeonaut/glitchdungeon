@@ -1,5 +1,8 @@
 1. Make you be able to dynamically alter the house (add a new Room if it doesn't exist)
 	-Make it so export and import have a ROOM_X, ROOM_Y variables?
+2. Make each tile switch tileset image at a random interval between 1 - 100 upon forme change?
+3. Add more forms and interactive objects
+4. Make dumb little npc trade quest
 	
 
 I hope when you die you get to see your stats like how many times you laughed or told a lie or kissed or how many people loved you and how many people hated you and what you meant to people
