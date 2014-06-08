@@ -4,27 +4,34 @@ function InputManager(key_manager){
 
 InputManager.prototype.Update = function(player){
 //	console.log(this.key_manager.keys_down);
-	if (this.key_manager.keys_down[KeyManager.RIGHT] || this.key_manager.keys_down[KeyManager.D]){
+	if (this.key_manager.keys_down[KeyManager.RIGHT]){
 		player.MoveRight();
 	}
-	else if (this.key_manager.keys_down[KeyManager.LEFT] || this.key_manager.keys_down[KeyManager.A]){
+	else if (this.key_manager.keys_down[KeyManager.LEFT]){
 		player.MoveLeft();
 	}
 	
-	if (this.key_manager.keys_pressed[KeyManager.UP] || this.key_manager.keys_pressed[KeyManager.W]){
+	if (this.key_manager.keys_pressed[KeyManager.UP]){
 		player.StartJump();
 	}
-	else if (this.key_manager.keys_down[KeyManager.UP] || this.key_manager.keys_down[KeyManager.W]){
+	else if (this.key_manager.keys_down[KeyManager.UP]){
 		player.Jump();
 	}
-	if (this.key_manager.keys_up[KeyManager.UP] || this.key_manager.keys_up[KeyManager.W]){
+	if (this.key_manager.keys_up[KeyManager.UP]){
 		player.StopJump();
 	}
 	
-	if (this.key_manager.keys_pressed[KeyManager.DOWN] || this.key_manager.keys_pressed[KeyManager.S]){
+	if (this.key_manager.keys_pressed[KeyManager.DOWN]){
 		player.PressDown();
 	}
-	else if(this.key_manager.keys_up[KeyManager.DOWN] || this.key_manager.keys_up[KeyManager.S]){
+	else if(this.key_manager.keys_up[KeyManager.DOWN]){
 		player.StopPressingDown();
+	}
+	
+	if (this.key_manager.keys_pressed[KeyManager.A]){
+		player.SwitchGlitchLeft();
+	}
+	else if (this.key_manager.keys_pressed[KeyManager.S]){
+		player.SwitchGlitchRight();
 	}
 }

@@ -25,28 +25,38 @@ Glitch.prototype.Update = function(delta, map){
 	
 	if (this.IsColliding(map.player)){
 		this.delete_me = true;
-		Glitch.TransformPlayer(map.player, this.glitch_type);
+		map.player.glitches[this.glitch_type] = true;
+		Glitch.TransformPlayer(map, this.glitch_type);
 	}
 }
 
-Glitch.TransformPlayer = function(player, glitch_type){
-	var oldbb = player.bb;
-	player.glitch_type = glitch_type;
+Glitch.TransformPlayer = function(map, glitch_type){
+	var glitches = map.player.glitches;
+	var facing = map.player.facing;
+	map.player = new Player(map.player.x, map.player.y);
+	map.player.on_ground = false;
+	map.player.facing = facing;
+	map.player.glitches = glitches;
+	
+	
+	room.tilesheet_name = "grey_tile_sheet";
+
+	var oldbb = map.player.bb;
+	map.player.glitch_type = glitch_type;
 	switch (glitch_type){
 		case Glitch.GREY:
 			break;
 		case Glitch.RED:
-			Glitch.RedTransform(player);
+			Glitch.RedTransform(map.player);
 			break;
 		case Glitch.GREEN:
-			Glitch.GreenTransform(player);
+			Glitch.GreenTransform(map.player);
 			break;
 		default: break;
 	}
 
-	player.y += oldbb - player.bb;
-	console.log(player.img_name);
-	player.image = eval("resource_manager." + player.img_name);
+	map.player.y += oldbb - map.player.bb;
+	map.player.image = eval("resource_manager." + map.player.img_name);
 }
 extend(GameSprite, Glitch);
 

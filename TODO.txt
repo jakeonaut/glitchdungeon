@@ -1,3 +1,4 @@
+0, Make a hard reset to forget all player glitches upon starting regardless of room import
 1. Make you be able to dynamically alter the house (add a new Room if it doesn't exist)
 	-Make it so export and import have a ROOM_X, ROOM_Y variables?
 2. Make each tile switch tileset image at a random interval between 1 - 100 upon forme change?
