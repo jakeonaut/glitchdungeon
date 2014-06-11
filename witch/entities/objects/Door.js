@@ -39,6 +39,8 @@ extend(GameSprite, Door);
 Door.prototype.SwitchRooms = function(map){
 	room_manager.room_index_x = this.room_x;
 	room_manager.room_index_y = this.room_y;
+	$("house_coordinates").innerHTML = this.room_x + " " + this.room_y;
+	
 	if (room_manager.room_index_y >= room_manager.rooms.length){
 		room_manager.rooms[this.room_y] = [];
 	}

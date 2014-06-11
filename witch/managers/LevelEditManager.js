@@ -15,6 +15,7 @@ var level_edit_tile_img_y = 0;
 function InitLevelEdit(){
 	$("level_edit_objects").style.display="block";
 	$("level_edit_buttons").style.display="block";
+	$("house_coordinates").style.display="block";
 	level_edit_tileset_ctx = $("tileset_canvas").getContext("2d");
 	$("tileset_canvas").width = 96;
 	$("tileset_canvas").height = 96;

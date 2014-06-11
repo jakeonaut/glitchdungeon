@@ -63,17 +63,56 @@ Room.prototype.Update = function(input, delta){
 Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 	//OFFSCREEN TOP
 	if (this.player.y + this.player.bb <= 0){
+		room_manager.room_index_y--;
+		if (room_manager.room_index_y < 0) room_manager.room_index_y = room_manager.house_height - 1;
+		room = room_manager.GetRoom();
+		
+		room.player.x = (this.player.x / (this.MAP_WIDTH * Tile.WIDTH)) * room.MAP_WIDTH * Tile.WIDTH;
+		room.player.y = room.MAP_HEIGHT * Tile.HEIGHT - 16 - room.player.bb;
+		
+		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
+		room.player.glitches = this.player.glitches;
+		Glitch.TransformPlayer(room, this.player.glitch_type);
 	}
 	//OFFSCREEN BOTTOM
 	else if (this.player.y + this.player.tb >= (this.MAP_HEIGHT * Tile.HEIGHT)){
+		room_manager.room_index_y++;
+		if (room_manager.room_index_y >= room_manager.house_height) room_manager.room_index_y = 0;
+		room = room_manager.GetRoom();
+		
+		room.player.x = (this.player.x / (this.MAP_WIDTH * Tile.WIDTH)) * room.MAP_WIDTH * Tile.WIDTH;
+		room.player.y = 0 + 16 + room.player.tb;
+		
+		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
+		room.player.glitches = this.player.glitches;
+		Glitch.TransformPlayer(room, this.player.glitch_type);
 	}
 	
 	//OFFSCREEN LEFT
 	if (this.player.x + this.player.rb <= 0){
+		room_manager.room_index_x--;
+		if (room_manager.room_index_x < 0) room_manager.room_index_x = room_manager.house_width - 1;
+		room = room_manager.GetRoom();
 		
+		room.player.y = (this.player.y / (this.MAP_HEIGHT * Tile.HEIGHT)) * room.MAP_HEIGHT * Tile.HEIGHT;
+		room.player.x = room.MAP_WIDTH * Tile.WIDTH - 16 - room.player.rb;
+		
+		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
+		room.player.glitches = this.player.glitches;
+		Glitch.TransformPlayer(room, this.player.glitch_type);
 	}
 	//OFFSCREEN RIGHT
 	else if (this.player.x + this.player.lb >= (this.MAP_WIDTH * Tile.WIDTH)){
+		room_manager.room_index_x++;
+		if (room_manager.room_index_x >= room_manager.house_width) room_manager.room_index_x = 0;
+		room = room_manager.GetRoom();
+		
+		room.player.y = (this.player.y / (this.MAP_HEIGHT * Tile.HEIGHT)) * room.MAP_HEIGHT * Tile.HEIGHT;
+		room.player.x = 0 + 16 - room.player.lb;
+		
+		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
+		room.player.glitches = this.player.glitches;
+		Glitch.TransformPlayer(room, this.player.glitch_type);
 	}
 }
 
