@@ -51,11 +51,29 @@ Room.prototype.isValidTile = function(i, j){
 Room.prototype.Update = function(input, delta){
 	input.Update(this.player);
 	this.player.Update(delta/1000, this);
+	this.TryUpdateRoomIfPlayerOffscreen();
 	this.camera.Update(delta/1000, this);
 	
 	for (var i = this.entities.length-1; i >= 0; i--){
 		this.entities[i].Update(delta/1000, this);
 		if (this.entities[i].delete_me) this.entities.splice(i, 1);
+	}
+}
+
+Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
+	//OFFSCREEN TOP
+	if (this.player.y + this.player.bb <= 0){
+	}
+	//OFFSCREEN BOTTOM
+	else if (this.player.y + this.player.tb >= (this.MAP_HEIGHT * Tile.HEIGHT)){
+	}
+	
+	//OFFSCREEN LEFT
+	if (this.player.x + this.player.rb <= 0){
+		
+	}
+	//OFFSCREEN RIGHT
+	else if (this.player.x + this.player.lb >= (this.MAP_WIDTH * Tile.WIDTH)){
 	}
 }
 
@@ -171,7 +189,7 @@ Room.prototype.Import = function(room){
 	for (var i = 0; i < room.tiles.length; i++){
 		var row = [];
 		for (var j = 0; j < room.tiles[i].length; j++){
-			var tile = new Tile(); tile.Import(room.tiles[i][j]);
+			var tile = new Tile(j*Tile.WIDTH, i*Tile.HEIGHT); tile.Import(room.tiles[i][j]);
 			row.push(tile);
 		}
 		this.tiles.push(row);

@@ -173,6 +173,13 @@ function ledit_reset(){
 	$("room_height").value = room.SCREEN_HEIGHT;
 }
 
+function ledit_reset_house(){
+	room_manager.room_index_x = 0;
+	room_manager.room_index_y = 0;
+	ledit_reset();
+	room_manager.rooms = [[room]];
+}
+
 function ledit_select(box, obj_type){
 	level_edit_mouse_down = false;
 	$("tileset_canvas").style.display="none";

@@ -28,7 +28,7 @@ function Tile(x, y, collision, slope){
 extend(GameObject, Tile);
 
 Tile.prototype.Import = function(obj){
-	GameObject.prototype.Import.call(this, obj);
+	//GameObject.prototype.Import.call(this, obj);
 	this.collision = obj.collision;
 	this.slope = obj.slope;
 	this.SetLRHeights();
@@ -37,7 +37,8 @@ Tile.prototype.Import = function(obj){
 	this.tileset_y = obj.tileset_y;
 }
 Tile.prototype.Export = function(){
-	var obj = GameObject.prototype.Export.call(this);
+	//var obj = GameObject.prototype.Export.call(this);
+	obj = {};
 	obj.collision = this.collision;
 	obj.slope = this.slope;
 	

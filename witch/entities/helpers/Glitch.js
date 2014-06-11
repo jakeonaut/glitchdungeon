@@ -160,15 +160,17 @@ Glitch.BlueTransform = function(player){
 			this.on_ground = false;
 		}
 		else if (!this.has_double_jumped){	
-			this.has_double_jumped = true;
+			var vel = this.vel;
 			var q_vert = 3;
+			
+			this.has_double_jumped = true;
 			this.vel.x = 0;
-			this.vel.y = -32;
 			var left_tile = Math.floor((this.x + this.lb + this.vel.x) / Tile.WIDTH);
 			var right_tile = Math.ceil((this.x + this.rb + this.vel.x) / Tile.WIDTH);
 			var top_tile = Math.floor((this.y + this.tb + this.vel.y) / Tile.HEIGHT);
 			var bottom_tile = Math.ceil((this.y + this.bb + this.vel.y) / Tile.HEIGHT);
-			var vel = this.vel;
+			
+			this.vel.y = -32;
 		
 			this.HandleVerticalCollisions(room, left_tile, right_tile, top_tile, bottom_tile, q_vert);
 			this.y += this.vel.y;
