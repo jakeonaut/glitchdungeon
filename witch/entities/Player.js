@@ -5,6 +5,7 @@ function Player(x, y){
 	this.glitch_type = 0;
 	this.glitches = [true];
 	this.touching_door = false;
+	this.touching_checkpoint = false;
 }
 
 Player.prototype.Import = function(obj){

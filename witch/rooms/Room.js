@@ -89,7 +89,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 	}
 	
 	//OFFSCREEN LEFT
-	if (this.player.x + this.player.rb <= 0){
+	if (this.player.x <= 0){
 		room_manager.room_index_x--;
 		if (room_manager.room_index_x < 0) room_manager.room_index_x = room_manager.house_width - 1;
 		room = room_manager.GetRoom();
@@ -99,10 +99,11 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		
 		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
 		room.player.glitches = this.player.glitches;
+		room.player.facing = Facing.LEFT;
 		Glitch.TransformPlayer(room, this.player.glitch_type);
 	}
 	//OFFSCREEN RIGHT
-	else if (this.player.x + this.player.lb >= (this.MAP_WIDTH * Tile.WIDTH)){
+	else if (this.player.x + Tile.WIDTH >= (this.MAP_WIDTH * Tile.WIDTH)){
 		room_manager.room_index_x++;
 		if (room_manager.room_index_x >= room_manager.house_width) room_manager.room_index_x = 0;
 		room = room_manager.GetRoom();
@@ -114,6 +115,8 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room.player.glitches = this.player.glitches;
 		Glitch.TransformPlayer(room, this.player.glitch_type);
 	}
+	
+	$("house_coordinates").innerHTML = room_manager.room_index_x + " " + room_manager.room_index_y;
 }
 
 Room.prototype.Render = function(ctx, level_edit){

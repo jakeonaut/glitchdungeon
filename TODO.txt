@@ -1,3 +1,4 @@
+-2. make green be able to gain momentum through skipping
 -1. death and checkpoints
 0, Make a hard reset to forget all player glitches upon starting regardless of room import
 2. Make each tile switch tileset image at a random interval between 1 - 100 upon forme change?

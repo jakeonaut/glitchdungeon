@@ -4,6 +4,7 @@ function House(){
 	
 	this.house_width = 3;
 	this.house_height = 3;
+	this.checkpoint = null;
 	this.SetUpRooms();
 }
 
@@ -23,4 +24,17 @@ House.prototype.SetUpRooms = function(){
 House.prototype.GetRoom = function(){
 	console.log(this.room_index_x, this.room_index_y);
 	return this.rooms[this.room_index_y][this.room_index_x];
+}
+
+House.prototype.DeactivateCheckpoints = function(){
+	for (var i = 0; i < this.house_height; i++){
+		for (var j = 0; j < this.house_width; j++){
+			var room = this.rooms[i][j];
+			for (var k = 0; k < room.entities.length; k++){
+				if (room.entities[k].type === "Checkpoint"){
+					room.entities[k].Deactivate();
+				}
+			}
+		}
+	}
 }

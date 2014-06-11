@@ -16,6 +16,13 @@ function InitLevelEdit(){
 	$("level_edit_objects").style.display="block";
 	$("level_edit_buttons").style.display="block";
 	$("house_coordinates").style.display="block";
+	$("object_options").style.display="block";
+	$("object_options").onchange = function(){
+		if ($("object_object").className == "selected_object_box"){
+			ledit_select($("object_object"), ledit_getSelectedObject());
+		}
+	}
+	
 	level_edit_tileset_ctx = $("tileset_canvas").getContext("2d");
 	$("tileset_canvas").width = 96;
 	$("tileset_canvas").height = 96;
@@ -127,7 +134,7 @@ function LevelEditMouseDown(e){
 				}
 			}else{
 				x = tile_x * Tile.WIDTH;
-				y = tile_y * Tile.HEIGHT
+				y = tile_y * Tile.HEIGHT;
 				var obj = eval(level_edit_object);
 				obj.x = x;
 				obj.y = y;
@@ -179,6 +186,11 @@ function ledit_reset_house(){
 	room_manager.room_index_y = 0;
 	ledit_reset();
 	room_manager.rooms = [[room]];
+}
+
+function ledit_getSelectedObject(){
+	var e = $("object_options");
+	return e.options[e.selectedIndex].value;
 }
 
 function ledit_select(box, obj_type){
