@@ -4,61 +4,32 @@ Glitch.GREEN = 2;
 Glitch.BLUE = 3;
 Glitch.ZERO = 4;
 
-function Glitch(x, y, glitch_type){
-	GameSprite.call(this, x, y, 2, 5, 14, 24, "glitch_sheet");
-	this.type = "Glitch";
-	this.glitch_type = glitch_type;
-	this.animation.frame_delay = 15;
-	this.animation.frame_height = 24;
-	this.animation.Change(0, 0, 8);
-}
-Glitch.prototype.Import = function(obj){
-	GameSprite.prototype.Import.call(this, obj);
-	this.glitch_type = obj.glitch_type;
-}
-Glitch.prototype.Export = function(){
-	var obj = GameSprite.prototype.Export.call(this);
-	obj.glitch_type = this.glitch_type;
-	return obj;
-}
-
-Glitch.prototype.Update = function(delta, map){
-	GameSprite.prototype.Update.call(this, delta, map);
-	
-	if (this.IsColliding(map.player)){
-		this.delete_me = true;
-		map.player.glitches[this.glitch_type] = true;
-		Glitch.TransformPlayer(map, this.glitch_type);
-	}
-}
+function Glitch(){};
 
 Glitch.TransformPlayer = function(map, glitch_type){
-	var glitches = map.player.glitches;
+	//Normalize the player before transforming
 	var facing = map.player.facing;
 	map.player = new Player(map.player.x, map.player.y);
 	map.player.on_ground = false;
 	map.player.facing = facing;
-	map.player.glitches = glitches;
-	
-	
-	room.tilesheet_name = "grey_tile_sheet";
+
+	map.tilesheet_name = "grey_tile_sheet";
 
 	var oldbb = map.player.bb;
-	map.player.glitch_type = glitch_type;
 	switch (glitch_type){
 		case Glitch.GREY:
 			break;
 		case Glitch.RED:
-			Glitch.RedTransform(map.player);
+			Glitch.RedTransform(map, map.player);
 			break;
 		case Glitch.GREEN:
-			Glitch.GreenTransform(map.player);
+			Glitch.GreenTransform(map, map.player);
 			break;
 		case Glitch.BLUE:
-			Glitch.BlueTransform(map.player);
+			Glitch.BlueTransform(map, map.player);
 			break;
 		case Glitch.ZERO:
-			Glitch.ZeroTransform(map.player);
+			Glitch.ZeroTransform(map, map.player);
 			break;
 		default: break;
 	}
@@ -69,9 +40,9 @@ Glitch.TransformPlayer = function(map, glitch_type){
 extend(GameSprite, Glitch);
 
 //******GLITCH TRANSFORMATION DEFINTIIONS***************************/
-Glitch.RedTransform = function(player){
+Glitch.RedTransform = function(map, player){
 	player.img_name = "player_red_sheet";
-	room.tilesheet_name = "red_tile_sheet";
+	map.tilesheet_name = "red_tile_sheet";
 			
 	player.HandleCollisionsAndMove = function(map){
 		var left_tile = Math.floor((this.x + this.lb + this.vel.x) / Tile.WIDTH);
@@ -94,65 +65,70 @@ Glitch.RedTransform = function(player){
 	}
 }
 
-Glitch.GreenTransform = function(player){
+Glitch.GreenTransform = function(map, player){
 	player.img_name = "player_green_sheet";
-	room.tilesheet_name = "green_tile_sheet";
-	player.terminal_vel = 1.0;
-	player.original_grav_acc = 0.2;
-	player.float_grav_acc = 0.2;
-	player.jump_time_limit = 60;
-	player.jump_vel = 3.2;
+	map.tilesheet_name = "green_tile_sheet";
 			
 	player.Move = function(mult){
 		this.pressed_down = false;
 
 		var acc;
+		var max = this.max_run_vel;
 		this.horizontal_input = true;
+		this.mult = mult;
 		//if ((this.vel.x * mult) < 0) this.vel.x = 0;
 		if (this.on_ground){
-			acc = this.gnd_run_acc / 10;
-			this.move_state = MoveState.RUNNING;
+			acc = this.gnd_run_acc;
+			this.move_state = MoveState.RUNNING;	
 		}
-		else{ acc = this.air_run_acc / 10; }
+		else{ 
+			acc = this.air_run_acc / 10;
+			max = this.max_run_vel * 2.5;
+			if (this.vel.x === 0)
+				acc *= 10;
+		}
 		
-		if (Math.abs(this.vel.x) < this.max_run_vel*2.5){
+		if (Math.abs(this.vel.x) < max){
 			this.vel.x += acc * mult;
 			//this.CorrectVelocity(mult);
 		}
-		/*else if (Math.abs(this.vel.x) > this.max_run_vel){
-			this.vel.x -= acc * mult;
-			if (Math.abs(this.vel.x) < this.max_run_vel)
-				this.vel.x = this.max_run_vel * mult;
-		}*/
 	}
 	
 	player.MoveStop = function(){
 		if (this.on_ground){
 			if (this.vel.x > 0){
-				this.vel.x -= this.gnd_run_dec / 10;
+				this.vel.x -= this.gnd_run_dec / 5;
 				if (this.vel.x < 0) this.vel.x = 0;
 			}else if (this.vel.x < 0){
-				this.vel.x += this.gnd_run_dec / 10;
+				this.vel.x += this.gnd_run_dec / 5;
 				if (this.vel.x > 0) this.vel.x = 0;
 			}
 			//this.move_state = MoveState.STANDING;
 		}else{
 			if (this.vel.x > 0){
-				this.vel.x -= this.air_run_dec / 10;
+				this.vel.x -= this.air_run_dec / 5;
 				if (this.vel.x < 0) this.vel.x = 0;
 			}else if (this.vel.x < 0){
-				this.vel.x += this.air_run_dec / 10;
+				this.vel.x += this.air_run_dec / 5;
 				if (this.vel.x > 0) this.vel.x = 0;
 			}
 		}
 	}
 }
 
-Glitch.BlueTransform = function(player){
+Glitch.BlueTransform = function(map, player){
 	player.img_name = "player_blue_sheet";
-	room.tilesheet_name = "blue_tile_sheet";
+	map.tilesheet_name = "blue_tile_sheet";
+	
+	/*player.terminal_vel = 1.0;
+	player.original_grav_acc = 0.2;
+	player.float_grav_acc = 0.2;*/
+	//player.jump_time_limit = 60;
+	//player.jump_vel = 3.2;
+	player.old_terminal_vel = player.terminal_vel;
 			
 	player.StartJump = function(){
+		this.terminal_vel = 1.0;
 		if (this.on_ground){
 			this.vel.y = -this.jump_vel;
 			this.is_jumping = true;
@@ -178,11 +154,17 @@ Glitch.BlueTransform = function(player){
 			this.vel.y = -this.jump_vel;
 		}
 	}
+
+	player.StopJump = function(){
+		this.is_jumping = false;
+		this.grav_acc = this.original_grav_acc;
+		this.terminal_vel = this.old_terminal_vel;
+	}
 }
 
-Glitch.ZeroTransform = function(player){
+Glitch.ZeroTransform = function(map, player){
 	player.img_name = "player_zero_sheet";
-	room.tilesheet_name = "zero_tile_sheet";
+	map.tilesheet_name = "zero_tile_sheet";
 		
 	player.HandleHorizontalCollisions = function(map, left_tile, right_tile, top_tile, bottom_tile, q, floor_tile){
 		this.horizontal_collision = false;

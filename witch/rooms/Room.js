@@ -5,6 +5,7 @@ function Room(){
 	this.MAP_WIDTH = ~~(GAME_WIDTH / Tile.WIDTH);
 	this.MAP_HEIGHT = ~~(GAME_HEIGHT / Tile.HEIGHT);
 	
+	this.glitch_type = Glitch.GREY
 	this.tilesheet_name = "grey_tile_sheet";
 	this.camera = new Camera();
 	this.CreateEntities();
@@ -72,7 +73,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		
 		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
 		room.player.glitches = this.player.glitches;
-		Glitch.TransformPlayer(room, this.player.glitch_type);
+		Glitch.TransformPlayer(room, room.glitch_type);
 	}
 	//OFFSCREEN BOTTOM
 	else if (this.player.y + this.player.tb >= (this.MAP_HEIGHT * Tile.HEIGHT)){
@@ -85,7 +86,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		
 		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
 		room.player.glitches = this.player.glitches;
-		Glitch.TransformPlayer(room, this.player.glitch_type);
+		Glitch.TransformPlayer(room, room.glitch_type);
 	}
 	
 	//OFFSCREEN LEFT
@@ -100,7 +101,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
 		room.player.glitches = this.player.glitches;
 		room.player.facing = Facing.LEFT;
-		Glitch.TransformPlayer(room, this.player.glitch_type);
+		Glitch.TransformPlayer(room, room.glitch_type);
 	}
 	//OFFSCREEN RIGHT
 	else if (this.player.x + Tile.WIDTH >= (this.MAP_WIDTH * Tile.WIDTH)){
@@ -113,7 +114,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		
 		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
 		room.player.glitches = this.player.glitches;
-		Glitch.TransformPlayer(room, this.player.glitch_type);
+		Glitch.TransformPlayer(room, room.glitch_type);
 	}
 	
 	$("house_coordinates").innerHTML = room_manager.room_index_x + " " + room_manager.room_index_y;
@@ -195,6 +196,7 @@ Room.prototype.Export = function(){
 	return {
 		width: this.MAP_WIDTH*Tile.WIDTH
 		,height: this.MAP_HEIGHT*Tile.HEIGHT
+		,glitch_type: this.glitch_type
 		,player: {type: "Player", obj: this.player.Export()}
 		,entities: entities
 		,tiles: tiles
@@ -213,6 +215,8 @@ Room.Import = function(file_name){
 Room.prototype.Import = function(room){
 	this.ChangeSize(room.width, room.height);
 	this.player = new Player(); this.player.Import(room.player.obj);
+	this.glitch_type = room.glitch_type;
+	Glitch.TransformPlayer(this, this.glitch_type);
 	
 	//import entities
 	this.entities = [];

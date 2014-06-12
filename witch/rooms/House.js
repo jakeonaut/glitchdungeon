@@ -9,7 +9,7 @@ function House(){
 }
 
 House.prototype.SetUpRooms = function(){
-	var path = "witch/rooms/room_";
+	var path = "rooms/room_";
 	
 	this.rooms = [];
 	for (var i = 0; i < this.house_height; i++){

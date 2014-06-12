@@ -29,7 +29,7 @@ InputManager.prototype.Update = function(player){
 	}
 	
 	//GLITCH MANAGEMENT
-	if (this.key_manager.keys_pressed[KeyManager.SPACE]){
+	/*if (this.key_manager.keys_pressed[KeyManager.SPACE]){
 		player.SwitchToGlitch(0);
 	}
 	else if (this.key_manager.keys_pressed[KeyManager.Q]){
@@ -49,5 +49,5 @@ InputManager.prototype.Update = function(player){
 	}
 	else if (this.key_manager.keys_pressed[KeyManager.S]){
 		player.SwitchGlitchRight();
-	}
+	}*/
 }

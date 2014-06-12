@@ -16,10 +16,16 @@ function InitLevelEdit(){
 	$("level_edit_objects").style.display="block";
 	$("level_edit_buttons").style.display="block";
 	$("house_coordinates").style.display="block";
+	$("glitch_options").style.display="block";
 	$("object_options").style.display="block";
+	
+	$("glitch_options").onchange = function(){
+		room.glitch_type = eval(ledit_getSelected("glitch_options"));
+		Glitch.TransformPlayer(room, room.glitch_type);
+	}
 	$("object_options").onchange = function(){
 		if ($("object_object").className == "selected_object_box"){
-			ledit_select($("object_object"), ledit_getSelectedObject());
+			ledit_select($("object_object"), ledit_getSelected("object_options"));
 		}
 	}
 	
@@ -188,8 +194,8 @@ function ledit_reset_house(){
 	room_manager.rooms = [[room]];
 }
 
-function ledit_getSelectedObject(){
-	var e = $("object_options");
+function ledit_getSelected(drop_down){
+	var e = $(drop_down);
 	return e.options[e.selectedIndex].value;
 }
 

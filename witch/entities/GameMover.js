@@ -17,6 +17,7 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.air_run_acc = this.max_run_vel/3.0;
 	this.air_run_dec = this.max_run_vel/3.0;
 	this.horizontal_input = false;
+	this.mult = 0;
 	
 	this.left_flip_offset = 0;
 	this.horizontal_collision = false;
@@ -36,6 +37,7 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.jump_time_limit = 30;
 	this.terminal_vel = defaultValue(terminal_vel, 7.0);
 	this.jump_acc = 35.0; 
+	this.was_on_ground = true;
 	this.on_ground = true;
 	this.previous_bottom = this.y + this.bb;
 	
@@ -110,7 +112,7 @@ GameMover.prototype.HandleCollisionsAndMove = function(map){
 	var bottom_tile = Math.ceil((this.y + this.bb + this.vel.y) / Tile.HEIGHT);
 	
 	// Reset flag to search for ground collision.
-	var was_on_ground = this.on_ground;
+	this.was_on_ground = this.on_ground;
 	this.on_ground = false;
 	var q_horz = 3; //q is used to minimize height checked in horizontal collisions and etc.
 	var q_vert = 3;
@@ -120,7 +122,7 @@ GameMover.prototype.HandleCollisionsAndMove = function(map){
 	this.x += this.vel.x;
 	this.HandleVerticalCollisions(map, left_tile, right_tile, top_tile, bottom_tile, q_vert);
 	this.y += this.vel.y;
-	this.CompensateForSlopes(was_on_ground, floor_tile);
+	this.CompensateForSlopes(this.was_on_ground, floor_tile);
 }
 
 GameMover.prototype.HandleHorizontalCollisions = function(map, left_tile, right_tile, top_tile, bottom_tile, q, floor_tile){
@@ -187,12 +189,17 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 				if (tile.collision == Tile.FALLTHROUGH && (tile.y < this.y + this.bb || this.pressing_down))
 					continue;
 				this.vel.y = 0;
+				if (!this.was_on_ground)
+					this.LandOnTheGround();
 				this.on_ground = true;
 				this.has_double_jumped = false;
 				this.y = tile.y - this.bb;
 			}
 		}
 	}
+}
+
+GameMover.prototype.LandOnTheGround = function(){
 }
 
 GameMover.prototype.CompensateForSlopes = function(was_on_ground, floor_tile){
@@ -255,6 +262,7 @@ GameMover.prototype.MoveRight = function(){
 }
 
 GameMover.prototype.Move = function(mult){
+	this.mult = mult;
 	this.pressed_down = false;
 
 	var acc;
@@ -278,6 +286,7 @@ GameMover.prototype.Move = function(mult){
 }
 
 GameMover.prototype.MoveStop = function(){
+	this.mult = 0;
 	if (this.on_ground){
 		if (this.vel.x > 0){
 			this.vel.x -= this.gnd_run_dec;

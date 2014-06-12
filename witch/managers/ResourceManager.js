@@ -12,7 +12,6 @@ function ResourceManager(){
 		"player_green_sheet",
 		"player_blue_sheet",
 		"player_zero_sheet",
-		"glitch_sheet",
 		"npc_sheet",
 		"obj_sheet",
 		"grey_tile_sheet",

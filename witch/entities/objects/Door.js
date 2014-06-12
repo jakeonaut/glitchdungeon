@@ -25,9 +25,9 @@ Door.prototype.Export = function(){
 Door.prototype.Update = function(delta, map){
 	GameSprite.prototype.Update.call(this, delta, map);
 	
-	if (this.IsColliding(map.player)){
+	if (this.IsColliding(map.player) && map.player.on_ground){
 		map.player.touching_door = true;
-		if (map.player.pressed_down){
+		if (map.player.pressed_down && map.player.pressing_down){
 			map.player.pressed_down = false;
 		
 			this.SwitchRooms(map);
@@ -51,7 +51,7 @@ Door.prototype.SwitchRooms = function(map){
 	
 	//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
 	room.player.glitches = map.player.glitches;
-	Glitch.TransformPlayer(room, map.player.glitch_type);
+	Glitch.TransformPlayer(room, room.glitch_type);
 	
 	var door = room.GetDoor(this.door_id);
 	if (door !== null){

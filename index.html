@@ -40,8 +40,7 @@
 			<div id="level_edit_objects" style="display:none;">
 				<div id="player_object" class="object_box" style="background: url('witch/assets/images/player_grey_sheet.png');" onclick="ledit_select(this, World.PLAYER);">&nbsp;</div>
 				<div id="npc_object" class="object_box" style="background:url('witch/assets/images/npc_sheet.png');" onclick="ledit_select(this,&quot;new NPC(0, 0, parseInt(prompt('id')))&quot;)">&nbsp;</div>
-				<div id="object_object" class="object_box" style="background: url('witch/assets/images/obj_sheet.png');" onclick="ledit_select(this, ledit_getSelectedObject());">&nbsp;</div>
-				<div id="glitch_object" class="object_box" style="background: url('witch/assets/images/glitch_sheet.png');" onclick="ledit_select(this, &quot;new Glitch(0, 0, parseInt(prompt('glitch type')))&quot;);">&nbsp;</div>
+				<div id="object_object" class="object_box" style="background: url('witch/assets/images/obj_sheet.png');" onclick="ledit_select(this, ledit_getSelected('object_options'));">&nbsp;</div>
 				
 				
 				<div id="tile_solid" class="object_box" style="background-color: #ff00ff;" onclick="ledit_select(this, World.TILE_SOLID);">&nbsp;</div>
@@ -58,7 +57,14 @@
 	  <div id="house_coordinates" style="display:none;position:absolute;right:10px;top:110px;">
 		0 0
 	  </div>
-	  <select id="object_options" style="display:none;position:absolute;right:10px;top:140px;">
+	  <select id="glitch_options" style="display:none;position:absolute;right:10px;top:140px;">
+		<option value="Glitch.GREY">GREY</option>
+		<option value="Glitch.RED">RED</option>
+		<option value="Glitch.GREEN">GREEN</option>
+		<option value="Glitch.BLUE">BLUE</option>
+		<option value="Glitch.ZERO">ZERO</option>
+	  </select>
+	  <select id="object_options" style="display:none;position:absolute;right:10px;top:164px;">
 		<option value="new Door(0, 0, parseInt(prompt('room x')), parseInt(prompt('room y')), parseInt(prompt('door id')))">Door</option>
 		<option value="new Checkpoint(0, 0)">CheckPoint</option>
 	  </select>
