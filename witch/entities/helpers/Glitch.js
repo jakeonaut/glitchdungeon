@@ -2,7 +2,8 @@ Glitch.GREY = 0;
 Glitch.RED = 1;
 Glitch.GREEN = 2;
 Glitch.BLUE = 3;
-Glitch.ZERO = 4;
+Glitch.CYAN = 4;
+Glitch.ZERO = 6;
 
 function Glitch(){};
 
@@ -10,10 +11,9 @@ Glitch.TransformPlayer = function(map, glitch_type){
 	//Normalize the player before transforming
 	var facing = map.player.facing;
 	map.player = new Player(map.player.x, map.player.y);
-	map.player.on_ground = false;
 	map.player.facing = facing;
 
-	map.tilesheet_name = "grey_tile_sheet";
+	map.tilesheet_name = "tile_grey_sheet";
 
 	var oldbb = map.player.bb;
 	switch (glitch_type){
@@ -27,6 +27,9 @@ Glitch.TransformPlayer = function(map, glitch_type){
 			break;
 		case Glitch.BLUE:
 			Glitch.BlueTransform(map, map.player);
+			break;
+		case Glitch.CYAN:
+			Glitch.CyanTransform(map, map.player);
 			break;
 		case Glitch.ZERO:
 			Glitch.ZeroTransform(map, map.player);
@@ -42,7 +45,7 @@ extend(GameSprite, Glitch);
 //******GLITCH TRANSFORMATION DEFINTIIONS***************************/
 Glitch.RedTransform = function(map, player){
 	player.img_name = "player_red_sheet";
-	map.tilesheet_name = "red_tile_sheet";
+	map.tilesheet_name = "tile_red_sheet";
 			
 	player.HandleCollisionsAndMove = function(map){
 		var left_tile = Math.floor((this.x + this.lb + this.vel.x) / Tile.WIDTH);
@@ -67,104 +70,133 @@ Glitch.RedTransform = function(map, player){
 
 Glitch.GreenTransform = function(map, player){
 	player.img_name = "player_green_sheet";
-	map.tilesheet_name = "green_tile_sheet";
-			
-	player.Move = function(mult){
-		this.pressed_down = false;
-
-		var acc;
-		var max = this.max_run_vel;
-		this.horizontal_input = true;
-		this.mult = mult;
-		//if ((this.vel.x * mult) < 0) this.vel.x = 0;
-		if (this.on_ground){
-			acc = this.gnd_run_acc;
-			this.move_state = MoveState.RUNNING;	
-		}
-		else{ 
-			acc = this.air_run_acc / 10;
-			max = this.max_run_vel * 2.5;
-			if (this.vel.x === 0)
-				acc *= 10;
-		}
-		
-		if (Math.abs(this.vel.x) < max){
-			this.vel.x += acc * mult;
-			//this.CorrectVelocity(mult);
-		}
-	}
-	
-	player.MoveStop = function(){
-		if (this.on_ground){
-			if (this.vel.x > 0){
-				this.vel.x -= this.gnd_run_dec / 5;
-				if (this.vel.x < 0) this.vel.x = 0;
-			}else if (this.vel.x < 0){
-				this.vel.x += this.gnd_run_dec / 5;
-				if (this.vel.x > 0) this.vel.x = 0;
-			}
-			//this.move_state = MoveState.STANDING;
-		}else{
-			if (this.vel.x > 0){
-				this.vel.x -= this.air_run_dec / 5;
-				if (this.vel.x < 0) this.vel.x = 0;
-			}else if (this.vel.x < 0){
-				this.vel.x += this.air_run_dec / 5;
-				if (this.vel.x > 0) this.vel.x = 0;
-			}
-		}
-	}
+	map.tilesheet_name = "tile_green_sheet";
 }
 
 Glitch.BlueTransform = function(map, player){
 	player.img_name = "player_blue_sheet";
-	map.tilesheet_name = "blue_tile_sheet";
+	map.tilesheet_name = "tile_blue_sheet";
 	
-	/*player.terminal_vel = 1.0;
+	player.gnd_run_acc = player.max_run_vel/10.0;
+	player.gnd_run_dec = player.max_run_vel/100.0;
+	player.air_run_acc = player.max_run_vel/10.0;
+	player.air_run_dec = player.max_run_vel/100.0;
+	
+	player.terminal_vel = 1.0;
 	player.original_grav_acc = 0.2;
-	player.float_grav_acc = 0.2;*/
-	//player.jump_time_limit = 60;
-	//player.jump_vel = 3.2;
-	player.old_terminal_vel = player.terminal_vel;
-			
-	player.StartJump = function(){
-		this.terminal_vel = 1.0;
+	player.float_grav_acc = 0.2;
+	player.jump_time_limit = 60;
+	player.jump_vel = 3.2;
+	
+	player.Move = function(mult){
+		this.mult = mult;
+		this.pressed_down = false;
+
+		var acc;
+		this.horizontal_input = true;
+		//if ((this.vel.x * mult) < 0) this.vel.x = 0;
 		if (this.on_ground){
-			this.vel.y = -this.jump_vel;
+			acc = this.gnd_run_acc;
+			this.move_state = MoveState.RUNNING;
+		}
+		else{ acc = this.air_run_acc; }
+		
+		if (Math.abs(this.vel.x) < this.max_run_vel){
+			this.vel.x += acc * mult;
+			this.CorrectVelocity(mult);
+		}
+		else if (Math.abs(this.vel.x) > this.max_run_vel){
+			this.vel.x -= acc * mult;
+			if (Math.abs(this.vel.x) < this.max_run_vel)
+				this.vel.x = this.max_run_vel * mult;
+		}else if (Math.abs(this.vel.x) == this.max_run_vel && this.vel.x != this.max_run_vel * mult){
+			this.vel.x += acc * mult;
+		}
+	}
+}
+
+Glitch.CyanTransform = function(map, player){
+	player.img_name = "player_cyan_sheet";
+	map.tilesheet_name = "tile_cyan_sheet";
+	
+	player.tb = 0;
+	player.bb = 14;
+	
+	player.ApplyGravity = function(delta, map)
+	{
+		if (!this.on_ground){
+			if (this.vel.y > -this.terminal_vel)
+			{
+				this.vel.y -= this.grav_acc;
+				if (this.vel.y < -this.terminal_vel) 
+					this.vel.y = -this.terminal_vel;
+			}else if (this.vel.y < -this.terminal_vel){
+				this.vel.y += this.grav_acc;
+				if (this.vel.y > -this.terminal_vel)
+					this.vel.y = -this.terminal_vel;
+			}
+		}else{ this.vel.y = 0; }
+	}
+		
+	player.HandleVerticalCollisions = function(map, left_tile, right_tile, top_tile, bottom_tile, q){
+		//Check all potentially colliding tiles
+		for (var i = top_tile; i <= bottom_tile; i++){
+			for (var j = left_tile; j <= right_tile; j++){
+				if (!map.isValidTile(i, j)) continue;
+				var tile = map.tiles[i][j];
+				//don't check for collisions if potential tile is "out of bounds" or not solid
+				if (tile.collision == Tile.GHOST) continue;
+				
+				//Check for top collisions
+				if (this.vel.y <= 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
+					//Don't count bottom collision for fallthrough platforms if we're not at the top of it
+					if (tile.collision == Tile.FALLTHROUGH && (tile.y + Tile.HEIGHT < this.y || this.pressing_down))
+						continue;
+				
+					this.vel.y = 0;
+					this.y = tile.y + Tile.HEIGHT - this.tb;
+					
+					this.on_ground = true;
+					this.has_double_jumped = false;
+				}
+				
+				//Check for bottom collisions
+				if (this.vel.y > 0 && tile.collision != Tile.FALLTHROUGH && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.bb, this.x + this.rb - q, this.y + this.bb + this.vel.y + 1)){
+					this.vel.y = 0;
+					this.y = tile.y - this.bb;
+				}
+			}
+		}
+	}
+	
+	
+	player.StartJump = function(){
+		if (this.on_ground){
+			this.vel.y = this.jump_vel;
 			this.is_jumping = true;
 			this.jump_timer = 0;
 			this.on_ground = false;
 		}
-		else if (!this.has_double_jumped){	
-			var vel = this.vel;
-			var q_vert = 3;
-			
-			this.has_double_jumped = true;
-			this.vel.x = 0;
-			var left_tile = Math.floor((this.x + this.lb + this.vel.x) / Tile.WIDTH);
-			var right_tile = Math.ceil((this.x + this.rb + this.vel.x) / Tile.WIDTH);
-			var top_tile = Math.floor((this.y + this.tb + this.vel.y) / Tile.HEIGHT);
-			var bottom_tile = Math.ceil((this.y + this.bb + this.vel.y) / Tile.HEIGHT);
-			
-			this.vel.y = -32;
-		
-			this.HandleVerticalCollisions(room, left_tile, right_tile, top_tile, bottom_tile, q_vert);
-			this.y += this.vel.y;
-			this.vel = vel;
-			this.vel.y = -this.jump_vel;
-		}
 	}
 
-	player.StopJump = function(){
-		this.is_jumping = false;
-		this.grav_acc = this.original_grav_acc;
-		this.terminal_vel = this.old_terminal_vel;
+	player.Jump = function(){
+		if (this.is_jumping){
+			this.jump_timer++;
+			if (this.jump_timer >= this.jump_time_limit){
+				this.jump_timer = 0;
+				this.is_jumping = false;
+				this.grav_acc = this.original_grav_acc;
+			}else{
+				this.grav_acc = this.float_grav_acc;
+				this.vel.y += this.jump_vel * ((this.jump_time_limit - (this.jump_timer/2)) / (this.jump_time_limit * 60));
+			}
+		}
 	}
 }
 
 Glitch.ZeroTransform = function(map, player){
 	player.img_name = "player_zero_sheet";
-	map.tilesheet_name = "zero_tile_sheet";
+	map.tilesheet_name = "tile_zero_sheet";
 		
 	player.HandleHorizontalCollisions = function(map, left_tile, right_tile, top_tile, bottom_tile, q, floor_tile){
 		this.horizontal_collision = false;

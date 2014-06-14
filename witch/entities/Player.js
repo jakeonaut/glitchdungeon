@@ -1,7 +1,7 @@
 function Player(x, y){
-	GameMover.call(this, x, y, 2, 5, 14, 24, "player_grey_sheet");
+	GameMover.call(this, x, y, 2, 1, 14, 16, "player_grey_sheet");
 	this.type = "Player";
-	this.animation.frame_height = 24;
+	this.animation.frame_height = 16;
 	this.touching_door = false;
 	this.touching_checkpoint = false;
 }

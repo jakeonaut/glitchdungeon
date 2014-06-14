@@ -11,14 +11,21 @@ function ResourceManager(){
 		"player_red_sheet",
 		"player_green_sheet",
 		"player_blue_sheet",
+		"player_cyan_sheet",
+		"player_gold_sheet",
+		"player_pink_sheet",
 		"player_zero_sheet",
 		"npc_sheet",
+		"collection_sheet",
 		"obj_sheet",
-		"grey_tile_sheet",
-		"red_tile_sheet",
-		"green_tile_sheet",
-		"blue_tile_sheet",
-		"zero_tile_sheet"
+		"tile_grey_sheet",
+		"tile_red_sheet",
+		"tile_green_sheet",
+		"tile_blue_sheet",
+		"tile_cyan_sheet",
+		"tile_gold_sheet",
+		"tile_pink_sheet",
+		"tile_zero_sheet"
 	];
 	this.num_images = this.image_names.length;
 	

@@ -82,6 +82,19 @@ GameMover.prototype.ApplyPhysics = function(delta, map)
 {
 	var prev_pos = {x: this.x, y: this.y};
 	
+	this.ApplyGravity();
+	
+	if (!this.horizontal_input) this.MoveStop();
+	this.horizontal_input = false;
+	
+	this.HandleCollisionsAndMove(map);
+	
+	if (this.x == prev_pos.x) this.vel.x = 0;
+	if (this.y == prev_pos.y) this.vel.y = 0;
+	this.previous_bottom = this.y + this.bb;
+}
+
+GameMover.prototype.ApplyGravity = function(){
 	if (!this.on_ground){
 		if (this.vel.y < this.terminal_vel)
 		{
@@ -94,22 +107,13 @@ GameMover.prototype.ApplyPhysics = function(delta, map)
 				this.vel.y = this.terminal_vel;
 		}
 	}else{ this.vel.y = 0; }
-	
-	if (!this.horizontal_input) this.MoveStop();
-	this.horizontal_input = false;
-	
-	this.HandleCollisionsAndMove(map);
-	
-	if (this.x == prev_pos.x) this.vel.x = 0;
-	if (this.y == prev_pos.y) this.vel.y = 0;
-	this.previous_bottom = this.y + this.bb;
 }
 
 GameMover.prototype.HandleCollisionsAndMove = function(map){
-	var left_tile = Math.floor((this.x + this.lb + this.vel.x) / Tile.WIDTH);
-	var right_tile = Math.ceil((this.x + this.rb + this.vel.x) / Tile.WIDTH);
-	var top_tile = Math.floor((this.y + this.tb + this.vel.y) / Tile.HEIGHT);
-	var bottom_tile = Math.ceil((this.y + this.bb + this.vel.y) / Tile.HEIGHT);
+	var left_tile = Math.floor((this.x + this.lb + this.vel.x - 1) / Tile.WIDTH);
+	var right_tile = Math.ceil((this.x + this.rb + this.vel.x + 1) / Tile.WIDTH);
+	var top_tile = Math.floor((this.y + this.tb + this.vel.y - 1) / Tile.HEIGHT);
+	var bottom_tile = Math.ceil((this.y + this.bb + this.vel.y + 1) / Tile.HEIGHT);
 	
 	// Reset flag to search for ground collision.
 	this.was_on_ground = this.on_ground;
@@ -189,17 +193,12 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 				if (tile.collision == Tile.FALLTHROUGH && (tile.y < this.y + this.bb || this.pressing_down))
 					continue;
 				this.vel.y = 0;
-				if (!this.was_on_ground)
-					this.LandOnTheGround();
 				this.on_ground = true;
 				this.has_double_jumped = false;
 				this.y = tile.y - this.bb;
 			}
 		}
 	}
-}
-
-GameMover.prototype.LandOnTheGround = function(){
 }
 
 GameMover.prototype.CompensateForSlopes = function(was_on_ground, floor_tile){
@@ -282,6 +281,9 @@ GameMover.prototype.Move = function(mult){
 		this.vel.x -= acc * mult;
 		if (Math.abs(this.vel.x) < this.max_run_vel)
 			this.vel.x = this.max_run_vel * mult;
+	}
+	else if (Math.abs(this.vel.x) == this.max_run_vel && this.vel.x != this.max_run_vel * mult){
+		this.vel.x += acc * mult;
 	}
 }
 

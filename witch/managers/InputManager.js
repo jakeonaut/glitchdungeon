@@ -28,26 +28,7 @@ InputManager.prototype.Update = function(player){
 		player.StopPressingDown();
 	}
 	
-	//GLITCH MANAGEMENT
-	/*if (this.key_manager.keys_pressed[KeyManager.SPACE]){
-		player.SwitchToGlitch(0);
+	if (this.key_manager.keys_pressed[KeyManager.SPACE]){
+		room_manager.RevivePlayer();
 	}
-	else if (this.key_manager.keys_pressed[KeyManager.Q]){
-		player.SwitchToGlitch(1);
-	}
-	else if (this.key_manager.keys_pressed[KeyManager.W]){
-		player.SwitchToGlitch(2);
-	}
-	else if (this.key_manager.keys_pressed[KeyManager.E]){
-		player.SwitchToGlitch(3);
-	}
-	else if (this.key_manager.keys_pressed[KeyManager.R]){
-		player.SwitchToGlitch(4);
-	}
-	else if (this.key_manager.keys_pressed[KeyManager.A]){
-		player.SwitchGlitchLeft();
-	}
-	else if (this.key_manager.keys_pressed[KeyManager.S]){
-		player.SwitchGlitchRight();
-	}*/
 }

@@ -10,6 +10,8 @@ function GameObject(x, y, lb, tb, rb, bb){
 	this.height = bb - tb;
 	this.solid = false;
 	this.delete_me = false;
+	
+	this.kill_player = false;
 }
 
 GameObject.prototype.Import = function(obj){

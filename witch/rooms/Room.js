@@ -6,7 +6,7 @@ function Room(){
 	this.MAP_HEIGHT = ~~(GAME_HEIGHT / Tile.HEIGHT);
 	
 	this.glitch_type = Glitch.GREY
-	this.tilesheet_name = "grey_tile_sheet";
+	this.tilesheet_name = "tile_grey_sheet";
 	this.camera = new Camera();
 	this.CreateEntities();
 	this.InitializeTiles();

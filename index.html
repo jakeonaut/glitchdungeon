@@ -23,6 +23,7 @@
 <script type="text/javascript" src="witch/entities/GameSprite.js"></script>
 <script type="text/javascript" src="witch/entities/GameMover.js"></script>
 <script type="text/javascript" src="witch/entities/Tile.js"></script>
+<script type="text/javascript" src="witch/entities/Collection.js"></script>
 <script type="text/javascript" src="witch/entities/NPC.js"></script>
 <script type="text/javascript" src="witch/entities/Player.js"></script>
 <script type="text/javascript" src="witch/entities/helpers/Glitch.js"></script>
@@ -40,6 +41,7 @@
 			<div id="level_edit_objects" style="display:none;">
 				<div id="player_object" class="object_box" style="background: url('witch/assets/images/player_grey_sheet.png');" onclick="ledit_select(this, World.PLAYER);">&nbsp;</div>
 				<div id="npc_object" class="object_box" style="background:url('witch/assets/images/npc_sheet.png');" onclick="ledit_select(this,&quot;new NPC(0, 0, parseInt(prompt('id')))&quot;)">&nbsp;</div>
+				<div id="collection_object" class="object_box" style="background:url('witch/assets/images/collection_sheet.png');" onclick="ledit_select(this,&quot;new Collection(0, 0, parseInt(prompt('id')))&quot;)">&nbsp;</div>
 				<div id="object_object" class="object_box" style="background: url('witch/assets/images/obj_sheet.png');" onclick="ledit_select(this, ledit_getSelected('object_options'));">&nbsp;</div>
 				
 				
@@ -53,7 +55,7 @@
 		</td>
 		</tr>
 	  </table>
-	  <canvas id="tileset_canvas" style="display:none;position:absolute;right:10px;top:10px;background:#aaaaaa url('witch/assets/images/grey_tile_sheet.png')" class="centerMe" oncontextmenu="return false;"></canvas>
+	  <canvas id="tileset_canvas" style="display:none;position:absolute;right:10px;top:10px;background:#aaaaaa url('witch/assets/images/tile_grey_sheet.png')" class="centerMe" oncontextmenu="return false;"></canvas>
 	  <div id="house_coordinates" style="display:none;position:absolute;right:10px;top:110px;">
 		0 0
 	  </div>
@@ -62,6 +64,7 @@
 		<option value="Glitch.RED">RED</option>
 		<option value="Glitch.GREEN">GREEN</option>
 		<option value="Glitch.BLUE">BLUE</option>
+		<option value="Glitch.CYAN">CYAN</option>
 		<option value="Glitch.ZERO">ZERO</option>
 	  </select>
 	  <select id="object_options" style="display:none;position:absolute;right:10px;top:164px;">

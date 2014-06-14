@@ -5,6 +5,16 @@ function NPC(x, y, npc_id){
 	this.animation.frame_height = 24;
 	this.animation.frame_delay = 30;
 }
+NPC.prototype.Import = function(obj){
+	GameMover.prototype.Import.call(this, obj);
+	this.npc_id = obj.npc_id;
+}
+
+NPC.prototype.Export = function(){
+	var obj = GameMover.prototype.Export.call(this);
+	obj.npc_id = this.npd_id;
+	return obj;
+}
 extend(GameMover, NPC);
 
 NPC.prototype.Update = function(delta, map){

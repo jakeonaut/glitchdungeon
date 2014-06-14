@@ -16,8 +16,7 @@ Checkpoint.prototype.Update = function(delta, map){
 				x: this.x, y: this.y, 
 				room_x: room_manager.room_index_x,
 				room_y: room_manager.room_index_y,
-				facing: room.player.facing,
-				glitch_type: room.player.glitch_type
+				facing: room.player.facing
 			}
 			this.active = true;
 			this.animation.Change(1, 0, 2);
