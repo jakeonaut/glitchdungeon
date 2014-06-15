@@ -1,0 +1,9 @@
+0. why does green not jump full height the first time?
+2. randomly blink up in time increments (like a pseudo double jump)
+3. Make each tile switch tileset image at a random interval between 1 - 100 upon forme change?
+4. loop music
+	
+
+I hope when you die you get to see your stats like how many times you laughed or told a lie or kissed or how many people loved you and how many people hated you and what you meant to people
+
+***GLITCH JAM 9-24::	code-magick academy where you learn the abilities of other videogame creatures and use it to get to the top of the tower and beat the final boss
