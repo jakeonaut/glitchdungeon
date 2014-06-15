@@ -8,7 +8,6 @@ function GameObject(x, y, lb, tb, rb, bb){
 	this.bb = bb;
 	this.width = rb - lb;
 	this.height = bb - tb;
-	this.solid = false;
 	this.delete_me = false;
 	
 	this.kill_player = false;
@@ -21,6 +20,7 @@ GameObject.prototype.Import = function(obj){
 	this.tb = obj.tb;
 	this.rb = obj.rb;
 	this.bb = obj.bb;
+	this.kill_player = obj.kill_player || false;
 }
 GameObject.prototype.Export = function(){
 	return {
@@ -29,7 +29,8 @@ GameObject.prototype.Export = function(){
 		lb: this.lb,
 		tb: this.tb,
 		rb: this.rb,
-		bb: this.bb
+		bb: this.bb,
+		kill_player: this.kill_player
 	};
 }
 GameObject.prototype.Update = function(delta, map){}

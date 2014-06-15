@@ -145,12 +145,12 @@ Glitch.CyanTransform = function(map, player){
 				if (!map.isValidTile(i, j)) continue;
 				var tile = map.tiles[i][j];
 				//don't check for collisions if potential tile is "out of bounds" or not solid
-				if (tile.collision == Tile.GHOST) continue;
+				if (tile.collision == Tile.GHOST || tile.collision == Tile.KILL_PLAYER) continue;
 				
 				//Check for top collisions
 				if (this.vel.y <= 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
 					//Don't count bottom collision for fallthrough platforms if we're not at the top of it
-					if (tile.collision == Tile.FALLTHROUGH && (tile.y + Tile.HEIGHT < this.y || this.pressing_down))
+					if (tile.collision == Tile.FALLTHROUGH && (tile.y + Tile.HEIGHT > this.y || this.pressing_down))
 						continue;
 				
 					this.vel.y = 0;

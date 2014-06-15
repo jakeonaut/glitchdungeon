@@ -16,8 +16,41 @@ Player.prototype.Export = function(){
 	return obj;
 }
 Player.prototype.Update = function(delta, map){
+	this.DieToSpikesAndStuff(map);
 	GameMover.prototype.Update.call(this, delta, map);
 	this.touching_door = false;
 }
+
+Player.prototype.DieToSpikesAndStuff = function(map){
+	for (var i = 0; i < map.entities.length; i++){
+		if (map.entities[i].kill_player && this.IsColliding(map.entities[i])){
+			this.Die();
+		}
+	}
+
+	//Colliding with spikes
+	var left_tile = Math.floor((this.x + this.lb + this.vel.x - 1) / Tile.WIDTH);
+	var right_tile = Math.ceil((this.x + this.rb + this.vel.x + 1) / Tile.WIDTH);
+	var top_tile = Math.floor((this.y + this.tb + this.vel.y - 1) / Tile.HEIGHT);
+	var bottom_tile = Math.ceil((this.y + this.bb + this.vel.y + 1) / Tile.HEIGHT);
+	
+	for (var i = top_tile; i <= bottom_tile; i++){
+		for (var j = left_tile; j <= right_tile; j++){
+			if (!map.isValidTile(i, j)) continue;
+			var tile = map.tiles[i][j];
+			if (tile.collision != Tile.KILL_PLAYER && !tile.kill_player) continue;
+			
+			if (this.IsColliding(tile)){
+				this.Die();
+			}
+		}
+	}
+}
+
+Player.prototype.Die = function(){
+	room_manager.RevivePlayer();
+}
+
+
 
 extend(GameMover, Player);

@@ -39,15 +39,16 @@
 		<tr>
 		<td>
 			<div id="level_edit_objects" style="display:none;">
-				<div id="player_object" class="object_box" style="background: url('witch/assets/images/player_grey_sheet.png');" onclick="ledit_select(this, World.PLAYER);">&nbsp;</div>
+				<div id="player_object" class="object_box" style="background: url('witch/assets/images/player_grey_sheet.png');" onclick="ledit_select(this, 'player');">&nbsp;</div>
 				<div id="npc_object" class="object_box" style="background:url('witch/assets/images/npc_sheet.png');" onclick="ledit_select(this,&quot;new NPC(0, 0, parseInt(prompt('id')))&quot;)">&nbsp;</div>
 				<div id="collection_object" class="object_box" style="background:url('witch/assets/images/collection_sheet.png');" onclick="ledit_select(this,&quot;new Collection(0, 0, parseInt(prompt('id')))&quot;)">&nbsp;</div>
 				<div id="object_object" class="object_box" style="background: url('witch/assets/images/obj_sheet.png');" onclick="ledit_select(this, ledit_getSelected('object_options'));">&nbsp;</div>
 				
 				
-				<div id="tile_solid" class="object_box" style="background-color: #ff00ff;" onclick="ledit_select(this, World.TILE_SOLID);">&nbsp;</div>
-				<div id="tile_fallthrough" class="object_box" style="background-color: #00ffff;" onclick="ledit_select(this, World.TILE_FALLTHROUGH);">&nbsp;</div>
-				<div id="tile_ghost" class="object_box" onclick="ledit_select(this, World.TILE_GHOST);">&nbsp;</div>
+				<div id="tile_solid" class="object_box" style="background-color: #ff00ff;" onclick="ledit_select(this, Tile.SOLID);">&nbsp;</div>
+				<div id="tile_fallthrough" class="object_box" style="background-color: #00ffff;" onclick="ledit_select(this, Tile.FALLTHROUGH);">&nbsp;</div>
+				<div id="tile_kill" class="object_box" style="background-color: #ff0000;" onclick="ledit_select(this, Tile.KILL_PLAYER);">&nbsp;</div>
+				<div id="tile_ghost" class="object_box" onclick="ledit_select(this, Tile.GHOST);">&nbsp;</div>
 			</div>
 		</td>
 		<td>

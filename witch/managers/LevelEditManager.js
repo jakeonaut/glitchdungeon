@@ -1,9 +1,3 @@
-World.PLAYER = 0;
-World.TILE_SOLID = 1;
-World.TILE_FALLTHROUGH = 2;
-World.TILE_GHOST = 3;
-function World(){}
-
 var level_edit_mouse_down = false;
 var level_edit_object;
 var level_edit_object_is_tile = false;
@@ -44,7 +38,7 @@ function InitLevelEdit(){
 	$("room_height").onkeypress = keypress;
 	level_edit = true;
 	
-	ledit_select($("tile_solid"), World.TILE_SOLID);
+	ledit_select($("tile_solid"), Tile.SOLID);
 }
 
 function DisableLevelEdit(){
@@ -106,6 +100,7 @@ function LevelEditMouseDown(e){
 	
 	if (level_edit_object_is_tile){
 		var tile = room.tiles[tile_y][tile_x];
+		tile.kill_player = false;
 		tile.tileset_x = level_edit_tile_img_x;
 		tile.tileset_y = level_edit_tile_img_y;
 		if (e.which === 3 && e.button === 2){ //RIGHT CLICK. REMOVE Tile
@@ -120,6 +115,10 @@ function LevelEditMouseDown(e){
 				case Tile.FALLTHROUGH:
 					tile.collision = Tile.FALLTHROUGH;
 					break;
+				case Tile.KILL_PLAYER:
+					tile.collision = Tile.KILL_PLAYER;
+					tile.kill_player = true;
+					break;
 				default:
 					tile.collision = Tile.GHOST;
 					break;
@@ -127,7 +126,7 @@ function LevelEditMouseDown(e){
 		}
 	}
 	else{
-		if (level_edit_object == World.PLAYER){
+		if (level_edit_object == 'player'){
 			room.player.x = x - (room.player.rb/2);
 			room.player.y = y - room.player.bb;
 		}
@@ -212,20 +211,22 @@ function ledit_select(box, obj_type){
 	
 	level_edit_object_is_tile = false;
 	switch (obj_type){
-		case World.PLAYER:
-			level_edit_object = World.PLAYER;
-			break;
-		case World.TILE_SOLID:
+		case Tile.SOLID:
 			level_edit_object_is_tile = true;
 			level_edit_object = Tile.SOLID;
 			LeditSetTileImage(0, 1);
 			break;
-		case World.TILE_FALLTHROUGH:
+		case Tile.FALLTHROUGH:
 			level_edit_object_is_tile = true;
 			level_edit_object = Tile.FALLTHROUGH;
 			LeditSetTileImage(2, 1);
 			break;
-		case World.TILE_GHOST:
+		case Tile.KILL_PLAYER:
+			level_edit_object_is_tile = true;
+			level_edit_object = Tile.KILL_PLAYER;
+			LeditSetTileImage(0, 3);
+			break;
+		case Tile.GHOST:
 			level_edit_object_is_tile = true;
 			level_edit_object = Tile.GHOST;
 			LeditSetTileImage(0, 0);

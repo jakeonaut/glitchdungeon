@@ -14,11 +14,13 @@ Tile.HEIGHT = 8;
 Tile.GHOST = -1;
 Tile.SOLID = 0;
 Tile.FALLTHROUGH = 1;
+Tile.KILL_PLAYER = 2;
 
 function Tile(x, y, collision, slope){
 	GameObject.call(this, x, y, 0, 0, Tile.WIDTH, Tile.HEIGHT);
 	this.type = "Tile";
 	this.collision = defaultValue(collision, Tile.GHOST);
+	if (collision == Tile.KILL_PLAYER) this.kill_player = true;
 	this.slope = slope;
 	this.tileset_x = 0;
 	this.tileset_y = 0;
