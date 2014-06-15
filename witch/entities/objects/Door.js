@@ -42,13 +42,16 @@ Door.prototype.Update = function(delta, map){
 				if (this.locked){
 					if (room_manager.num_artifacts >= this.num_artifacts){
 						this.locked = false;
+						room.Speak("door unlocked");
+						this.talking = true;
 					}else{
-						room.Speak("door is locked\nneed " + this.num_artifacts + " artifacts");
+						room.Speak("door is locked\nneed " + (this.num_artifacts-room_manager.num_artifacts) + " artifacts more");
 						this.talking = true;
 					}
 				}
-				else 
+				else{
 					this.SwitchRooms(map);
+				}
 			}
 		}
 	}

@@ -85,9 +85,8 @@ GameMover.prototype.ApplyPhysics = function(delta, map)
 	this.ApplyGravity();
 	
 	if (!this.horizontal_input) this.MoveStop();
-	this.horizontal_input = false;
-	
 	this.HandleCollisionsAndMove(map);
+	this.horizontal_input = false;
 	
 	if (this.x == prev_pos.x) this.vel.x = 0;
 	if (this.y == prev_pos.y) this.vel.y = 0;

@@ -58,7 +58,7 @@ NPC.prototype.UpdateAnimationFromState = function(){
 NPC.prototype.GetText = function(){
 	switch (this.npc_id){
 		case 0:
-			return "you must escape the labyrinth";
+			return "you must escape\nthe labyrinth";
 		case 1:
 			return "press down to fall\nand to enter doors";
 		case 2:

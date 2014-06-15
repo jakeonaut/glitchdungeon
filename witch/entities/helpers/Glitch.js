@@ -3,6 +3,7 @@ Glitch.RED = 1;
 Glitch.GREEN = 2;
 Glitch.BLUE = 3;
 Glitch.CYAN = 4;
+Glitch.GOLD = 5;
 Glitch.ZERO = 6;
 
 function Glitch(){};
@@ -24,8 +25,12 @@ Glitch.TransformPlayer = function(map, glitch_type){
 	map.player.jump_time_limit = jump_time_limit;
 	map.player.on_ground = on_ground;
 	map.player.grav_acc = grav_acc;
+	if (map.glitch_type != Glitch.RED){
+		map.player.on_ground = false;
+	}
 
 	map.tilesheet_name = "tile_grey_sheet";
+	
 
 	var oldbb = map.player.bb;
 	switch (glitch_type){
@@ -42,6 +47,9 @@ Glitch.TransformPlayer = function(map, glitch_type){
 			break;
 		case Glitch.CYAN:
 			Glitch.CyanTransform(map, map.player);
+			break;
+		case Glitch.GOLD:
+			Glitch.GoldTransform(map, map.player);
 			break;
 		case Glitch.ZERO:
 			Glitch.ZeroTransform(map, map.player);
@@ -203,6 +211,34 @@ Glitch.CyanTransform = function(map, player){
 				this.vel.y += this.jump_vel * ((this.jump_time_limit - (this.jump_timer/2)) / (this.jump_time_limit * 60));
 			}
 		}
+	}
+}
+
+Glitch.GoldTransform = function(map, player){
+	player.img_name = "player_gold_sheet";
+	map.tilesheet_name = "tile_gold_sheet";
+	
+	player.HandleCollisionsAndMove = function(map){
+		var left_tile = Math.floor((this.x + this.lb + this.vel.x - 1) / Tile.WIDTH);
+		var right_tile = Math.ceil((this.x + this.rb + this.vel.x + 1) / Tile.WIDTH);
+		var top_tile = Math.floor((this.y + this.tb + this.vel.y - 1) / Tile.HEIGHT);
+		var bottom_tile = Math.ceil((this.y + this.bb + this.vel.y + 1) / Tile.HEIGHT);
+		
+		// Reset flag to search for ground collision.
+		this.was_on_ground = this.on_ground;
+		this.on_ground = false;
+		var q_horz = 3; //q is used to minimize height checked in horizontal collisions and etc.
+		var q_vert = 3;
+		var floor_tile = null;
+		
+		floor_tile = this.HandleHorizontalCollisions(map, left_tile, right_tile, top_tile, bottom_tile, q_horz, floor_tile);
+		this.x += this.vel.x;
+		if (this.horizontal_collision && this.horizontal_input){
+			this.vel.y = -1;
+		}
+		this.HandleVerticalCollisions(map, left_tile, right_tile, top_tile, bottom_tile, q_vert);
+		this.y += this.vel.y;
+		this.CompensateForSlopes(this.was_on_ground, floor_tile);
 	}
 }
 

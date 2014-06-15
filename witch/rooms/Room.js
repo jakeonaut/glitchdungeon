@@ -14,6 +14,8 @@ function Room(){
 	this.glitch_time_limit = Room.GLITCH_TIME_LIMIT_ORIGINAL;
 	
 	this.spoken_text = "";
+	this.speech_timer = 0;
+	this.speech_time_limit = 0;
 	
 	this.tilesheet_name = "tile_grey_sheet";
 	this.camera = new Camera();
@@ -77,8 +79,9 @@ Room.prototype.Update = function(input, delta){
 		if (this.glitch_index >= this.glitch_sequence.length){
 			this.glitch_index = 0;
 		}
+		
+		Glitch.TransformPlayer(this, this.glitch_sequence[this.glitch_index]);
 		this.glitch_type = this.glitch_sequence[this.glitch_index];
-		Glitch.TransformPlayer(this, this.glitch_type);
 	}
 }
 
@@ -130,14 +133,23 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 	$("house_coordinates").innerHTML = room_manager.room_index_x + " " + room_manager.room_index_y;
 }
 
-Room.prototype.Speak = function(text){
+Room.prototype.Speak = function(text, speech_time){
 	this.spoken_text = text;
+	this.speech_time = 0;
+	this.speech_time_limit = speech_time || 240;
 }
 
 Room.prototype.RenderSpeech = function(ctx){
 	var speech_height = 32;
 
 	if (this.spoken_text != null && this.spoken_text.length > 0){
+		this.speech_timer++;
+		if (this.speech_timer > this.speech_time_limit){
+			this.speech_timer = 0;
+			this.Speak(null);
+			return;
+		}
+		
 		var h = 0;
 		if (this.player.y+(this.player.bb/2) >= GAME_HEIGHT/2) 
 			h = (-1)*(GAME_HEIGHT/1.5)+Tile.HEIGHT;
@@ -148,7 +160,7 @@ Room.prototype.RenderSpeech = function(ctx){
 		ctx.fillRect(Tile.WIDTH+2, h + GAME_HEIGHT-(Tile.HEIGHT)-speech_height+2, GAME_WIDTH-(Tile.WIDTH*2)-4, speech_height-4);
 	
 		var fs = 8;
-		ctx.font = fs + "px Arial";
+		ctx.font = fs + "px pixelFont";
 		ctx.fillStyle = "#ffffff";
 		var texts = this.spoken_text.split("\n");
 		for (var i = 0; i < texts.length; i++){
@@ -186,7 +198,7 @@ Room.prototype.ChangeSize = function(width, height){
 	if (this.MAP_WIDTH * Tile.WIDTH < this.SCREEN_WIDTH)
 		this.camera.screen_offset_x = (this.SCREEN_WIDTH - (this.MAP_WIDTH * Tile.WIDTH))/2;
 	else this.camera.screen_offset_x = 0;
-	if (this.MAP_WIDTH * Tile.HEIGHT < this.SCREEN_HEIGHT)
+	if (this.MAP_HEIGHT * Tile.HEIGHT < this.SCREEN_HEIGHT)
 		this.camera.screen_offset_y = (this.SCREEN_HEIGHT-(this.MAP_HEIGHT*Tile.HEIGHT))/2;
 	else this.camera.screen_offset_y = 0;
 

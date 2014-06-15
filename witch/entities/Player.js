@@ -22,8 +22,15 @@ Player.prototype.Update = function(delta, map){
 }
 
 Player.prototype.DieToSpikesAndStuff = function(map){
+	var q = 3;
+	var x = this.x;
+	var y = this.y;
+	var lb = this.lb;
+	var tb = this.tb;
+	var rb = this.rb;
+	var bb = this.bb;
 	for (var i = 0; i < map.entities.length; i++){
-		if (map.entities[i].kill_player && this.IsColliding(map.entities[i])){
+		if (map.entities[i].kill_player && (this.IsRectColliding(map.entities[i], x+lb+q, y+tb+q,x+rb-q,y+bb-q))){
 			this.Die();
 		}
 	}
@@ -40,7 +47,7 @@ Player.prototype.DieToSpikesAndStuff = function(map){
 			var tile = map.tiles[i][j];
 			if (tile.collision != Tile.KILL_PLAYER && !tile.kill_player) continue;
 			
-			if (this.IsColliding(tile)){
+			if (this.IsRectColliding(tile, x+lb+q, y+tb+q,x+rb-q,y+bb-q)){
 				this.Die();
 			}
 		}
