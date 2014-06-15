@@ -10,8 +10,20 @@ function Glitch(){};
 Glitch.TransformPlayer = function(map, glitch_type){
 	//Normalize the player before transforming
 	var facing = map.player.facing;
+	var vel = map.player.vel;
+	var is_jumping = map.player.is_jumping;
+	var jump_timer = map.player.jump_timer;
+	var jump_time_limit = map.player.jump_time_limit;
+	var on_ground = map.player.on_ground;
+	var grav_acc = map.player.grav_acc;
 	map.player = new Player(map.player.x, map.player.y);
 	map.player.facing = facing;
+	map.player.vel = vel;
+	map.player.is_jumping = is_jumping;
+	map.player.jump_timer = jump_timer;
+	map.player.jump_time_limit = jump_time_limit;
+	map.player.on_ground = on_ground;
+	map.player.grav_acc = grav_acc;
 
 	map.tilesheet_name = "tile_grey_sheet";
 

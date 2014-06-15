@@ -1,10 +1,13 @@
-function Door(x, y, room_x, room_y, door_id){
+function Door(x, y, room_x, room_y, door_id, locked, num_artifacts){
 	GameSprite.call(this, x, y, 0, 0, 16, 16, "obj_sheet");
 	this.type = "Door";
 	
 	this.room_x = room_x;
 	this.room_y = room_y;
 	this.door_id = door_id;
+	
+	this.locked = locked || false;
+	this.num_artifacts = num_artifacts || 0;
 }
 Door.prototype.Import = function(obj){
 	GameSprite.prototype.Import.call(this, obj);
@@ -12,12 +15,16 @@ Door.prototype.Import = function(obj){
 	this.room_x = obj.room_x;
 	this.room_y = obj.room_y;
 	this.door_id = obj.door_id;
+	this.locked = obj.locked || false;
+	this.num_artifacts = obj.num_artifacts || 0;
 }
 Door.prototype.Export = function(){
 	var obj = GameSprite.prototype.Export.call(this);
 	obj.room_x = this.room_x;
 	obj.room_y = this.room_y;
 	obj.door_id = this.door_id;
+	obj.locked = this.locked;
+	obj.num_artifacts = this.num_artifacts;
 	return obj;
 }
 
@@ -28,10 +35,21 @@ Door.prototype.Update = function(delta, map){
 		map.player.touching_door = true;
 		if (map.player.pressed_down && map.player.pressing_down){
 			map.player.pressed_down = false;
-		
-			this.SwitchRooms(map);
+			
+			if (this.locked){
+				if (room_manager.num_artifacts >= this.num_artifacts){
+					this.locked = false;
+				}else{
+					alert("door is locked\nneed " + this.num_artifacts + " artifacts");
+				}
+			}
+			else 
+				this.SwitchRooms(map);
 		}
 	}
+	
+	if (this.locked) this.animation.Change(0, 1, 2);
+	else this.animation.Change(0, 0, 1);
 }
 extend(GameSprite, Door);
 
@@ -46,11 +64,7 @@ Door.prototype.SwitchRooms = function(map){
 		room_manager.rooms[this.room_y][this.room_x] = new Room();
 	}
 	
-	room = room_manager.GetRoom();
-	
-	//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
-	room.player.glitches = map.player.glitches;
-	Glitch.TransformPlayer(room, room.glitch_type);
+	room_manager.ChangeRoom();
 	
 	console.log("door id: " + this.door_id);
 	var door = room.GetDoor(this.door_id);

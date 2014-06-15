@@ -9,14 +9,7 @@ var level_edit_tile_img_y = 0;
 function InitLevelEdit(){
 	$("level_edit_objects").style.display="block";
 	$("level_edit_buttons").style.display="block";
-	$("house_coordinates").style.display="block";
-	$("glitch_options").style.display="block";
-	$("object_options").style.display="block";
-	
-	$("glitch_options").onchange = function(){
-		room.glitch_type = eval(ledit_getSelected("glitch_options"));
-		Glitch.TransformPlayer(room, room.glitch_type);
-	}
+	$("etc_options").style.display="block";
 	$("object_options").onchange = function(){
 		if ($("object_object").className == "selected_object_box"){
 			ledit_select($("object_object"), ledit_getSelected("object_options"));
@@ -165,6 +158,19 @@ function ledit_change_room_size(){
 	room.ChangeSize($("room_width").value, $("room_height").value);
 }
 
+function ledit_change_glitch(){
+	room.glitch_sequence = [eval(ledit_getSelected("glitch_options"))];
+	room.glitch_index = 0;
+	room.glitch_type = room.glitch_sequence[0];
+	Glitch.TransformPlayer(room, room.glitch_type);
+}
+
+function ledit_add_glitch(){
+	room.glitch_sequence.push(eval(ledit_getSelected("glitch_options")));
+	room.glitch_index = 0;
+	room.glitch_time = 0;
+}
+
 function ledit_export(){
 	$("level_edit_export_text").value = JSON.stringify(room.Export());
 }
@@ -187,10 +193,7 @@ function ledit_reset(){
 }
 
 function ledit_reset_house(){
-	room_manager.room_index_x = 0;
-	room_manager.room_index_y = 0;
-	ledit_reset();
-	room_manager.rooms = [[room]];
+	room_manager.Reset();
 }
 
 function ledit_getSelected(drop_down){

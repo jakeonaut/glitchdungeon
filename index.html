@@ -57,10 +57,11 @@
 		</tr>
 	  </table>
 	  <canvas id="tileset_canvas" style="display:none;position:absolute;right:10px;top:10px;background:#aaaaaa url('witch/assets/images/tile_grey_sheet.png')" class="centerMe" oncontextmenu="return false;"></canvas>
-	  <div id="house_coordinates" style="display:none;position:absolute;right:10px;top:110px;">
+	  <div id="etc_options" style="display:none;">
+	  <div id="house_coordinates" style="position:absolute;right:10px;top:110px;">
 		0 0
 	  </div>
-	  <select id="glitch_options" style="display:none;position:absolute;right:10px;top:140px;">
+	  <select id="glitch_options" style="position:absolute;right:10px;top:140px;">
 		<option value="Glitch.GREY">GREY</option>
 		<option value="Glitch.RED">RED</option>
 		<option value="Glitch.GREEN">GREEN</option>
@@ -68,10 +69,14 @@
 		<option value="Glitch.CYAN">CYAN</option>
 		<option value="Glitch.ZERO">ZERO</option>
 	  </select>
-	  <select id="object_options" style="display:none;position:absolute;right:10px;top:164px;">
+	  <input type="submit" value="change" style="position:absolute;right:50px;top:164px;" onclick="ledit_change_glitch()"/>
+	  <input type="submit" value="add" style="position:absolute;right:10px;top:164px;" onclick="ledit_add_glitch()"/>
+	  <select id="object_options" style="position:absolute;right:10px;top:196px;">
 		<option value="new Door(0, 0, parseInt(prompt('room x')), parseInt(prompt('room y')), parseInt(prompt('door id')))">Door</option>
+		<option value="new Door(0, 0, parseInt(prompt('room x')), parseInt(prompt('room y')), parseInt(prompt('door id')), true, parseInt(prompt('num artifacts')))">Door (Lock)</option>
 		<option value="new Checkpoint(0, 0)">CheckPoint</option>
 	  </select>
+	  </div>
 	  
       <div id="level_edit_buttons" style="display:none;">
 		<div style="position: absolute; left: 10px;">

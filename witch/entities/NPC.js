@@ -1,8 +1,7 @@
 function NPC(x, y, npc_id){
-	GameMover.call(this, x, y, 2, 5, 14, 24, "npc_sheet");
+	GameMover.call(this, x, y, 2, 2, 14, 16, "npc_sheet");
 	this.type = "NPC";
 	this.npc_id = npc_id;
-	this.animation.frame_height = 24;
 	this.animation.frame_delay = 30;
 }
 NPC.prototype.Import = function(obj){

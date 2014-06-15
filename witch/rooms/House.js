@@ -7,13 +7,32 @@ function House(){
 	this.SetUpRooms();
 	
 	var room = this.rooms[this.room_index_y][this.room_index_x];
-	var self = this;
 	this.checkpoint = {
 		x: room.player.x, y: room.player.y, 
-		room_x: self.room_index_x,
-		room_y: self.room_index_y,
+		room_x: this.room_index_x,
+		room_y: this.room_index_y,
 		facing: room.player.facing
 	};
+	
+	this.num_artifacts = 0;
+}
+
+House.prototype.Reset = function(){
+	this.room_index_x = 0;
+	this.room_index_y = 0;
+	room_manager.rooms = [[new Room()]];
+	
+	var room = this.rooms[this.room_index_y][this.room_index_x];
+	this.checkpoint = {
+		x: room.player.x, y: room.player.y, 
+		room_x: this.room_index_x,
+		room_y: this.room_index_y,
+		facing: room.player.facing
+	};
+	
+	this.num_artifacts = 0;
+	
+	this.ChangeRoom();
 }
 
 House.prototype.SetUpRooms = function(){
@@ -32,6 +51,15 @@ House.prototype.SetUpRooms = function(){
 House.prototype.GetRoom = function(){
 	console.log(this.room_index_x, this.room_index_y);
 	return this.rooms[this.room_index_y][this.room_index_x];
+}
+
+House.prototype.ChangeRoom = function(){
+	room = this.GetRoom();
+	room.glitch_index = 0;
+	room.glitch_type = room.glitch_sequence[0];
+	
+	//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
+	Glitch.TransformPlayer(room, room.glitch_type);
 }
 
 House.prototype.RevivePlayer = function(){

@@ -24,5 +24,12 @@ Collection.prototype.Export = function(){
 }
 extend(GameMover, Collection);
 
+Collection.prototype.Update = function(delta, map){
+	if (this.IsColliding(map.player)){
+		this.delete_me = true;
+		room_manager.num_artifacts++;
+	}
+}
+
 Collection.prototype.UpdateAnimationFromState = function(){
 }
