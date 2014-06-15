@@ -43,14 +43,17 @@ Door.prototype.Update = function(delta, map){
 					if (room_manager.num_artifacts >= this.num_artifacts){
 						this.locked = false;
 						room.Speak("door unlocked");
+						Utils.playSound("LA_Chest_Open", master_volume, 0);
 						this.talking = true;
 					}else{
 						room.Speak("door is locked\nneed " + (this.num_artifacts-room_manager.num_artifacts) + " artifacts more");
+						Utils.playSound("locked", master_volume, 0);
 						this.talking = true;
 					}
 				}
 				else{
 					this.SwitchRooms(map);
+					Utils.playSound("LA_Stairs", master_volume, 0);
 				}
 			}
 		}

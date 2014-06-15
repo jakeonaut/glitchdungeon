@@ -32,6 +32,7 @@ Player.prototype.DieToSpikesAndStuff = function(map){
 	for (var i = 0; i < map.entities.length; i++){
 		if (map.entities[i].kill_player && (this.IsRectColliding(map.entities[i], x+lb+q, y+tb+q,x+rb-q,y+bb-q))){
 			this.Die();
+			return;
 		}
 	}
 
@@ -49,12 +50,14 @@ Player.prototype.DieToSpikesAndStuff = function(map){
 			
 			if (this.IsRectColliding(tile, x+lb+q, y+tb+q,x+rb-q,y+bb-q)){
 				this.Die();
+				return;
 			}
 		}
 	}
 }
 
 Player.prototype.Die = function(){
+	Utils.playSound("hurt", master_volume, 0);
 	room_manager.RevivePlayer();
 }
 

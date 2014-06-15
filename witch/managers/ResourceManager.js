@@ -30,9 +30,28 @@ function ResourceManager(){
 	this.num_images = this.image_names.length;
 	
 	//SOUND VARIABLE DECLARATION
+	this.play_sound = true;
+	this.audio_context;
+	try{
+		window.AudioContext = window.AudioContext || window.webkitAudioContext;
+		this.audio_context = new AudioContext();
+	}catch(e){
+		this.audio_context = null;
+		this.play_sound = false;
+	}
 	this.sounds_loaded = 0;
 	this.sound_names = [
-	]
+		"RoccoW_outOfSight"
+		,"jump"
+		,"land"
+		,"pickup"
+		,"checkpoint"
+		,"hurt"
+		,"LA_Stairs"
+		,"LA_Chest_Open"
+		,"locked"
+		,"switchglitch"
+	];
 	this.num_sounds = this.sound_names.length;
 }
 
@@ -76,10 +95,41 @@ ResourceManager.prototype.LoadResources = function(ctx){
 	//Load Sounds
 	for (var i = 0; i < this.sound_names.length; i++){
 		var snd = this.sound_names[i];
-		this[snd] = document.createElement("audio");
-		this[snd].oncanplaythrough = this.SoundLoad.bind(this);
-		this[snd].src = snd_path + snd + ".mp3";
+		this.loadBuffer(snd_path + snd + ".mp3", snd);
 	}
+}
+
+ResourceManager.prototype.loadBuffer = function(url, index) {
+  // Load buffer asynchronously
+  var request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.responseType = "arraybuffer";
+
+  var loader = this;
+
+  request.onload = function() {
+    // Asynchronously decode the audio file data in request.response
+    loader.audio_context.decodeAudioData(
+      request.response,
+      function(buffer) {
+        if (!buffer) {
+          alert('error decoding file data: ' + url);
+          return;
+        }
+        loader[index] = buffer;
+		loader.SoundLoad();
+      },
+      function(error) {
+        console.error('decodeAudioData error', error);
+      }
+    );
+  }
+
+  request.onerror = function() {
+    alert('BufferLoader: XHR error');
+  }
+
+  request.send();
 }
 
 ResourceManager.prototype.CheckLoadedResources = function(){

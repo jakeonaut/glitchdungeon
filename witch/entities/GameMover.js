@@ -11,6 +11,9 @@ Facing.RIGHT = 1;
 function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, terminal_vel){
 	GameSprite.call(this, x, y, lb, tb, rb, bb, img_name);
 	this.type = "GameMover";
+	
+	this.prev_x = this.x;
+	this.prev_y = this.y;
 	this.max_run_vel = defaultValue(max_run_vel, 2.0); //pixels/second
 	this.gnd_run_acc = this.max_run_vel/3.0;
 	this.gnd_run_dec = this.max_run_vel/3.0;
@@ -39,6 +42,7 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.jump_acc = 35.0; 
 	this.was_on_ground = true;
 	this.on_ground = true;
+	this.played_land_sound = true;
 	this.previous_bottom = this.y + this.bb;
 	
 	this.move_state = MoveState.STANDING;
@@ -67,6 +71,8 @@ GameMover.prototype.Export = function(){
 GameMover.prototype.Update = function(delta, map)
 {
 	this.ApplyPhysics(delta, map);
+	this.prev_x = this.x;
+	this.prev_y = this.y;
 	if (!this.on_ground){
 		if (!this.was_on_ground)
 			this.pressed_down = false;
@@ -74,6 +80,7 @@ GameMover.prototype.Update = function(delta, map)
 		else this.move_state = MoveState.FALLING;
 	}
 	this.UpdateAnimationFromState();
+	
 	GameSprite.prototype.Update.call(this, delta, map);
 }
 
@@ -125,6 +132,7 @@ GameMover.prototype.HandleCollisionsAndMove = function(map){
 	this.x += this.vel.x;
 	this.HandleVerticalCollisions(map, left_tile, right_tile, top_tile, bottom_tile, q_vert);
 	this.y += this.vel.y;
+	if (this.vel.y != 0) this.played_land_sound = false;
 	this.CompensateForSlopes(this.was_on_ground, floor_tile);
 }
 
@@ -191,6 +199,11 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 				//Don't count bottom collision for fallthrough platforms if we're not at the top of it
 				if (tile.collision == Tile.FALLTHROUGH && (tile.y < this.y + this.bb || this.pressing_down))
 					continue;
+					
+				if (!this.played_land_sound){
+					Utils.playSound("land");
+					this.played_land_sound = true;
+				}
 				this.vel.y = 0;
 				this.on_ground = true;
 				this.has_double_jumped = false;
@@ -333,6 +346,7 @@ GameMover.prototype.Nudge = function(mult, gnd_speed, air_speed){
 
 GameMover.prototype.StartJump = function(){
 	if (this.on_ground){
+		Utils.playSound("jump");
 		this.vel.y = -this.jump_vel;
 		this.is_jumping = true;
 		this.jump_timer = 0;

@@ -1,15 +1,5 @@
 var level_edit = true;
-
-var isMSIE = /*@cc_on!@*/0;
-var playSound = true;
-
-if (isMSIE){
-  playSound = false; 
-}
-
-if (navigator.userAgent.match(/AppleWebKit/) && !navigator.userAgent.match(/Chrome/)) {
-   playSound = false;
-}
+var master_volume = 0.5;
 
 var GAME_WIDTH=160; //CHANGE TO /2
 var GAME_HEIGHT=120; //CHANGE TO /2
@@ -64,6 +54,7 @@ var startGame = function(){
 	//Let's play the game!
 	then = Date.now();
 	
+	Utils.playSound("RoccoW_outOfSight", master_volume, 0);
 	setInterval(main, 17);
 };
 

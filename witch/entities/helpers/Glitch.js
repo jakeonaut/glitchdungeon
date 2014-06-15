@@ -28,6 +28,7 @@ Glitch.TransformPlayer = function(map, glitch_type){
 	if (map.glitch_type != Glitch.RED){
 		map.player.on_ground = false;
 	}
+	map.player.was_on_ground = true;
 
 	map.tilesheet_name = "tile_grey_sheet";
 	
@@ -84,6 +85,7 @@ Glitch.RedTransform = function(map, player){
 		this.x += this.vel.x;
 		this.HandleVerticalCollisions(map, left_tile, right_tile, top_tile, bottom_tile, q_vert);
 		this.y += this.vel.y;
+		if (this.vel.y != 0) this.played_land_sound = false;
 		this.CompensateForSlopes(this.was_on_ground, floor_tile);
 	}
 }
@@ -176,6 +178,10 @@ Glitch.CyanTransform = function(map, player){
 					this.vel.y = 0;
 					this.y = tile.y + Tile.HEIGHT - this.tb;
 					
+					if (!this.played_land_sound){
+						Utils.playSound("land");
+						this.played_land_sound = true;
+					}
 					this.on_ground = true;
 					this.has_double_jumped = false;
 				}
@@ -192,6 +198,7 @@ Glitch.CyanTransform = function(map, player){
 	
 	player.StartJump = function(){
 		if (this.on_ground){
+			Utils.playSound("jump");
 			this.vel.y = this.jump_vel;
 			this.is_jumping = true;
 			this.jump_timer = 0;
@@ -235,10 +242,29 @@ Glitch.GoldTransform = function(map, player){
 		this.x += this.vel.x;
 		if (this.horizontal_collision && this.horizontal_input){
 			this.vel.y = -1;
+			this.move_state = MoveState.RUNNING;
 		}
 		this.HandleVerticalCollisions(map, left_tile, right_tile, top_tile, bottom_tile, q_vert);
 		this.y += this.vel.y;
+		if (this.vel.y != 0) this.played_land_sound = false;
 		this.CompensateForSlopes(this.was_on_ground, floor_tile);
+	}
+	
+	player.Update = function(delta, map)
+	{
+		this.ApplyPhysics(delta, map);
+		this.prev_x = this.x;
+		this.prev_y = this.y;
+		if (!this.on_ground){
+			if (!this.was_on_ground)
+				this.pressed_down = false;
+			if (!this.horizontal_collision){
+				if (this.vel.y < 0) this.move_state = MoveState.JUMPING;
+				else this.move_state = MoveState.FALLING;
+			}
+		}
+		this.UpdateAnimationFromState();
+		GameSprite.prototype.Update.call(this, delta, map);
 	}
 }
 
@@ -265,6 +291,11 @@ Glitch.ZeroTransform = function(map, player){
 					if (tile.y < this.y + this.bb || (this.pressing_down && !this.touching_door))
 						continue;
 					this.vel.y = 0;
+					
+					if (!this.played_land_sound){
+						Utils.playSound("land");
+						this.played_land_sound = true;
+					}
 					this.on_ground = true;
 					this.has_double_jumped = false;
 					this.y = tile.y - this.bb;

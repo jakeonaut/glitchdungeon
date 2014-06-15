@@ -71,6 +71,7 @@ Room.prototype.Update = function(input, delta){
 		if (this.entities[i].delete_me) this.entities.splice(i, 1);
 	}
 	
+	//UPDATE GLITCH SEQUENCE
 	this.glitch_time++;
 	if (this.glitch_time >= this.glitch_time_limit){
 		this.glitch_time = 0;
@@ -82,6 +83,9 @@ Room.prototype.Update = function(input, delta){
 		
 		Glitch.TransformPlayer(this, this.glitch_sequence[this.glitch_index]);
 		this.glitch_type = this.glitch_sequence[this.glitch_index];
+		if (this.glitch_sequence.length > 1){
+			Utils.playSound("switchglitch", master_volume, 0);
+		}
 	}
 }
 
@@ -215,8 +219,8 @@ Room.prototype.ChangeSize = function(width, height){
 			else this.tiles[i][j] = temp_tiles[i][j];
 		}
 	}
-	console.log("NEW WIDTH: ", this.MAP_WIDTH);
-	console.log("NEW HEIGHT: ", this.MAP_HEIGHT);
+	//console.log("NEW WIDTH: ", this.MAP_WIDTH);
+	//console.log("NEW HEIGHT: ", this.MAP_HEIGHT);
 }
 
 Room.prototype.GetDoor = function(door_id){

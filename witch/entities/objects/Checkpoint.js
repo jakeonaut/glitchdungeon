@@ -18,6 +18,7 @@ Checkpoint.prototype.Update = function(delta, map){
 				room_y: room_manager.room_index_y,
 				facing: room.player.facing
 			}
+			Utils.playSound("checkpoint", master_volume, 0);
 			this.active = true;
 			this.animation.Change(1, 0, 2);
 		}
