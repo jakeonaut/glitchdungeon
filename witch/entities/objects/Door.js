@@ -1,7 +1,6 @@
 function Door(x, y, room_x, room_y, door_id){
-	GameSprite.call(this, x, y, 2, 5, 14, 24, "obj_sheet");
+	GameSprite.call(this, x, y, 0, 0, 16, 16, "obj_sheet");
 	this.type = "Door";
-	this.animation.frame_height = 24;
 	
 	this.room_x = room_x;
 	this.room_y = room_y;
@@ -53,6 +52,7 @@ Door.prototype.SwitchRooms = function(map){
 	room.player.glitches = map.player.glitches;
 	Glitch.TransformPlayer(room, room.glitch_type);
 	
+	console.log("door id: " + this.door_id);
 	var door = room.GetDoor(this.door_id);
 	if (door !== null){
 		room.player.x = door.x;

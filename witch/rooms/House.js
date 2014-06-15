@@ -2,7 +2,7 @@ function House(){
 	this.room_index_x = 0;
 	this.room_index_y = 0;
 	
-	this.house_width = 3;
+	this.house_width = 4;
 	this.house_height = 3;
 	this.SetUpRooms();
 	
@@ -17,7 +17,7 @@ function House(){
 }
 
 House.prototype.SetUpRooms = function(){
-	var path = "rooms/room_";
+	var path = "witch/rooms/rooms/room_";
 	
 	this.rooms = [];
 	for (var i = 0; i < this.house_height; i++){

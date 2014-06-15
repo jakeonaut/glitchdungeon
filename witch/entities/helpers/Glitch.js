@@ -54,7 +54,7 @@ Glitch.RedTransform = function(map, player){
 		var bottom_tile = Math.ceil((this.y + this.bb + this.vel.y) / Tile.HEIGHT);
 		
 		// Reset flag to search for ground collision.
-		var was_on_ground = this.on_ground;
+		this.was_on_ground = this.on_ground;
 		//this.on_ground = false;
 		var q_horz = 3; //q is used to minimize height checked in horizontal collisions and etc.
 		var q_vert = 3;
@@ -64,18 +64,13 @@ Glitch.RedTransform = function(map, player){
 		this.x += this.vel.x;
 		this.HandleVerticalCollisions(map, left_tile, right_tile, top_tile, bottom_tile, q_vert);
 		this.y += this.vel.y;
-		this.CompensateForSlopes(was_on_ground, floor_tile);
+		this.CompensateForSlopes(this.was_on_ground, floor_tile);
 	}
 }
 
 Glitch.GreenTransform = function(map, player){
 	player.img_name = "player_green_sheet";
 	map.tilesheet_name = "tile_green_sheet";
-}
-
-Glitch.BlueTransform = function(map, player){
-	player.img_name = "player_blue_sheet";
-	map.tilesheet_name = "tile_blue_sheet";
 	
 	player.gnd_run_acc = player.max_run_vel/10.0;
 	player.gnd_run_dec = player.max_run_vel/100.0;
@@ -86,7 +81,7 @@ Glitch.BlueTransform = function(map, player){
 	player.original_grav_acc = 0.2;
 	player.float_grav_acc = 0.2;
 	player.jump_time_limit = 60;
-	player.jump_vel = 3.2;
+	player.jump_vel = 3.3;
 	
 	player.Move = function(mult){
 		this.mult = mult;
@@ -113,6 +108,11 @@ Glitch.BlueTransform = function(map, player){
 			this.vel.x += acc * mult;
 		}
 	}
+}
+
+Glitch.BlueTransform = function(map, player){
+	player.img_name = "player_blue_sheet";
+	map.tilesheet_name = "tile_blue_sheet";
 }
 
 Glitch.CyanTransform = function(map, player){

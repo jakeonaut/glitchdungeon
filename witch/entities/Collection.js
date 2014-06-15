@@ -7,11 +7,14 @@ function Collection(x, y, collection_id){
 	var ani_x = Math.floor(this.collection_id / 6) * 2;
 	var ani_y = this.collection_id % 6;
 	this.animation.Change(ani_x, ani_y, 2);
-	console.log(ani_x + ", " + ani_y);
 }
 Collection.prototype.Import = function(obj){
 	GameMover.prototype.Import.call(this, obj);
 	this.collection_id = obj.collection_id;
+	
+	var ani_x = Math.floor(this.collection_id / 6) * 2;
+	var ani_y = this.collection_id % 6;
+	this.animation.Change(ani_x, ani_y, 2);
 }
 
 Collection.prototype.Export = function(){
