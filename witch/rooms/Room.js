@@ -13,6 +13,8 @@ function Room(){
 	this.glitch_index = 0;
 	this.glitch_time_limit = Room.GLITCH_TIME_LIMIT_ORIGINAL;
 	
+	this.spoken_text = "";
+	
 	this.tilesheet_name = "tile_grey_sheet";
 	this.camera = new Camera();
 	this.CreateEntities();
@@ -128,6 +130,33 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 	$("house_coordinates").innerHTML = room_manager.room_index_x + " " + room_manager.room_index_y;
 }
 
+Room.prototype.Speak = function(text){
+	this.spoken_text = text;
+}
+
+Room.prototype.RenderSpeech = function(ctx){
+	var speech_height = 32;
+
+	if (this.spoken_text != null && this.spoken_text.length > 0){
+		var h = 0;
+		if (this.player.y+(this.player.bb/2) >= GAME_HEIGHT/2) 
+			h = (-1)*(GAME_HEIGHT/1.5)+Tile.HEIGHT;
+		
+		ctx.fillStyle = "#ffffff";
+		ctx.fillRect(Tile.WIDTH, h + GAME_HEIGHT-(Tile.HEIGHT)-speech_height, GAME_WIDTH-(Tile.WIDTH*2), speech_height);
+		ctx.fillStyle = "#000000";
+		ctx.fillRect(Tile.WIDTH+2, h + GAME_HEIGHT-(Tile.HEIGHT)-speech_height+2, GAME_WIDTH-(Tile.WIDTH*2)-4, speech_height-4);
+	
+		var fs = 8;
+		ctx.font = fs + "px Arial";
+		ctx.fillStyle = "#ffffff";
+		var texts = this.spoken_text.split("\n");
+		for (var i = 0; i < texts.length; i++){
+			ctx.fillText(texts[i], Tile.WIDTH*2, h + (fs*i)+GAME_HEIGHT+(Tile.HEIGHT/2)-speech_height, GAME_WIDTH-(Tile.WIDTH*2), fs*i);
+		}
+	}
+}
+
 Room.prototype.Render = function(ctx, level_edit){
 	/*ctx.fillStyle = "rgb(128, 128, 128)";
 	ctx.fillRect(this.camera.screen_offset_x, this.camera.screen_offset_y, 
@@ -144,6 +173,7 @@ Room.prototype.Render = function(ctx, level_edit){
 	}
 	
 	this.player.Render(ctx, this.camera);
+	this.RenderSpeech(ctx);
 }
 
 /********************OTHER LEVEL EDITING FUNCTIONS********************/

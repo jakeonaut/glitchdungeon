@@ -17,6 +17,8 @@ Door.prototype.Import = function(obj){
 	this.door_id = obj.door_id;
 	this.locked = obj.locked || false;
 	this.num_artifacts = obj.num_artifacts || 0;
+	
+	this.talking = false;
 }
 Door.prototype.Export = function(){
 	var obj = GameSprite.prototype.Export.call(this);
@@ -31,21 +33,28 @@ Door.prototype.Export = function(){
 Door.prototype.Update = function(delta, map){
 	GameSprite.prototype.Update.call(this, delta, map);
 	
-	if (this.IsColliding(map.player) && map.player.on_ground){
-		map.player.touching_door = true;
-		if (map.player.pressed_down && map.player.pressing_down){
-			map.player.pressed_down = false;
-			
-			if (this.locked){
-				if (room_manager.num_artifacts >= this.num_artifacts){
-					this.locked = false;
-				}else{
-					alert("door is locked\nneed " + this.num_artifacts + " artifacts");
+	if (this.IsColliding(map.player)){
+		if (map.player.on_ground){
+			map.player.touching_door = true;
+			if (map.player.pressed_down && map.player.pressing_down){
+				map.player.pressed_down = false;
+				
+				if (this.locked){
+					if (room_manager.num_artifacts >= this.num_artifacts){
+						this.locked = false;
+					}else{
+						room.Speak("door is locked\nneed " + this.num_artifacts + " artifacts");
+						this.talking = true;
+					}
 				}
+				else 
+					this.SwitchRooms(map);
 			}
-			else 
-				this.SwitchRooms(map);
 		}
+	}
+	else if (this.talking){
+		this.talking = false;
+		room.Speak(null);
 	}
 	
 	if (this.locked) this.animation.Change(0, 1, 2);

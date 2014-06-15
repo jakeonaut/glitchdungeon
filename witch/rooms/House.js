@@ -57,6 +57,10 @@ House.prototype.ChangeRoom = function(){
 	room = this.GetRoom();
 	room.glitch_index = 0;
 	room.glitch_type = room.glitch_sequence[0];
+	room.player.pressing_down = false;
+	room.player.pressed_down = false;
+	
+	room.Speak(null);
 	
 	//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
 	Glitch.TransformPlayer(room, room.glitch_type);

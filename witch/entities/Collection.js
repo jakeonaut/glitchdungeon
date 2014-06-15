@@ -28,8 +28,17 @@ Collection.prototype.Update = function(delta, map){
 	if (this.IsColliding(map.player)){
 		this.delete_me = true;
 		room_manager.num_artifacts++;
+		room.Speak("item get: "+this.GetName());
 	}
 }
 
 Collection.prototype.UpdateAnimationFromState = function(){
+}
+
+Collection.prototype.GetName = function(){
+	switch (this.collection_id){
+		case 0: return "relic sword";
+		case 1: return "magic shield";
+		default: break;
+	}
 }

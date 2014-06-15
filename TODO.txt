@@ -1,5 +1,3 @@
-2. make glitch changing room sequences (in the two small rooms that contain artifacts for now
-0. Make doors that only open with a certain number of artifacts
 1. walk up walls
 	-randomly blink up in time increments (like a pseudo double jump)
 3. Make each tile switch tileset image at a random interval between 1 - 100 upon forme change?

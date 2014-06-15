@@ -11,7 +11,7 @@ NPC.prototype.Import = function(obj){
 
 NPC.prototype.Export = function(){
 	var obj = GameMover.prototype.Export.call(this);
-	obj.npc_id = this.npd_id;
+	obj.npc_id = this.npc_id;
 	return obj;
 }
 extend(GameMover, NPC);
@@ -30,6 +30,17 @@ NPC.prototype.Update = function(delta, map){
 			this.facing = Facing.RIGHT;
 		}
 	}
+	
+	
+	//TALK TO PLAYER AND SUCH
+	if (this.IsRectColliding(map.player, this.x+this.lb-Tile.WIDTH, this.y+this.tb, this.x+this.rb+Tile.WIDTH, this.y+this.bb)){
+		this.talking = true;
+		room.Speak("NPC: "+this.GetText());
+	}
+	else if (this.talking){
+		this.talking = false;
+		room.Speak(null);
+	}
 }
 
 NPC.prototype.UpdateAnimationFromState = function(){
@@ -41,4 +52,18 @@ NPC.prototype.UpdateAnimationFromState = function(){
 		this.animation.abs_ani_y = 0;
 	}
 	this.prev_move_state = this.move_state;
+}
+
+//TEXT BABY
+NPC.prototype.GetText = function(){
+	switch (this.npc_id){
+		case 0:
+			return "you must escape the labyrinth";
+		case 1:
+			return "press down to fall\nand to enter doors";
+		case 2:
+			return "it's lonely here...";
+		default:
+			break;
+	}
 }
