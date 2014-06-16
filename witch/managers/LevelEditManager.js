@@ -136,6 +136,8 @@ function LevelEditMouseDown(e){
 				var obj = eval(level_edit_object);
 				obj.x = x;
 				obj.y = y;
+				obj.original_x = x;
+				obj.original_y = y;
 				room.entities.push(obj);
 			}
 		}

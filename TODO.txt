@@ -1,3 +1,4 @@
+0. make text display based on GAME_WITH and camera?
 3. Make each tile switch tileset image at a random interval between 1 - 100 upon forme change?
 4. loop music
 
@@ -6,8 +7,6 @@
 	b. orb to let you control glitch switching in a room
 	c. tunic which will provide "glitchY" movement like wreck it ralph
 	d. gauntlet which lets you place or remove solid blocks
-	
 
-I hope when you die you get to see your stats like how many times you laughed or told a lie or kissed or how many people loved you and how many people hated you and what you meant to people
 
 ***GLITCH JAM 9-24::	code-magick academy where you learn the abilities of other videogame creatures and use it to get to the top of the tower and beat the final boss

@@ -11,7 +11,7 @@ function ResourceManager(){
 		"player_red_sheet",
 		"player_green_sheet",
 		"player_blue_sheet",
-		"player_cyan_sheet",
+		//"player_cyan_sheet",
 		"player_gold_sheet",
 		"player_pink_sheet",
 		"player_zero_sheet",
@@ -23,7 +23,7 @@ function ResourceManager(){
 		"tile_red_sheet",
 		"tile_green_sheet",
 		"tile_blue_sheet",
-		"tile_cyan_sheet",
+		//"tile_cyan_sheet",
 		"tile_gold_sheet",
 		"tile_pink_sheet",
 		"tile_zero_sheet"

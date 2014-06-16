@@ -7,7 +7,7 @@ function Enemy(x, y, enemy_id){
 	
 	this.facing = Facing.LEFT;
 	this.original_facing = this.facing;
-	this.max_run_vel = 1.0;
+	this.max_run_vel = 1.5;
 }
 Enemy.prototype.Import = function(obj){
 	GameMover.prototype.Import.call(this, obj);

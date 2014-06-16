@@ -1,10 +1,10 @@
 Glitch.GREY = 0;
 Glitch.RED = 1;
 Glitch.GREEN = 2;
-Glitch.BLUE = 3;
-Glitch.CYAN = 4;
+Glitch.ZERO = 3;
+Glitch.BLUE = 4;
+//Glitch.CYAN = 4;
 Glitch.GOLD = 5;
-Glitch.ZERO = 6;
 
 function Glitch(){};
 
@@ -47,9 +47,9 @@ Glitch.TransformPlayer = function(map, glitch_type){
 		case Glitch.BLUE:
 			Glitch.BlueTransform(map, map.player);
 			break;
-		case Glitch.CYAN:
+		/*case Glitch.CYAN:
 			Glitch.CyanTransform(map, map.player);
-			break;
+			break;*/
 		case Glitch.GOLD:
 			Glitch.GoldTransform(map, map.player);
 			break;
@@ -134,14 +134,22 @@ Glitch.GreenTransform = function(map, player){
 	}
 }
 
+Glitch.ZeroTransform = function(map, player){
+	player.img_name = "player_zero_sheet";
+	map.tilesheet_name = "tile_zero_sheet";
+	
+	player.DieToSpikesAndStuff = function(){}
+	
+	player.Render = function(ctx, camera){
+		ctx.globalCompositeOperation = "lighter";
+		GameMover.prototype.Render.call(this, ctx, camera);
+		ctx.globalCompositeOperation = "source-over";
+	}
+}
+
 Glitch.BlueTransform = function(map, player){
 	player.img_name = "player_blue_sheet";
 	map.tilesheet_name = "tile_blue_sheet";
-}
-
-Glitch.CyanTransform = function(map, player){
-	player.img_name = "player_cyan_sheet";
-	map.tilesheet_name = "tile_cyan_sheet";
 	
 	player.tb = 0;
 	player.bb = 14;
@@ -270,7 +278,7 @@ Glitch.GoldTransform = function(map, player){
 	}
 }
 
-Glitch.ZeroTransform = function(map, player){
+/*Glitch.ZeroTransform = function(map, player){
 	player.img_name = "player_zero_sheet";
 	map.tilesheet_name = "tile_zero_sheet";
 		
@@ -305,4 +313,4 @@ Glitch.ZeroTransform = function(map, player){
 			}
 		}
 	}
-}
+}*/

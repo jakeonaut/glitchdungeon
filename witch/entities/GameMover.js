@@ -57,6 +57,7 @@ GameMover.prototype.Import = function(obj){
 	this.max_run_vel = obj.max_run_vel;
 	this.jump_vel = obj.jump_vel;
 	this.terminal_vel = obj.terminal_vel;
+	this.facing = obj.facing || this.facing;
 }
 GameMover.prototype.Export = function(){
 	var obj = GameSprite.prototype.Export.call(this);

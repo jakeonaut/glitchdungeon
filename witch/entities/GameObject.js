@@ -2,8 +2,8 @@ function GameObject(x, y, lb, tb, rb, bb){
 	this.type = "GameObject";
 	this.x = x;
 	this.y = y;
-	this.original_x = this.x;
-	this.original_y = this.y;
+	this.original_x = x;
+	this.original_y = y;
 	this.lb = lb;
 	this.tb = tb;
 	this.rb = rb;
