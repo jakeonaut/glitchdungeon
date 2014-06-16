@@ -223,10 +223,10 @@ Room.prototype.ChangeSize = function(width, height){
 	//console.log("NEW HEIGHT: ", this.MAP_HEIGHT);
 }
 
-Room.prototype.GetDoor = function(door_id){
+Room.prototype.GetDoor = function(door_id, door){
 	for (var i = 0; i < this.entities.length; i++){
-		if (this.entities[i].type == "Door"){
-			if (this.entities[i].door_id == door_id)
+		if (this.entities[i].type === "Door"){
+			if (this.entities[i].door_id == door_id && this.entities[i] !== door)
 				return this.entities[i];
 		}
 	}

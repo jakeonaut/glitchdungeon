@@ -16,6 +16,7 @@ function ResourceManager(){
 		"player_pink_sheet",
 		"player_zero_sheet",
 		"npc_sheet",
+		"enemy_sheet",
 		"collection_sheet",
 		"obj_sheet",
 		"tile_grey_sheet",

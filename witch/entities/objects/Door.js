@@ -1,5 +1,5 @@
 function Door(x, y, room_x, room_y, door_id, locked, num_artifacts){
-	GameSprite.call(this, x, y, 0, 0, 16, 16, "obj_sheet");
+	GameSprite.call(this, x, y, 4, 0, 12, 16, "obj_sheet");
 	this.type = "Door";
 	
 	this.room_x = room_x;
@@ -11,6 +11,8 @@ function Door(x, y, room_x, room_y, door_id, locked, num_artifacts){
 }
 Door.prototype.Import = function(obj){
 	GameSprite.prototype.Import.call(this, obj);
+	this.lb = 4;
+	this.rb = 12;
 	
 	this.room_x = obj.room_x;
 	this.room_y = obj.room_y;
@@ -38,6 +40,7 @@ Door.prototype.Update = function(delta, map){
 			map.player.touching_door = true;
 			if (map.player.pressed_down && map.player.pressing_down){
 				map.player.pressed_down = false;
+				map.player.vel.x = 0;
 				
 				if (this.locked){
 					if (room_manager.num_artifacts >= this.num_artifacts){
@@ -82,7 +85,7 @@ Door.prototype.SwitchRooms = function(map){
 	room_manager.ChangeRoom();
 	
 	console.log("door id: " + this.door_id);
-	var door = room.GetDoor(this.door_id);
+	var door = room.GetDoor(this.door_id, this);
 	if (door !== null){
 		room.player.x = door.x;
 		room.player.y = door.y + door.bb - room.player.bb;

@@ -1,9 +1,11 @@
 function House(){
 	this.room_index_x = 0;
 	this.room_index_y = 0;
+	this.old_room_index_x = 0;
+	this.old_room_index_y = 0;
 	
-	this.house_width = 4;
-	this.house_height = 3;
+	this.house_width = 10;
+	this.house_height = 10;
 	this.SetUpRooms();
 	
 	var room = this.rooms[this.room_index_y][this.room_index_x];
@@ -54,11 +56,19 @@ House.prototype.GetRoom = function(){
 }
 
 House.prototype.ChangeRoom = function(){
-	room = this.GetRoom();
-	room.glitch_index = 0;
-	room.glitch_type = room.glitch_sequence[0];
 	room.player.pressing_down = false;
 	room.player.pressed_down = false;
+	
+	if (this.old_room_index_x != this.room_index_x || this.old_room_index_y != this.room_index_y){
+		room = this.GetRoom();
+		room.glitch_index = 0;
+		room.glitch_type = room.glitch_sequence[0];
+		for (var i = 0; i < room.entities.length; i++){
+			room.entities[i].ResetPosition();
+		}
+	}
+	this.old_room_index_x = this.room_index_x;
+	this.old_room_index_y = this.room_index_y;
 	
 	room.Speak(null);
 	
@@ -69,6 +79,8 @@ House.prototype.ChangeRoom = function(){
 House.prototype.RevivePlayer = function(){
 	this.room_index_x = this.checkpoint.room_x;
 	this.room_index_y = this.checkpoint.room_y;
+	this.old_room_index_x = this.room_index_x;
+	this.old_room_index_y = this.room_index_y;
 	room = this.GetRoom();
 	room.player = new Player();
 	Glitch.TransformPlayer(room, room.glitch_type);

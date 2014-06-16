@@ -44,7 +44,9 @@ NPC.prototype.Update = function(delta, map){
 }
 
 NPC.prototype.UpdateAnimationFromState = function(){
-	this.animation.Change(0, 0, 2);
+	var ani_x = 0;//this.npc_id / 2;
+	var ani_y = 0;//this.npc_id % 2;
+	this.animation.Change(ani_x, ani_y, 2);
 	
 	if (this.facing === Facing.LEFT){
 		this.animation.abs_ani_y = 2 * this.animation.frame_height;

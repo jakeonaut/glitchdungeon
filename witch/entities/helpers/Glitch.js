@@ -16,7 +16,6 @@ Glitch.TransformPlayer = function(map, glitch_type){
 	var jump_timer = map.player.jump_timer;
 	var jump_time_limit = map.player.jump_time_limit;
 	var on_ground = map.player.on_ground;
-	var grav_acc = map.player.grav_acc;
 	map.player = new Player(map.player.x, map.player.y);
 	map.player.facing = facing;
 	map.player.vel = vel;
@@ -24,7 +23,9 @@ Glitch.TransformPlayer = function(map, glitch_type){
 	map.player.jump_timer = jump_timer;
 	map.player.jump_time_limit = jump_time_limit;
 	map.player.on_ground = on_ground;
-	map.player.grav_acc = grav_acc;
+	if (map.player.is_jumping)
+		map.player.grav_acc = map.player.float_grav_acc;
+	//map.player.grav_acc = grav_acc;
 	if (map.glitch_type != Glitch.RED){
 		map.player.on_ground = false;
 	}
@@ -102,6 +103,7 @@ Glitch.GreenTransform = function(map, player){
 	player.terminal_vel = 1.0;
 	player.original_grav_acc = 0.2;
 	player.float_grav_acc = 0.2;
+	player.grav_acc = player.original_grav_acc;
 	player.jump_time_limit = 60;
 	player.jump_vel = 3.3;
 	

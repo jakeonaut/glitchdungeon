@@ -1,7 +1,11 @@
-0. why does green not jump full height the first time?
-2. randomly blink up in time increments (like a pseudo double jump)
 3. Make each tile switch tileset image at a random interval between 1 - 100 upon forme change?
 4. loop music
+
+5. Artifacts are special abilities:
+	a. first two artifacts are two pieces of one that allows glitch sequencing
+	b. orb to let you control glitch switching in a room
+	c. tunic which will provide "glitchY" movement like wreck it ralph
+	d. gauntlet which lets you place or remove solid blocks
 	
 
 I hope when you die you get to see your stats like how many times you laughed or told a lie or kissed or how many people loved you and how many people hated you and what you meant to people

@@ -2,6 +2,8 @@ function GameObject(x, y, lb, tb, rb, bb){
 	this.type = "GameObject";
 	this.x = x;
 	this.y = y;
+	this.original_x = this.x;
+	this.original_y = this.y;
 	this.lb = lb;
 	this.tb = tb;
 	this.rb = rb;
@@ -16,6 +18,8 @@ function GameObject(x, y, lb, tb, rb, bb){
 GameObject.prototype.Import = function(obj){
 	this.x = obj.x;
 	this.y = obj.y;
+	this.original_x = obj.x;
+	this.original_y = obj.y;
 	this.lb = obj.lb;
 	this.tb = obj.tb;
 	this.rb = obj.rb;
@@ -32,6 +36,10 @@ GameObject.prototype.Export = function(){
 		bb: this.bb,
 		kill_player: this.kill_player
 	};
+}
+GameObject.prototype.ResetPosition = function(){
+	this.x = this.original_x;
+	this.y = this.original_y;
 }
 GameObject.prototype.Update = function(delta, map){}
 GameObject.prototype.Render = function(ctx, camera){}

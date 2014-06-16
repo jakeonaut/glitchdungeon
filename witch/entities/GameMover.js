@@ -48,6 +48,7 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.move_state = MoveState.STANDING;
 	this.prev_move_state = this.move_state;
 	this.facing = Facing.RIGHT;
+	this.original_facing = this.facing;
 }
 extend(GameSprite, GameMover);
 
@@ -63,6 +64,11 @@ GameMover.prototype.Export = function(){
 	obj.jump_vel = this.jump_vel;
 	obj.terminal_vel = this.terminal_vel;
 	return obj;
+}
+
+GameMover.prototype.ResetPosition = function(){
+	GameObject.prototype.ResetPosition.call(this);
+	this.facing = this.original_facing;
 }
 
 
