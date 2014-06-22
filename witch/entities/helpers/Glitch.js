@@ -9,6 +9,8 @@ Glitch.GOLD = 5;
 function Glitch(){};
 
 Glitch.TransformPlayer = function(map, glitch_type){
+	if (room_manager) room_manager.glitch_type = glitch_type;
+	
 	//Normalize the player before transforming
 	var facing = map.player.facing;
 	var vel = map.player.vel;

@@ -4,6 +4,8 @@ function Player(x, y){
 	this.animation.frame_height = 16;
 	this.touching_door = false;
 	this.touching_checkpoint = false;
+	
+	this.z_index = -100;
 }
 
 Player.prototype.Import = function(obj){

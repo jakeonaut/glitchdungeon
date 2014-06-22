@@ -8,6 +8,8 @@ function Door(x, y, room_x, room_y, door_id, locked, num_artifacts){
 	
 	this.locked = locked || false;
 	this.num_artifacts = num_artifacts || 0;
+	
+	this.z_index = 10;
 }
 Door.prototype.Import = function(obj){
 	GameSprite.prototype.Import.call(this, obj);
@@ -49,7 +51,7 @@ Door.prototype.Update = function(delta, map){
 						Utils.playSound("LA_Chest_Open", master_volume, 0);
 						this.talking = true;
 					}else{
-						room.Speak("door is locked\nneed " + (this.num_artifacts-room_manager.num_artifacts) + " artifacts more");
+						room.Speak("door is locked\nneed " + (this.num_artifacts-room_manager.num_artifacts) + " spells more");
 						Utils.playSound("locked", master_volume, 0);
 						this.talking = true;
 					}

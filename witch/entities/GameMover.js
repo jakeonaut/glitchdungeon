@@ -34,7 +34,7 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.original_grav_acc = 0.8;
 	this.float_grav_acc = 0.4;
 	this.grav_acc = this.original_grav_acc;//35.1; //pixels/second
-	this.jump_vel = defaultValue(jump_vel, 5.2);
+	this.jump_vel = defaultValue(jump_vel, 4.2);
 	this.is_jumping = false;
 	this.jump_timer = 0;
 	this.jump_time_limit = 30;

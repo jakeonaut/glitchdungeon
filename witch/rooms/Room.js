@@ -174,21 +174,30 @@ Room.prototype.RenderSpeech = function(ctx){
 }
 
 Room.prototype.Render = function(ctx, level_edit){
-	/*ctx.fillStyle = "rgb(128, 128, 128)";
-	ctx.fillRect(this.camera.screen_offset_x, this.camera.screen_offset_y, 
-		this.MAP_WIDTH*Tile.WIDTH, this.MAP_HEIGHT*Tile.HEIGHT);*/
+	//SORT ENTITIES BY Z INDEX (descending)
+	var entities = this.entities.slice(0);
+	entities.push(this.player);
+	entities.sort(GameObject.ZIndexSort);
+	var index = 0;
 
+	//DRAW ENTITIES WITH Z INDEX GREATER THAN 10 UNDER TILES
+	while (entities[index].z_index > 10){
+		entities[index].Render(ctx, this.camera);
+		index++;
+	}
+
+	//DRAW THE TILES OF THE ROOM
 	var tile_img = eval("resource_manager." + this.tilesheet_name);
 	for (var i = 0; i < this.MAP_HEIGHT; i++){ for (var j = 0; j < this.MAP_WIDTH; j++){
 		this.tiles[i][j].Render(ctx, this.camera, tile_img);
 	} }
 	if (level_edit) DrawLevelEditGrid(ctx, this);
 	
-	for (var i = 0; i < this.entities.length; i++){
-		this.entities[i].Render(ctx, this.camera);
+	//DRAW THE REMAINING ENTITIES
+	for (var i = index; i < entities.length; i++){
+		entities[i].Render(ctx, this.camera);
 	}
 	
-	this.player.Render(ctx, this.camera);
 	this.RenderSpeech(ctx);
 }
 

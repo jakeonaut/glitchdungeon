@@ -4,6 +4,8 @@ function Checkpoint(x, y){
 	
 	this.active = false;
 	this.animation.Change(2, 0, 1);
+	
+	this.z_index = 9;
 }
 
 Checkpoint.prototype.Update = function(delta, map){

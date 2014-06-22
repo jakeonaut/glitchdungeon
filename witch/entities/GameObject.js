@@ -12,6 +12,8 @@ function GameObject(x, y, lb, tb, rb, bb){
 	this.height = bb - tb;
 	this.delete_me = false;
 	
+	this.z_index = 0;
+	
 	this.kill_player = false;
 }
 
@@ -43,6 +45,10 @@ GameObject.prototype.ResetPosition = function(){
 }
 GameObject.prototype.Update = function(delta, map){}
 GameObject.prototype.Render = function(ctx, camera){}
+
+GameObject.ZIndexSort = function(a,b){
+	return b.z_index - a.z_index;
+}
 
 /**************************COLLISION DETECTION*************************************/
 //object is of type GameObject

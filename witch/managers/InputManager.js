@@ -29,6 +29,12 @@ InputManager.prototype.Update = function(player){
 	}
 	
 	if (this.key_manager.keys_pressed[KeyManager.SPACE]){
+		room_manager.RandomGlitch();
+	}
+	
+	
+	//DEBUG TODO DELETE IN RELEASE
+	if (this.key_manager.keys_pressed[KeyManager.ENTER]){
 		room_manager.RevivePlayer();
 	}
 }

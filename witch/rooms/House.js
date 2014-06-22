@@ -1,4 +1,8 @@
 function House(){
+	this.num_artifacts = 0;
+	this.spellbook = [];
+	this.glitch_type = Glitch.GREY;
+
 	this.room_index_x = 0;
 	this.room_index_y = 0;
 	this.old_room_index_x = 0;
@@ -15,8 +19,6 @@ function House(){
 		room_y: this.room_index_y,
 		facing: room.player.facing
 	};
-	
-	this.num_artifacts = 0;
 }
 
 House.prototype.Reset = function(){
@@ -73,7 +75,23 @@ House.prototype.ChangeRoom = function(){
 	room.Speak(null);
 	
 	//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
-	Glitch.TransformPlayer(room, room.glitch_type);
+	Glitch.TransformPlayer(room, room.glitch_type); //this.glitch);
+}
+
+House.prototype.RandomGlitch = function(){
+	Utils.playSound("switchglitch", master_volume, 0);
+
+	var rindex = Math.floor(Math.random()*this.spellbook.length);
+	var glitch = this.spellbook[rindex];
+	while (this.spellbook.length > 1 && glitch == this.glitch_type){
+		rindex++;
+		if (rindex >= this.spellbook.length) rindex = 0;
+		glitch = this.spellbook[rindex];
+	}
+	this.glitch_type = glitch;
+	
+	Glitch.TransformPlayer(room, glitch);
+	room.glitch_time = 0;
 }
 
 House.prototype.RevivePlayer = function(){
