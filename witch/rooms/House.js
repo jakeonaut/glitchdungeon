@@ -60,13 +60,21 @@ House.prototype.GetRoom = function(){
 }
 
 House.prototype.ChangeRoom = function(){
+	var clone = room.player;
 	room.player.pressing_down = false;
 	room.player.pressed_down = false;
-	
+	var glitch_type = this.glitch_type;
+		
 	if (this.old_room_index_x != this.room_index_x || this.old_room_index_y != this.room_index_y){
 		room = this.GetRoom();
-		room.glitch_index = 0;
-		room.glitch_type = room.glitch_sequence[0];
+		room.player.facing = clone.facing;
+		room.player.vel = clone.vel;
+		
+		
+		room.glitch_type = glitch_type;
+		if (!this.has_spellbook){
+			room.glitch_type = room.glitch_sequence[0];
+		}
 		for (var i = 0; i < room.entities.length; i++){
 			room.entities[i].ResetPosition();
 		}
@@ -95,13 +103,15 @@ House.prototype.RandomGlitch = function(){
 		this.glitch_index = -1;
 		
 	if (this.glitch_index < 0){
-		room.glitch_time = room.glitch_time_limit;
+		//room.glitch_time = room.glitch_time_limit;
+		this.glitch_type = Glitch.GREY;
 	}
 	if (this.glitch_index >= 0){
 		this.glitch_type = this.spellbook[this.glitch_index];
 		room.glitch_time = 0;
 	}
 	
+	room.glitch_type = this.glitch_type;
 	Glitch.TransformPlayer(room, this.glitch_type);
 	
 }

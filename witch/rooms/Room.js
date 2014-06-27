@@ -74,7 +74,7 @@ Room.prototype.Update = function(input, delta){
 	}
 	
 	//UPDATE GLITCH SEQUENCE
-	this.glitch_time++;
+	/*this.glitch_time++;
 	if (this.glitch_time >= this.glitch_time_limit){
 		this.glitch_time = 0;
 		
@@ -88,7 +88,7 @@ Room.prototype.Update = function(input, delta){
 		if (this.glitch_sequence.length > 1){
 			Utils.playSound("switchglitch", master_volume, 0);
 		}
-	}
+	}*/
 }
 
 Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
@@ -100,7 +100,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room_manager.ChangeRoom();
 		
 		room.player.x = (this.player.x / (this.MAP_WIDTH * Tile.WIDTH)) * room.MAP_WIDTH * Tile.WIDTH;
-		room.player.y = room.MAP_HEIGHT * Tile.HEIGHT - 16 - room.player.bb;
+		room.player.y = room.MAP_HEIGHT * Tile.HEIGHT - Tile.HEIGHT - room.player.bb;
 	}
 	//OFFSCREEN BOTTOM
 	else if (this.player.y + this.player.tb >= (this.MAP_HEIGHT * Tile.HEIGHT)){
@@ -110,7 +110,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room_manager.ChangeRoom();
 		
 		room.player.x = (this.player.x / (this.MAP_WIDTH * Tile.WIDTH)) * room.MAP_WIDTH * Tile.WIDTH;
-		room.player.y = 0 + 16 + room.player.tb;
+		room.player.y = 0 + Tile.HEIGHT + room.player.tb;
 	}
 	
 	//OFFSCREEN LEFT
@@ -122,7 +122,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room_manager.ChangeRoom();
 		
 		room.player.y = (this.player.y / (this.MAP_HEIGHT * Tile.HEIGHT)) * room.MAP_HEIGHT * Tile.HEIGHT;
-		room.player.x = room.MAP_WIDTH * Tile.WIDTH - 16 - room.player.rb;
+		room.player.x = room.MAP_WIDTH * Tile.WIDTH - Tile.WIDTH - room.player.rb;
 	}
 	//OFFSCREEN RIGHT
 	else if (this.player.x + Tile.WIDTH >= (this.MAP_WIDTH * Tile.WIDTH)){
@@ -133,7 +133,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room_manager.ChangeRoom();
 		
 		room.player.y = (this.player.y / (this.MAP_HEIGHT * Tile.HEIGHT)) * room.MAP_HEIGHT * Tile.HEIGHT;
-		room.player.x = 0 + 16 - room.player.lb;
+		room.player.x = 0 + Tile.WIDTH - room.player.lb;
 	}
 	
 	$("house_coordinates").innerHTML = room_manager.room_index_x + " " + room_manager.room_index_y;

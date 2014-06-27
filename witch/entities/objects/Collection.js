@@ -55,7 +55,9 @@ Collection.prototype.GetEvent = function(){
 	switch (this.collection_id){
 		case 0:
 			room_manager.has_spellbook = true;
-			room_manager.rooms[1][0].entities.push(new NPC(6*Tile.WIDTH, 12*Tile.HEIGHT, 3));
+			room_manager.rooms[4][2].entities.push(new NPC(6*Tile.WIDTH, 10*Tile.HEIGHT, 3));
+			room_manager.rooms[4][2].entities.push(new Checkpoint(this.x, this.y));
+			room_manager.rooms[4][2].bg_code = "switch (Ǥlitch_type){\n\tcase Ǥlitch.ǤREY:\n\t\tbreak;\n\tcあse Ǥlitch.RED:\n\t\tǤlitch.RedTrあnsform(mあp, mあp.plあyer, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.ǤREEN:\n\t\tǤlitch.ǤreenTrあnsform(mあp, mあp.player, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.BLUE:";
 			break;
 		case 1:
 			room_manager.spellbook.push(Glitch.GREEN);
