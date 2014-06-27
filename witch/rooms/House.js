@@ -123,7 +123,11 @@ House.prototype.RevivePlayer = function(){
 	this.old_room_index_y = this.room_index_y;
 	room = this.GetRoom();
 	room.player = new Player();
-	Glitch.TransformPlayer(room, room.glitch_type);
+	if (!this.has_spellbook){
+		Glitch.TransformPlayer(room, room.glitch_type);
+	}else{
+		Glitch.TransformPlayer(room, this.glitch_type);
+	}
 	room.player.x = this.checkpoint.x;
 	room.player.y = this.checkpoint.y;
 	room.player.facing = this.checkpoint.facing;

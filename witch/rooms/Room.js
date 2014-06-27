@@ -110,7 +110,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room_manager.ChangeRoom();
 		
 		room.player.x = (this.player.x / (this.MAP_WIDTH * Tile.WIDTH)) * room.MAP_WIDTH * Tile.WIDTH;
-		room.player.y = 0 + Tile.HEIGHT + room.player.tb;
+		room.player.y = 0 + Tile.HEIGHT/2 + room.player.tb;
 	}
 	
 	//OFFSCREEN LEFT
@@ -122,7 +122,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room_manager.ChangeRoom();
 		
 		room.player.y = (this.player.y / (this.MAP_HEIGHT * Tile.HEIGHT)) * room.MAP_HEIGHT * Tile.HEIGHT;
-		room.player.x = room.MAP_WIDTH * Tile.WIDTH - Tile.WIDTH - room.player.rb;
+		room.player.x = room.MAP_WIDTH * Tile.WIDTH - Tile.WIDTH/2 - room.player.rb;
 	}
 	//OFFSCREEN RIGHT
 	else if (this.player.x + Tile.WIDTH >= (this.MAP_WIDTH * Tile.WIDTH)){
@@ -133,7 +133,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room_manager.ChangeRoom();
 		
 		room.player.y = (this.player.y / (this.MAP_HEIGHT * Tile.HEIGHT)) * room.MAP_HEIGHT * Tile.HEIGHT;
-		room.player.x = 0 + Tile.WIDTH - room.player.lb;
+		room.player.x = 0 + Tile.WIDTH/2 - room.player.lb;
 	}
 	
 	$("house_coordinates").innerHTML = room_manager.room_index_x + " " + room_manager.room_index_y;
