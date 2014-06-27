@@ -13,8 +13,9 @@ function ResourceManager(){
 		"player_blue_sheet",
 		//"player_cyan_sheet",
 		"player_gold_sheet",
-		"player_pink_sheet",
+		//"player_pink_sheet",
 		"player_zero_sheet",
+		"player_negative_sheet",
 		"npc_sheet",
 		"enemy_sheet",
 		"collection_sheet",
@@ -25,8 +26,9 @@ function ResourceManager(){
 		"tile_blue_sheet",
 		//"tile_cyan_sheet",
 		"tile_gold_sheet",
-		"tile_pink_sheet",
-		"tile_zero_sheet"
+		//"tile_pink_sheet",
+		"tile_zero_sheet",
+		"tile_negative_sheet"
 	];
 	this.num_images = this.image_names.length;
 	

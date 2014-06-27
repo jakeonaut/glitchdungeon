@@ -5,6 +5,7 @@ Glitch.ZERO = 3;
 Glitch.BLUE = 4;
 //Glitch.CYAN = 4;
 Glitch.GOLD = 5;
+Glitch.NEGATIVE = 6;
 
 function Glitch(){};
 
@@ -59,6 +60,9 @@ Glitch.TransformPlayer = function(map, glitch_type, normalize){
 			break;
 		case Glitch.ZERO:
 			Glitch.ZeroTransform(map, map.player, normalize);
+			break;
+		case Glitch.NEGATIVE:
+			Glitch.NegativeTransform(map, map.player, normalize);
 			break;
 		default: break;
 	}
@@ -286,9 +290,9 @@ Glitch.GoldTransform = function(map, player, normalize){
 	}
 }
 
-/*Glitch.ZeroTransform = function(map, player, normalize){
-	player.img_name = "player_zero_sheet";
-	if (!normalize) map.tilesheet_name = "tile_zero_sheet";
+Glitch.NegativeTransform = function(map, player, normalize){
+	player.img_name = "player_negative_sheet";
+	if (!normalize) map.tilesheet_name = "tile_negative_sheet";
 		
 	player.HandleHorizontalCollisions = function(map, left_tile, right_tile, top_tile, bottom_tile, q, floor_tile){
 		this.horizontal_collision = false;
@@ -321,4 +325,4 @@ Glitch.GoldTransform = function(map, player, normalize){
 			}
 		}
 	}
-}*/
+}

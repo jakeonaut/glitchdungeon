@@ -10,8 +10,8 @@ function House(){
 	this.old_room_index_x = 0;
 	this.old_room_index_y = 0;
 	
-	this.house_width = 10;
-	this.house_height = 10;
+	this.house_width = 5;
+	this.house_height = 5;
 	this.SetUpRooms();
 	
 	var room = this.rooms[this.room_index_y][this.room_index_x];

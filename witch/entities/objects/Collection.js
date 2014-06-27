@@ -41,12 +41,13 @@ Collection.prototype.UpdateAnimationFromState = function(){
 
 Collection.prototype.GetName = function(){
 	switch (this.collection_id){
-		case 0: return "spell book";
+		case 0: return "grimoire";
 		case 1: return "feather spell";
 		case 2: return "floor spell";
-		case 3: return "blue spell";
+		case 3: return "gravity spell";
 		case 4: return "wall spell";
-		case 5: return "negative spell";
+		case 5: return "invis spell";
+		case 6: return "zero spell";
 		default: break;
 	}
 }
@@ -55,6 +56,11 @@ Collection.prototype.GetEvent = function(){
 	switch (this.collection_id){
 		case 0:
 			room_manager.has_spellbook = true;
+			var door = room_manager.rooms[4][2].GetDoor(1);
+			door.locked = true;
+			door.room_x = 0;
+			door.room_y = 2;
+			door.num_artifacts = 7;
 			room_manager.rooms[4][2].entities.push(new NPC(6*Tile.WIDTH, 10*Tile.HEIGHT, 3));
 			room_manager.rooms[4][2].entities.push(new Checkpoint(this.x, this.y));
 			room_manager.rooms[4][2].bg_code = "switch (Ǥlitch_type){\n\tcase Ǥlitch.ǤREY:\n\t\tbreak;\n\tcあse Ǥlitch.RED:\n\t\tǤlitch.RedTrあnsform(mあp, mあp.plあyer, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.ǤREEN:\n\t\tǤlitch.ǤreenTrあnsform(mあp, mあp.player, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.BLUE:";
