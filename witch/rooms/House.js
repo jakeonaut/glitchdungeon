@@ -1,7 +1,9 @@
 function House(){
 	this.num_artifacts = 0;
+	this.has_spellbook = false;
 	this.spellbook = [];
 	this.glitch_type = Glitch.GREY;
+	this.glitch_index = -1;
 
 	this.room_index_x = 0;
 	this.room_index_y = 0;
@@ -81,17 +83,27 @@ House.prototype.ChangeRoom = function(){
 House.prototype.RandomGlitch = function(){
 	Utils.playSound("switchglitch", master_volume, 0);
 
-	var rindex = Math.floor(Math.random()*this.spellbook.length);
+	/*var rindex = Math.floor(Math.random()*this.spellbook.length);
 	var glitch = this.spellbook[rindex];
 	while (this.spellbook.length > 1 && glitch == this.glitch_type){
 		rindex++;
 		if (rindex >= this.spellbook.length) rindex = 0;
 		glitch = this.spellbook[rindex];
+	}*/
+	this.glitch_index++;
+	if (this.glitch_index >= this.spellbook.length) 
+		this.glitch_index = -1;
+		
+	if (this.glitch_index < 0){
+		room.glitch_time = room.glitch_time_limit;
 	}
-	this.glitch_type = glitch;
+	if (this.glitch_index >= 0){
+		this.glitch_type = this.spellbook[this.glitch_index];
+		room.glitch_time = 0;
+	}
 	
-	Glitch.TransformPlayer(room, glitch);
-	room.glitch_time = 0;
+	Glitch.TransformPlayer(room, this.glitch_type);
+	
 }
 
 House.prototype.RevivePlayer = function(){

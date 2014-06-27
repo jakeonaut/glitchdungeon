@@ -1,4 +1,4 @@
-Room.GLITCH_TIME_LIMIT_ORIGINAL = 120;
+Room.GLITCH_TIME_LIMIT_ORIGINAL = 240;
 
 function Room(){
 	this.SCREEN_WIDTH = GAME_WIDTH;
@@ -12,6 +12,8 @@ function Room(){
 	this.glitch_time = 0;
 	this.glitch_index = 0;
 	this.glitch_time_limit = Room.GLITCH_TIME_LIMIT_ORIGINAL;
+	
+	this.bg_code = "";
 	
 	this.spoken_text = "";
 	this.speech_timer = 0;
@@ -168,7 +170,7 @@ Room.prototype.RenderSpeech = function(ctx){
 		ctx.fillStyle = "#ffffff";
 		var texts = this.spoken_text.split("\n");
 		for (var i = 0; i < texts.length; i++){
-			ctx.fillText(texts[i], Tile.WIDTH*2, h + (fs*i)+GAME_HEIGHT+(Tile.HEIGHT/2)-speech_height, GAME_WIDTH-(Tile.WIDTH*2), fs*i);
+			ctx.fillText(texts[i], Tile.WIDTH*2, h + (fs*i)+GAME_HEIGHT+(Tile.HEIGHT/2)-speech_height, GAME_WIDTH-(Tile.WIDTH*2), fs);
 		}
 	}
 }
@@ -184,6 +186,15 @@ Room.prototype.Render = function(ctx, level_edit){
 	while (entities[index].z_index > 10){
 		entities[index].Render(ctx, this.camera);
 		index++;
+	}
+	
+	//Draw some background code for aesthetic
+	var fs = 4;
+	ctx.font = fs + "px monospace";
+	ctx.fillStyle = "#ffffff";
+	var texts = this.bg_code.split("\n");
+	for (var i = 0; i < texts.length; i++){
+		ctx.fillText(texts[i], 16, fs*i, GAME_WIDTH-32, fs*i);
 	}
 
 	//DRAW THE TILES OF THE ROOM
@@ -265,6 +276,7 @@ Room.prototype.Export = function(){
 		,player: {type: "Player", obj: this.player.Export()}
 		,entities: entities
 		,tiles: tiles
+		,bg_code: this.bg_code
 	};
 }
 
@@ -309,4 +321,7 @@ Room.prototype.Import = function(room){
 		}
 		this.tiles.push(row);
 	}
+	
+	this.bg_code = room.bg_code;
+	if (this.bg_code === undefined) this.bg_code = "";
 }

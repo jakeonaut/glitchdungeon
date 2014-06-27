@@ -8,10 +8,14 @@ function Enemy(x, y, enemy_id){
 	this.facing = Facing.LEFT;
 	this.original_facing = this.facing;
 	this.max_run_vel = 1.5;
+	
+	this.GlitchMe();
 }
 Enemy.prototype.Import = function(obj){
 	GameMover.prototype.Import.call(this, obj);
 	this.enemy_id = obj.enemy_id;
+	
+	this.GlitchMe();
 }
 
 Enemy.prototype.Export = function(){
@@ -20,6 +24,14 @@ Enemy.prototype.Export = function(){
 	return obj;
 }
 extend(GameMover, Enemy);
+
+Enemy.prototype.GlitchMe = function(){
+	if (this.enemy_id === 1){
+		this.ApplyGravity = function(){}
+		this.HandleHorizontalCollisions = function(){};
+		this.HandleVerticalCollisions = function(){};
+	}
+}
 
 Enemy.prototype.Update = function(delta, map){
 	if (this.facing == Facing.LEFT){
@@ -35,12 +47,20 @@ Enemy.prototype.Update = function(delta, map){
 			this.facing = Facing.RIGHT;
 		else this.facing = Facing.LEFT;
 	}
+	if (this.enemy_id === 1){
+		if (this.x < 0){ this.facing = Facing.RIGHT;}
+		if (this.x + this.rb > map.MAP_WIDTH * Tile.WIDTH){ this.facing = Facing.LEFT; }
+	}
+	
+	if (this.enemy_id === null || this.enemy_id === undefined){
+		this.delete_me = true;
+	}
 }
 
 Enemy.prototype.UpdateAnimationFromState = function(){
-	var ani_x = this.enemy_id / 2;
-	var ani_y = this.enemy_id % 2;
-	this.animation.Change(ani_x, ani_y, 2);
+	var ani_x = 0;
+	var ani_y = this.enemy_id;
+	this.animation.Change(ani_x, ani_y, 6);
 	
 	if (this.facing === Facing.LEFT){
 		this.animation.abs_ani_y = 2 * this.animation.frame_height;

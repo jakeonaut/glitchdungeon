@@ -28,7 +28,7 @@ InputManager.prototype.Update = function(player){
 		player.StopPressingDown();
 	}
 	
-	if (this.key_manager.keys_pressed[KeyManager.SPACE]){
+	if (this.key_manager.keys_pressed[KeyManager.SPACE] && room_manager.has_spellbook){
 		room_manager.RandomGlitch();
 	}
 	

@@ -8,55 +8,57 @@ Glitch.GOLD = 5;
 
 function Glitch(){};
 
-Glitch.TransformPlayer = function(map, glitch_type){
+Glitch.TransformPlayer = function(map, glitch_type, normalize){
 	if (room_manager) room_manager.glitch_type = glitch_type;
+	normalize = normalize || true;
 	
 	//Normalize the player before transforming
-	var facing = map.player.facing;
-	var vel = map.player.vel;
-	var is_jumping = map.player.is_jumping;
-	var jump_timer = map.player.jump_timer;
-	var jump_time_limit = map.player.jump_time_limit;
-	var on_ground = map.player.on_ground;
-	map.player = new Player(map.player.x, map.player.y);
-	map.player.facing = facing;
-	map.player.vel = vel;
-	map.player.is_jumping = is_jumping;
-	map.player.jump_timer = jump_timer;
-	map.player.jump_time_limit = jump_time_limit;
-	map.player.on_ground = on_ground;
-	if (map.player.is_jumping)
-		map.player.grav_acc = map.player.float_grav_acc;
-	//map.player.grav_acc = grav_acc;
-	if (map.glitch_type != Glitch.RED){
-		map.player.on_ground = false;
-	}
-	map.player.was_on_ground = true;
+	if (normalize){
+		var facing = map.player.facing;
+		var vel = map.player.vel;
+		var is_jumping = map.player.is_jumping;
+		var jump_timer = map.player.jump_timer;
+		var jump_time_limit = map.player.jump_time_limit;
+		var on_ground = map.player.on_ground;
+		map.player = new Player(map.player.x, map.player.y);
+		map.player.facing = facing;
+		map.player.vel = vel;
+		map.player.is_jumping = is_jumping;
+		map.player.jump_timer = jump_timer;
+		map.player.jump_time_limit = jump_time_limit;
+		map.player.on_ground = on_ground;
+		if (map.player.is_jumping)
+			map.player.grav_acc = map.player.float_grav_acc;
+		//map.player.grav_acc = grav_acc;
+		if (map.glitch_type != Glitch.RED){
+			map.player.on_ground = false;
+		}
+		map.player.was_on_ground = true;
 
-	map.tilesheet_name = "tile_grey_sheet";
-	
+		map.tilesheet_name = "tile_grey_sheet";
+	}
 
 	var oldbb = map.player.bb;
 	switch (glitch_type){
 		case Glitch.GREY:
 			break;
 		case Glitch.RED:
-			Glitch.RedTransform(map, map.player);
+			Glitch.RedTransform(map, map.player, normalize);
 			break;
 		case Glitch.GREEN:
-			Glitch.GreenTransform(map, map.player);
+			Glitch.GreenTransform(map, map.player, normalize);
 			break;
 		case Glitch.BLUE:
-			Glitch.BlueTransform(map, map.player);
+			Glitch.BlueTransform(map, map.player, normalize);
 			break;
 		/*case Glitch.CYAN:
-			Glitch.CyanTransform(map, map.player);
+			Glitch.CyanTransform(map, map.player, normalize);
 			break;*/
 		case Glitch.GOLD:
-			Glitch.GoldTransform(map, map.player);
+			Glitch.GoldTransform(map, map.player, normalize);
 			break;
 		case Glitch.ZERO:
-			Glitch.ZeroTransform(map, map.player);
+			Glitch.ZeroTransform(map, map.player, normalize);
 			break;
 		default: break;
 	}
@@ -67,9 +69,9 @@ Glitch.TransformPlayer = function(map, glitch_type){
 extend(GameSprite, Glitch);
 
 //******GLITCH TRANSFORMATION DEFINTIIONS***************************/
-Glitch.RedTransform = function(map, player){
+Glitch.RedTransform = function(map, player, normalize){
 	player.img_name = "player_red_sheet";
-	map.tilesheet_name = "tile_red_sheet";
+	if (normalize) map.tilesheet_name = "tile_red_sheet";
 			
 	player.HandleCollisionsAndMove = function(map){
 		var left_tile = Math.floor((this.x + this.lb + this.vel.x) / Tile.WIDTH);
@@ -93,9 +95,9 @@ Glitch.RedTransform = function(map, player){
 	}
 }
 
-Glitch.GreenTransform = function(map, player){
+Glitch.GreenTransform = function(map, player, normalize){
 	player.img_name = "player_green_sheet";
-	map.tilesheet_name = "tile_green_sheet";
+	if (normalize) map.tilesheet_name = "tile_green_sheet";
 	
 	player.gnd_run_acc = player.max_run_vel/10.0;
 	player.gnd_run_dec = player.max_run_vel/100.0;
@@ -136,9 +138,9 @@ Glitch.GreenTransform = function(map, player){
 	}
 }
 
-Glitch.ZeroTransform = function(map, player){
+Glitch.ZeroTransform = function(map, player, normalize){
 	player.img_name = "player_zero_sheet";
-	map.tilesheet_name = "tile_zero_sheet";
+	if (normalize) map.tilesheet_name = "tile_zero_sheet";
 	
 	player.DieToSpikesAndStuff = function(){}
 	
@@ -149,9 +151,9 @@ Glitch.ZeroTransform = function(map, player){
 	}
 }
 
-Glitch.BlueTransform = function(map, player){
+Glitch.BlueTransform = function(map, player, normalize){
 	player.img_name = "player_blue_sheet";
-	map.tilesheet_name = "tile_blue_sheet";
+	if (normalize) map.tilesheet_name = "tile_blue_sheet";
 	
 	player.tb = 0;
 	player.bb = 14;
@@ -233,9 +235,9 @@ Glitch.BlueTransform = function(map, player){
 	}
 }
 
-Glitch.GoldTransform = function(map, player){
+Glitch.GoldTransform = function(map, player, normalize){
 	player.img_name = "player_gold_sheet";
-	map.tilesheet_name = "tile_gold_sheet";
+	if (normalize) map.tilesheet_name = "tile_gold_sheet";
 	
 	player.HandleCollisionsAndMove = function(map){
 		var left_tile = Math.floor((this.x + this.lb + this.vel.x - 1) / Tile.WIDTH);
@@ -264,6 +266,8 @@ Glitch.GoldTransform = function(map, player){
 	
 	player.Update = function(delta, map)
 	{
+		this.DieToSpikesAndStuff(map);
+		
 		this.ApplyPhysics(delta, map);
 		this.prev_x = this.x;
 		this.prev_y = this.y;
@@ -277,12 +281,14 @@ Glitch.GoldTransform = function(map, player){
 		}
 		this.UpdateAnimationFromState();
 		GameSprite.prototype.Update.call(this, delta, map);
+		
+		this.touching_door = false;
 	}
 }
 
-/*Glitch.ZeroTransform = function(map, player){
+/*Glitch.ZeroTransform = function(map, player, normalize){
 	player.img_name = "player_zero_sheet";
-	map.tilesheet_name = "tile_zero_sheet";
+	if (!normalize) map.tilesheet_name = "tile_zero_sheet";
 		
 	player.HandleHorizontalCollisions = function(map, left_tile, right_tile, top_tile, bottom_tile, q, floor_tile){
 		this.horizontal_collision = false;

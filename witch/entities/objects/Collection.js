@@ -42,22 +42,36 @@ Collection.prototype.UpdateAnimationFromState = function(){
 Collection.prototype.GetName = function(){
 	switch (this.collection_id){
 		case 0: return "spell book";
-		case 1: return "red hex";
-		case 2: return "blue spell";
-		case 3: return "relic sword";
-		case 4: return "magic shield";
+		case 1: return "feather spell";
+		case 2: return "floor spell";
+		case 3: return "blue spell";
+		case 4: return "wall spell";
+		case 5: return "negative spell";
 		default: break;
 	}
 }
 
 Collection.prototype.GetEvent = function(){
 	switch (this.collection_id){
+		case 0:
+			room_manager.has_spellbook = true;
+			room_manager.rooms[1][0].entities.push(new NPC(6*Tile.WIDTH, 12*Tile.HEIGHT, 3));
+			break;
 		case 1:
-			room_manager.spellbook.push(Glitch.RED);
+			room_manager.spellbook.push(Glitch.GREEN);
 			break;
 		case 2: 
+			room_manager.spellbook.push(Glitch.RED);
+			room_manager.rooms[0][2].entities.push(new NPC(6*Tile.WIDTH, 12*Tile.HEIGHT, 2));
+			break;
+		case 3:
 			room_manager.spellbook.push(Glitch.BLUE);
-			room_manager.rooms[0][2].entities.push(new NPC(6*Tile.WIDTH, 10*Tile.HEIGHT, 2));
+			break;
+		case 4:
+			room_manager.spellbook.push(Glitch.GOLD);
+			break;
+		case 5:
+			room_manager.spellbook.push(Glitch.ZERO);
 			break;
 		default: break;
 	}

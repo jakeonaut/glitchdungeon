@@ -64,6 +64,8 @@ NPC.prototype.GetText = function(){
 		case 1:
 			return "press down to fall\n and to enter doors";
 		case 2:
+			return "it's so lonely here";
+		case 3:
 			return "press space bar\n to cast a spell\n for a short time";
 		default:
 			break;
