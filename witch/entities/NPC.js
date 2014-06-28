@@ -69,6 +69,8 @@ NPC.prototype.GetText = function(){
 			return "it's so lonely here";
 		case 3:
 			return "press space bar\n to cast a spell";
+		case 4:
+			return "press down to\nplace a memory";
 		default:
 			break;
 	}

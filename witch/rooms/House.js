@@ -102,7 +102,7 @@ House.prototype.RandomGlitch = function(){
 	}*/
 	this.glitch_index++;
 	if (this.glitch_index >= this.spellbook.length) 
-		this.glitch_index = -1;
+		this.glitch_index = 0; //-1;
 		
 	if (this.glitch_index < 0){
 		//room.glitch_time = room.glitch_time_limit;

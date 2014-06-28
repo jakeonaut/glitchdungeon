@@ -27,7 +27,7 @@ Collection.prototype.Export = function(){
 extend(GameMover, Collection);
 
 Collection.prototype.Update = function(delta, map){
-	if (this.IsColliding(map.player)){
+	if (this.IsColliding(map.player) && map.player.on_ground){
 		this.delete_me = true;
 		Utils.playSound("pickup", master_volume, 0);
 		room_manager.num_artifacts++;
@@ -57,7 +57,7 @@ Collection.prototype.GetEvent = function(){
 	switch (this.collection_id){
 		case 0:
 			room_manager.has_spellbook = true;
-			var door = room_manager.rooms[4][2].GetDoor(1);
+			var door = room_manager.rooms[4][2].GetDoor(0);
 			door.locked = true;
 			door.room_x = 0;
 			door.room_y = 2;
@@ -75,6 +75,7 @@ Collection.prototype.GetEvent = function(){
 			break;
 		case 3:
 			room_manager.spellbook.push(Glitch.BLUE);
+			Glitch.TransformPlayer(room, Glitch.BLUE);
 			break;
 		case 4:
 			room_manager.spellbook.push(Glitch.GOLD);
@@ -87,6 +88,11 @@ Collection.prototype.GetEvent = function(){
 			break;
 		case 7:
 			room_manager.spellbook.push(Glitch.PINK);
+			room_manager.rooms[4][4].entities.push(new NPC(4*Tile.WIDTH, 4*Tile.HEIGHT, 4));
+			room_manager.rooms[4][4].entities.push(new NPC(8*Tile.WIDTH, 10*Tile.HEIGHT, 4));
+			room_manager.rooms[4][4].entities.push(new NPC(13*Tile.WIDTH, 7*Tile.HEIGHT, 4));
+			
+			Glitch.TransformPlayer(room, Glitch.PINK);
 			break;
 		default: break;
 	}
