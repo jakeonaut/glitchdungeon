@@ -69,6 +69,7 @@ House.prototype.ChangeRoom = function(){
 		room = this.GetRoom();
 		room.player.facing = clone.facing;
 		room.player.vel = clone.vel;
+		room.player.on_ground = clone.on_ground;
 		
 		
 		room.glitch_type = glitch_type;

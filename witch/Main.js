@@ -1,4 +1,4 @@
-var level_edit = true;
+var level_edit = true;//false;
 var master_volume = 0.5;
 
 var GAME_WIDTH=160; //CHANGE TO /2
@@ -54,7 +54,7 @@ var startGame = function(){
 	//Let's play the game!
 	then = Date.now();
 	
-	//Utils.playSound("RoccoW_outOfSight", master_volume, 0);
+//	Utils.playSound("RoccoW_outOfSight", master_volume, 0);
 	setInterval(main, 17);
 };
 

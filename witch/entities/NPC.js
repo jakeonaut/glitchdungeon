@@ -59,6 +59,8 @@ NPC.prototype.UpdateAnimationFromState = function(){
 //TEXT BABY
 NPC.prototype.GetText = function(){
 	switch (this.npc_id){
+		case -1:
+			return "hold up to jump higher";
 		case 0:
 			return "you must escape\n the labyrinth";
 		case 1:

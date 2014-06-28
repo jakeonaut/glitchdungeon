@@ -1,3 +1,6 @@
+++ explain the floor and feather spell a bit better (in their rooms)
+	-move the spikes off of the grimoire room but limit the player from advancing without it?
+
 0. Checkpoint spell: press down to place a checkpoint.
 	-checkpoint disappears upon A) placing a checkpoint, B) switching glitches or dying
 2. Actually pause entirely when tab becomes inactive (float text saying press enter to resume)
