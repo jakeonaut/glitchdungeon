@@ -74,21 +74,23 @@ Room.prototype.Update = function(input, delta){
 	}
 	
 	//UPDATE GLITCH SEQUENCE
-	/*this.glitch_time++;
-	if (this.glitch_time >= this.glitch_time_limit){
-		this.glitch_time = 0;
-		
-		this.glitch_index++;
-		if (this.glitch_index >= this.glitch_sequence.length){
-			this.glitch_index = 0;
+	if (room_manager && !room_manager.has_spellbook){
+		this.glitch_time++;
+		if (this.glitch_time >= this.glitch_time_limit){
+			this.glitch_time = 0;
+			
+			this.glitch_index++;
+			if (this.glitch_index >= this.glitch_sequence.length){
+				this.glitch_index = 0;
+			}
+			
+			Glitch.TransformPlayer(this, this.glitch_sequence[this.glitch_index]);
+			this.glitch_type = this.glitch_sequence[this.glitch_index];
+			if (this.glitch_sequence.length > 1){
+				Utils.playSound("switchglitch", master_volume, 0);
+			}
 		}
-		
-		Glitch.TransformPlayer(this, this.glitch_sequence[this.glitch_index]);
-		this.glitch_type = this.glitch_sequence[this.glitch_index];
-		if (this.glitch_sequence.length > 1){
-			Utils.playSound("switchglitch", master_volume, 0);
-		}
-	}*/
+	}
 }
 
 Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){

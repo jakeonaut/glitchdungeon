@@ -74,6 +74,7 @@ House.prototype.ChangeRoom = function(){
 		
 		room.glitch_type = glitch_type;
 		if (!this.has_spellbook){
+			room.glitch_index = 0;
 			room.glitch_type = room.glitch_sequence[0];
 		}
 		for (var i = 0; i < room.entities.length; i++){
