@@ -6,6 +6,8 @@
 	-the frequency of bg_code creation and distortion
 	-the frequency of player image glitching (sprite sheet and facing)
 	-Giant cave makes use of doors going to nonreflective places and warping around (Essentially cave is a big maze)
+6. along with locked spellbook room, should have a glitch runoff room;
+	-no normalizing after spell casting (all glitch powers)
 1. ADD DELTA SUPPORT IN ALL UPDATE FUNCTIONS???
 	
 

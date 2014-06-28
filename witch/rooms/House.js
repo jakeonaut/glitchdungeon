@@ -66,6 +66,7 @@ House.prototype.ChangeRoom = function(){
 	room.player.pressing_down = false;
 	room.player.pressed_down = false;
 	var glitch_type = this.glitch_type;
+	var could_use_spellbook = room.can_use_spellbook;
 		
 	if (this.old_room_index_x != this.room_index_x || this.old_room_index_y != this.room_index_y){
 		room = this.GetRoom();
@@ -75,9 +76,10 @@ House.prototype.ChangeRoom = function(){
 		
 		
 		room.glitch_type = glitch_type;
-		if (!this.has_spellbook){
+		if (!this.has_spellbook || !room.can_use_spellbook){
 			room.glitch_index = 0;
 			room.glitch_type = room.glitch_sequence[0];
+			room.glitch_time = 0;
 		}
 		for (var i = 0; i < room.entities.length; i++){
 			room.entities[i].ResetPosition();
@@ -89,8 +91,11 @@ House.prototype.ChangeRoom = function(){
 	room.Speak(null);
 	if (!room.can_use_spellbook)
 		room.Speak("a dark force prevents\nyou from casting\nspells here");
-	else{
-		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
+	//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
+	if (!could_use_spellbook){
+		this.glitch_index = this.spellbook.length-1;
+		Glitch.TransformPlayer(room, Glitch.GREY);
+	}else{
 		Glitch.TransformPlayer(room, room.glitch_type); //this.glitch);
 	}
 }
@@ -134,7 +139,7 @@ House.prototype.RevivePlayer = function(){
 	this.old_room_index_y = this.room_index_y;
 	room = this.GetRoom();
 	room.player = new Player();
-	if (!this.has_spellbook){
+	if (!this.has_spellbook || !room.can_use_spellbook){
 		Glitch.TransformPlayer(room, room.glitch_type);
 	}else{
 		Glitch.TransformPlayer(room, this.glitch_type);

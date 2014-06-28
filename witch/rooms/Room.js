@@ -77,6 +77,22 @@ Room.prototype.Update = function(input, delta){
 	//UPDATE GLITCH SEQUENCE
 	if (room_manager && !room_manager.has_spellbook || !this.can_use_spellbook){
 		this.glitch_time++;
+		
+		if (this.glitch_sequence.length > 1 
+				&& this.glitch_time > this.glitch_time_limit - 60 
+				&& this.glitch_time < this.glitch_time_limit)
+		{		
+			if (this.glitch_time % 20 === 0){
+				var temp_index = this.glitch_index;
+				temp_index++;
+				if (temp_index >= this.glitch_sequence.length)
+					temp_index = 0;
+				Glitch.TransformPlayer(this, this.glitch_sequence[temp_index], false, true);
+			}else if ((this.glitch_time - 10) % 20 === 0){
+				Glitch.TransformPlayer(this, this.glitch_sequence[this.glitch_index], false, true);
+			}
+		}
+		
 		if (this.glitch_time >= this.glitch_time_limit){
 			this.glitch_time = 0;
 			

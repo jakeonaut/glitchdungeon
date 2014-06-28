@@ -3,16 +3,16 @@ Glitch.RED = 1;
 Glitch.GREEN = 2;
 Glitch.ZERO = 3;
 Glitch.BLUE = 4;
-//Glitch.CYAN = 4;
 Glitch.GOLD = 5;
 Glitch.NEGATIVE = 6;
 Glitch.PINK = 7;
 
 function Glitch(){};
 
-Glitch.TransformPlayer = function(map, glitch_type, normalize){
+Glitch.TransformPlayer = function(map, glitch_type, normalize, only_visual){
 	if (room_manager) room_manager.glitch_type = glitch_type;
-	normalize = normalize || true;
+	normalize = defaultValue(normalize, true);
+	only_visual = only_visual || false;
 	
 	//Normalize the player before transforming
 	if (normalize){
@@ -45,28 +45,25 @@ Glitch.TransformPlayer = function(map, glitch_type, normalize){
 		case Glitch.GREY:
 			break;
 		case Glitch.RED:
-			Glitch.RedTransform(map, map.player, normalize);
+			Glitch.RedTransform(map, map.player, only_visual);
 			break;
 		case Glitch.GREEN:
-			Glitch.GreenTransform(map, map.player, normalize);
+			Glitch.GreenTransform(map, map.player, only_visual);
 			break;
 		case Glitch.BLUE:
-			Glitch.BlueTransform(map, map.player, normalize);
+			Glitch.BlueTransform(map, map.player, only_visual);
 			break;
-		/*case Glitch.CYAN:
-			Glitch.CyanTransform(map, map.player, normalize);
-			break;*/
 		case Glitch.GOLD:
-			Glitch.GoldTransform(map, map.player, normalize);
+			Glitch.GoldTransform(map, map.player, only_visual);
 			break;
 		case Glitch.ZERO:
-			Glitch.ZeroTransform(map, map.player, normalize);
+			Glitch.ZeroTransform(map, map.player, only_visual);
 			break;
 		case Glitch.NEGATIVE:
-			Glitch.NegativeTransform(map, map.player, normalize);
+			Glitch.NegativeTransform(map, map.player, only_visual);
 			break;
 		case Glitch.PINK:
-			Glitch.PinkTransform(map, map.player, normalize);
+			Glitch.PinkTransform(map, map.player, only_visual);
 			break;
 		default: break;
 	}
@@ -77,9 +74,10 @@ Glitch.TransformPlayer = function(map, glitch_type, normalize){
 extend(GameSprite, Glitch);
 
 //******GLITCH TRANSFORMATION DEFINTIIONS***************************/
-Glitch.RedTransform = function(map, player, normalize){
+Glitch.RedTransform = function(map, player, only_visual){
 	player.img_name = "player_red_sheet";
-	if (normalize) map.tilesheet_name = "tile_red_sheet";
+	if (only_visual) return;
+	map.tilesheet_name = "tile_red_sheet";
 			
 	player.HandleCollisionsAndMove = function(map){
 		var left_tile = Math.floor((this.x + this.lb + this.vel.x) / Tile.WIDTH);
@@ -103,9 +101,10 @@ Glitch.RedTransform = function(map, player, normalize){
 	}
 }
 
-Glitch.GreenTransform = function(map, player, normalize){
+Glitch.GreenTransform = function(map, player, only_visual){
 	player.img_name = "player_green_sheet";
-	if (normalize) map.tilesheet_name = "tile_green_sheet";
+	if (only_visual) return;
+	map.tilesheet_name = "tile_green_sheet";
 	
 	player.gnd_run_acc = player.max_run_vel/10.0;
 	player.gnd_run_dec = player.max_run_vel/100.0;
@@ -146,9 +145,10 @@ Glitch.GreenTransform = function(map, player, normalize){
 	}
 }
 
-Glitch.ZeroTransform = function(map, player, normalize){
+Glitch.ZeroTransform = function(map, player, only_visual){
 	player.img_name = "player_zero_sheet";
-	if (normalize) map.tilesheet_name = "tile_zero_sheet";
+	if (only_visual) return;
+	map.tilesheet_name = "tile_zero_sheet";
 	
 	player.DieToSpikesAndStuff = function(){}
 	
@@ -159,9 +159,10 @@ Glitch.ZeroTransform = function(map, player, normalize){
 	}
 }
 
-Glitch.BlueTransform = function(map, player, normalize){
+Glitch.BlueTransform = function(map, player, only_visual){
 	player.img_name = "player_blue_sheet";
-	if (normalize) map.tilesheet_name = "tile_blue_sheet";
+	if (only_visual) return;
+	map.tilesheet_name = "tile_blue_sheet";
 	
 	player.tb = 0;
 	player.bb = 14;
@@ -243,9 +244,10 @@ Glitch.BlueTransform = function(map, player, normalize){
 	}
 }
 
-Glitch.GoldTransform = function(map, player, normalize){
+Glitch.GoldTransform = function(map, player, only_visual){
 	player.img_name = "player_gold_sheet";
-	if (normalize) map.tilesheet_name = "tile_gold_sheet";
+	if (only_visual) return;
+	map.tilesheet_name = "tile_gold_sheet";
 	
 	player.HandleCollisionsAndMove = function(map){
 		var left_tile = Math.floor((this.x + this.lb + this.vel.x - 1) / Tile.WIDTH);
@@ -294,9 +296,10 @@ Glitch.GoldTransform = function(map, player, normalize){
 	}
 }
 
-Glitch.NegativeTransform = function(map, player, normalize){
+Glitch.NegativeTransform = function(map, player, only_visual){
 	player.img_name = "player_negative_sheet";
-	if (!normalize) map.tilesheet_name = "tile_negative_sheet";
+	if (only_visual) return;
+	map.tilesheet_name = "tile_negative_sheet";
 		
 	player.HandleHorizontalCollisions = function(map, left_tile, right_tile, top_tile, bottom_tile, q, floor_tile){
 		this.horizontal_collision = false;
@@ -331,8 +334,9 @@ Glitch.NegativeTransform = function(map, player, normalize){
 	}
 }
 
-Glitch.PinkTransform = function(map, player, normalize){
+Glitch.PinkTransform = function(map, player, only_visual){
 	player.img_name = "player_pink_sheet";
+	if (only_visual) return;
 	map.tilesheet_name = "tile_pink_sheet";
 	
 	player.PressDown = function(){
