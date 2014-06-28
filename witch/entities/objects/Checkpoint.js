@@ -13,7 +13,9 @@ Checkpoint.prototype.Update = function(delta, map){
 	GameSprite.prototype.Update.call(this, delta, map);
 	
 	if (this.IsColliding(map.player)){
+		map.player.touching_checkpoint = true;
 		if (!this.active){
+			if (!this.is_glitched) room_manager.RemoveGlitchedCheckpoint();
 			room_manager.DeactivateCheckpoints();
 			room_manager.checkpoint = {
 				x: this.x, y: this.y, 

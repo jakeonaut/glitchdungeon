@@ -1,6 +1,3 @@
-
-0. checkpoint disappears upon B) switching glitches or dying
-	-upon checkpoint disappearing, activate last real checkpoint...
 2. Actually pause entirely when tab becomes inactive (float text saying press enter to resume)
 4. loop music
 

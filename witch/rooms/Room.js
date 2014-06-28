@@ -12,6 +12,7 @@ function Room(){
 	this.glitch_time = 0;
 	this.glitch_index = 0;
 	this.glitch_time_limit = Room.GLITCH_TIME_LIMIT_ORIGINAL;
+	this.can_use_spellbook = true;
 	
 	this.bg_code = "";
 	
@@ -74,7 +75,7 @@ Room.prototype.Update = function(input, delta){
 	}
 	
 	//UPDATE GLITCH SEQUENCE
-	if (room_manager && !room_manager.has_spellbook){
+	if (room_manager && !room_manager.has_spellbook || !this.can_use_spellbook){
 		this.glitch_time++;
 		if (this.glitch_time >= this.glitch_time_limit){
 			this.glitch_time = 0;
@@ -275,6 +276,7 @@ Room.prototype.Export = function(){
 		,glitch_type: this.glitch_type
 		,glitch_sequence: this.glitch_sequence
 		,glitch_time_limit: this.glitch_time_limit
+		,can_use_spellbook: this.can_use_spellbook
 		,player: {type: "Player", obj: this.player.Export()}
 		,entities: entities
 		,tiles: tiles
@@ -299,6 +301,7 @@ Room.prototype.Import = function(room){
 	this.glitch_time_limit = room.glitch_time_limit || Room.GLITCH_TIME_LIMIT_ORIGINAL;
 	this.glitch_sequence = room.glitch_sequence || [room.glitch_type];
 	this.glitch_type = this.glitch_sequence[0];
+	this.can_use_spellbook = defaultValue(room.can_use_spellbook, true);
 	Glitch.TransformPlayer(this, this.glitch_type);
 	
 	//import entities

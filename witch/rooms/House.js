@@ -21,6 +21,8 @@ function House(){
 		room_y: this.room_index_y,
 		facing: room.player.facing
 	};
+	this.old_checkpoint = null;
+	this.new_checkpoint = null;
 }
 
 House.prototype.Reset = function(){
@@ -85,12 +87,19 @@ House.prototype.ChangeRoom = function(){
 	this.old_room_index_y = this.room_index_y;
 	
 	room.Speak(null);
-	
-	//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
-	Glitch.TransformPlayer(room, room.glitch_type); //this.glitch);
+	if (!room.can_use_spellbook)
+		room.Speak("a dark force prevents\nyou from casting\nspells here");
+	else{
+		//MAKE SURE THE FORM CHANGE REMAINS BETWEEN ROOMS
+		Glitch.TransformPlayer(room, room.glitch_type); //this.glitch);
+	}
 }
 
 House.prototype.RandomGlitch = function(){
+	if (!this.GetRoom().can_use_spellbook){
+		Utils.playSound("error", master_volume, 0);
+		return;
+	}
 	Utils.playSound("switchglitch", master_volume, 0);
 
 	/*var rindex = Math.floor(Math.random()*this.spellbook.length);
@@ -133,7 +142,9 @@ House.prototype.RevivePlayer = function(){
 	room.player.x = this.checkpoint.x;
 	room.player.y = this.checkpoint.y;
 	room.player.facing = this.checkpoint.facing;
+	room.Speak(null);
 	
+	this.RemoveGlitchedCheckpoint();
 }
 
 House.prototype.DeactivateCheckpoints = function(){
@@ -143,6 +154,37 @@ House.prototype.DeactivateCheckpoints = function(){
 			for (var k = 0; k < room.entities.length; k++){
 				if (room.entities[k].type === "Checkpoint"){
 					room.entities[k].Deactivate();
+				}
+			}
+		}
+	}
+}
+
+House.prototype.RemoveGlitchedCheckpoint = function(){
+	for (var i = 0; i < this.rooms.length; i++){
+		for (var j = 0; j < this.rooms[i].length; j++){
+			for (var k = 0; k < this.rooms[i][j].entities.length; k++){
+				if (this.rooms[i][j].entities[k].type == "Checkpoint" && this.rooms[i][j].entities[k].is_glitched){
+					this.rooms[i][j].entities.splice(k, 1);
+				}
+			}
+		}
+	}
+	
+	if (this.new_checkpoint != null){
+		this.new_checkpoint = null;
+		if (this.old_checkpoint != null){
+			var room = this.rooms[this.old_checkpoint.room_y][this.old_checkpoint.room_x];
+			for (var i = 0; i < room.entities.length; i++){
+				if (room.entities[i].type === "Checkpoint" && !room.entities[i].is_glitched &&
+						room.entities[i].x === this.old_checkpoint.x &&
+						room.entities[i].y === this.old_checkpoint.y){
+					
+						this.checkpoint = this.old_checkpoint;
+						this.old_checkpoint = null;
+						//Utils.playSound("checkpoint", master_volume, 0);
+						room.entities[i].active = true;
+						room.entities[i].animation.Change(1, 0, 2);
 				}
 			}
 		}

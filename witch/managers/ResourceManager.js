@@ -54,6 +54,7 @@ function ResourceManager(){
 		,"LA_Chest_Open"
 		,"locked"
 		,"switchglitch"
+		,"error"
 	];
 	this.num_sounds = this.sound_names.length;
 }

@@ -21,6 +21,7 @@ Player.prototype.Update = function(delta, map){
 	this.DieToSpikesAndStuff(map);
 	GameMover.prototype.Update.call(this, delta, map);
 	this.touching_door = false;
+	this.touching_checkpoint = false;
 }
 
 Player.prototype.DieToSpikesAndStuff = function(map){
