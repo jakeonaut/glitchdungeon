@@ -1,3 +1,5 @@
+0. Checkpoint spell: press down to place a checkpoint.
+	-checkpoint disappears upon A) placing a checkpoint, B) switching glitches or dying
 2. Actually pause entirely when tab becomes inactive (float text saying press enter to resume)
 3. Make each tile switch tileset image at a random interval between 1 - 100 upon forme change?
 4. loop music
@@ -12,4 +14,4 @@
 
 
 
--tilesets from kid icarus, adventure island, that weird game with the desert and trees, super mario, and???
+-tilesets from kid icarus, adventure island, that weird game with the desert and trees, super mario, megaman, 

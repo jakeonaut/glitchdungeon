@@ -6,6 +6,7 @@ Glitch.BLUE = 4;
 //Glitch.CYAN = 4;
 Glitch.GOLD = 5;
 Glitch.NEGATIVE = 6;
+Glitch.PINK = 7;
 
 function Glitch(){};
 
@@ -63,6 +64,9 @@ Glitch.TransformPlayer = function(map, glitch_type, normalize){
 			break;
 		case Glitch.NEGATIVE:
 			Glitch.NegativeTransform(map, map.player, normalize);
+			break;
+		case Glitch.PINK:
+			Glitch.PinkTransform(map, map.player, normalize);
 			break;
 		default: break;
 	}
@@ -323,6 +327,41 @@ Glitch.NegativeTransform = function(map, player, normalize){
 					this.y = tile.y - this.bb;
 				}
 			}
+		}
+	}
+}
+
+Glitch.PinkTransform = function(map, player, normalize){
+	player.img_name = "player_pink_sheet";
+	map.tilesheet_name = "tile_pink_sheet";
+	
+	player.PressDown = function(){
+		this.pressing_down = true;
+		this.pressed_down = true;
+		this.on_ground = false;
+		
+		if (!this.touching_door){
+			for (var i = 0; i < room_manager.rooms.length; i++){
+				for (var j = 0; j < room_manager.rooms[i].length; j++){
+					for (var k = 0; k < room_manager.rooms[i][j].entities.length; k++){
+						if (room_manager.rooms[i][j].entities[k].type == "Checkpoint" && room_manager.rooms[i][j].entities[k].is_glitched){
+							room_manager.rooms[i][j].entities.splice(k, 1);
+						}
+					}
+				}
+			}
+		
+			room_manager.new_checkpoint = {
+				x: this.x, y: this.y, 
+				room_x: room_manager.room_index_x,
+				room_y: room_manager.room_index_y,
+				facing: this.facing
+			};
+		
+			var checkpoint = new Checkpoint(this.x, this.y);
+			checkpoint.lex = 3;
+			checkpoint.is_glitched = true;
+			room.entities.push(checkpoint);
 		}
 	}
 }

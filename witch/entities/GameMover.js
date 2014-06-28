@@ -240,9 +240,7 @@ GameMover.prototype.CompensateForSlopes = function(was_on_ground, floor_tile){
 GameMover.prototype.UpdateAnimationFromState = function(){
 	switch (this.move_state){
 		case MoveState.STANDING:
-			if (this.pressing_down)
-				this.animation.Change(1, 0, 1);
-			else this.animation.Change(0, 0, 1);
+			this.animation.Change(0, 0, 2);
 			break;
 		case MoveState.RUNNING: 
 			this.animation.Change(2, 0, 4);

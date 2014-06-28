@@ -48,6 +48,7 @@ Collection.prototype.GetName = function(){
 		case 4: return "wall spell";
 		case 5: return "invis spell";
 		case 6: return "zero spell";
+		case 7: return "memory spell";
 		default: break;
 	}
 }
@@ -80,6 +81,12 @@ Collection.prototype.GetEvent = function(){
 			break;
 		case 5:
 			room_manager.spellbook.push(Glitch.ZERO);
+			break;
+		case 6:
+			room_manager.spellbook.push(Glitch.NEGATIVE);
+			break;
+		case 7:
+			room_manager.spellbook.push(Glitch.PINK);
 			break;
 		default: break;
 	}
