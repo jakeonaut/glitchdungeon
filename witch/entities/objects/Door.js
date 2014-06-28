@@ -35,6 +35,9 @@ Door.prototype.Export = function(){
 }
 
 Door.prototype.Update = function(delta, map){
+	if (this.room_x >= room_manager.house_width || this.room_y >= room_manager.house_height){
+		return;
+	}
 	GameSprite.prototype.Update.call(this, delta, map);
 	
 	if (this.IsColliding(map.player)){

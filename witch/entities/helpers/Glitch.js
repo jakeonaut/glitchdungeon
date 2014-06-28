@@ -293,6 +293,7 @@ Glitch.GoldTransform = function(map, player, only_visual){
 		GameSprite.prototype.Update.call(this, delta, map);
 		
 		this.touching_door = false;
+		this.touching_checkpoint = false;
 	}
 }
 

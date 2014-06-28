@@ -49,7 +49,7 @@ Collection.prototype.GetName = function(){
 		case 3: return "gravity spell";
 		case 4: return "wall spell";
 		case 5: return "invis spell";
-		case 6: return "zero spell";
+		case 6: return "undefined";
 		case 7: return "memory spell";
 		default: break;
 	}
@@ -87,6 +87,17 @@ Collection.prototype.GetEvent = function(){
 			break;
 		case 6:
 			room_manager.spellbook.push(Glitch.NEGATIVE);
+			Glitch.TransformPlayer(room, Glitch.NEGATIVE);
+			
+			for (var i = 0; i < room_manager.rooms.length; i++){
+				for (var j = 0; j < room_manager.rooms[i].length; j++){
+					for (var k = 0; k < room_manager.rooms[i][j].entities.length; k++){
+						if (room_manager.rooms[i][j].entities[k].type === "Collection"){
+							room_manager.rooms[i][j].entities[k].Update = GameSprite.prototype.Update;
+						}
+					}
+				}
+			}
 			break;
 		case 7:
 			room_manager.spellbook.push(Glitch.PINK);

@@ -1,13 +1,13 @@
 2. Actually pause entirely when tab becomes inactive (float text saying press enter to resume)
 4. loop music
-
+***cookies to remember what room you are in and additional necessary stuff??? (the house manager probably)
 5. Every time you glitch the room: increase
-	-the frequency of misdrawn tiles, 
 	-the frequency of bg_code creation and distortion
+	-the frequency of misdrawn tiles, 
 	-the frequency of player image glitching (sprite sheet and facing)
-	-Giant cave makes use of doors going to nonreflective places and warping around (Essentially cave is a big maze)
 6. along with locked spellbook room, should have a glitch runoff room;
 	-no normalizing after spell casting (all glitch powers)
+7. NEW GAME +:: Collect 25 artifacts after being given the walkthruwalls spell in room 1
 1. ADD DELTA SUPPORT IN ALL UPDATE FUNCTIONS???
 	
 
