@@ -1,7 +1,10 @@
-var level_edit = true;
+var level_edit = false;
 var master_volume = 0.5;
 var delta = 18; //this is a little hacky.
 var DNUM = 18;
+
+var bg_music = null;
+var bg_name = "RoccoW_outOfSight";
 
 var GAME_WIDTH=160; //CHANGE TO /2
 var GAME_HEIGHT=120; //CHANGE TO /2
@@ -36,10 +39,15 @@ var init = function(){
 	key_manager = new KeyManager();
 	window.onkeydown = key_manager.KeyDown.bind(key_manager);
 	window.onkeyup = key_manager.KeyUp.bind(key_manager);
-	canvas.onmousedown = LevelEditMouseDown;
-	canvas.onmousemove = LevelEditMouseMove;
-	canvas.onmouseup = LevelEditMouseUp;
-	$("tileset_canvas").onmousedown = TileSetMouseDown;
+	if (level_edit){
+		canvas.onmousedown = LevelEditMouseDown;
+		canvas.onmousemove = LevelEditMouseMove;
+		canvas.onmouseup = LevelEditMouseUp;
+		$("tileset_canvas").onmousedown = TileSetMouseDown;
+	}else{
+		canvas.onmousedown = SoundMouseDown;
+		canvas.onmouseup = SoundMouseUp;
+	}
 	
 	input_manager = new InputManager(key_manager);
 	if (level_edit) InitLevelEdit();
@@ -60,9 +68,65 @@ var startGame = function(){
 	//Let's play the game!
 	then = Date.now();
 	
-	Utils.playSound("RoccoW_outOfSight", master_volume, 0);
+	bg_music = Utils.playSound(bg_name, master_volume, 0, true);
 	setInterval(main, 17);
 };
+
+var stopSound = function(){
+	resource_manager.play_sound = false;
+}
+
+var startSound = function(){
+	if (!resource_manager.can_play_sound) return;
+	resource_manager.play_sound = true;
+}
+
+var stopMusic = function(){
+	resource_manager.play_music = false;
+	if (bg_music !== null){
+		bg_music.stop();
+		bg_music = null;
+	}
+}
+
+var startMusic = function(){
+	if (!resource_manager.can_play_sound) return;
+	resource_manager.play_music = true;
+
+	if (bg_name !== null){
+		bg_music = Utils.playSound(bg_name, master_volume, 0, true);
+	}
+}
+
+var SoundMouseDown = function(){
+}
+
+var SoundMouseUp = function(e){
+	var box = canvas.getBoundingClientRect();
+	
+	var x = (e.clientX - box.left) / 2;
+	var y = (e.clientY - box.top) / 2;
+	
+	console.log(x + ", " + y);
+	
+	if (x >= 4 && x <= 20){
+		if (y >= 4 && y <= 20){
+			if (resource_manager.play_music){
+				stopMusic();
+			}else if (resource_manager.can_play_sound){
+				startMusic();
+			}
+		}
+		
+		else if (y >= 24 && y <= 40){
+			if (resource_manager.play_sound){
+				stopSound();
+			}else if (resource_manager.can_play_sound){
+				startSound();
+			}
+		}
+	}
+}
 
 //main game loop
 var main = function(){
@@ -92,6 +156,27 @@ var render = function(){
 	//draw the game
 	sharpen(ctx);
 	room.Render(ctx, level_edit);
+	
+	//draw sound buttons
+	var ani_x = 0;
+	if (!resource_manager.play_music) ani_x = 16;
+	
+	ctx.scale(0.5, 0.5);
+	ctx.drawImage(resource_manager.soundButtons, 
+		//SOURCE RECTANGLE
+		ani_x, 0, 16, 16,
+		//DESTINATION RECTANGLE
+		4, 4, 16, 16
+	);
+	
+	ani_x = 0;
+	if (!resource_manager.play_sound) ani_x = 16;
+	ctx.drawImage(resource_manager.soundButtons, 
+		//SOURCE RECTANGLE
+		ani_x, 16, 16, 16,
+		//DESTINATION RECTANGLE
+		4, 24, 16, 16
+	);
 };
 
 window.onload=init;

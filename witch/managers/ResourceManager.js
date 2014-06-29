@@ -26,12 +26,15 @@ function ResourceManager(){
 		"tile_negative_sheet",
 		"player_pink_sheet",
 		"tile_pink_sheet",
+		"soundButtons"
 	];
 	this.necessary_images = 8;
 	this.num_images = this.image_names.length;
 	
 	//SOUND VARIABLE DECLARATION
 	this.play_sound = true;
+	this.play_music = true;
+	this.can_play_sound = true;
 	this.audio_context;
 	try{
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -40,6 +43,8 @@ function ResourceManager(){
 		console.log(e);
 		this.audio_context = null;
 		this.play_sound = false;
+		this.play_music = false;
+		this.can_play_sound = false;
 	}
 	this.sounds_loaded = 0;
 	this.sound_names = [
@@ -55,7 +60,8 @@ function ResourceManager(){
 		,"switchglitch"
 		,"error"
 	];
-	this.necessary_sounds = 1;
+	if (!this.can_play_sound) this.necessary_sounds = 0;
+	else this.necessary_sounds = 1;
 	this.num_sounds = this.sound_names.length;
 }
 
@@ -96,7 +102,7 @@ ResourceManager.prototype.LoadResources = function(ctx){
 		this[img].src = img_path + img + ".png";
 	}
 	
-	if (this.audio_context === null){ 
+	if (this.audio_context === null || !this.can_play_sound){ 
 		this.sounds_loaded = this.snd_names.length;
 		return;
 	}

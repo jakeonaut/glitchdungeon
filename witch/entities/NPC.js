@@ -84,7 +84,7 @@ NPC.prototype.GetText = function(){
 		case 9:
 			return "magick controls\nthe dungeon";
 		case 10:
-			return "GET\nwitch/rooms/rooms/room_2_3.txt\n404 (File not found)";
+			return "GET\nwitch/rooms/rooms/room_4_5.txt\n404 (File not found)";
 		case 11:
 			return "patience is a virtue\n\nthat means nothing here";
 		case 12:
@@ -113,6 +113,8 @@ NPC.prototype.GetText = function(){
 				console.log("start");
 				//Let's play the game!
 				then = Date.now();
+				
+				InputManager.RestartGame = function(){}
 			}
 			return "thanks for playing :)!\n\npress enter to restart";
 		default:

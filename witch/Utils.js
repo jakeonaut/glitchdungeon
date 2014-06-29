@@ -1,11 +1,15 @@
 function Utils(){}
 
-Utils.playSound = function(sound_name, volume, time){
-	if (!resource_manager.play_sound || !resource_manager[sound_name]) return;
+Utils.playSound = function(sound_name, volume, time, loop){
+	loop = defaultValue(loop, false);
+
+	if (!resource_manager.can_play_sound || (!resource_manager.play_sound || (!resource_manager.play_music && loop)) || !resource_manager[sound_name]) 
+		return;
 
 	//http://www.html5rocks.com/en/tutorials/webaudio/intro/
 	var source = resource_manager.audio_context.createBufferSource(); //creates a sound source
 	source.buffer = resource_manager[sound_name]; //tell the source which sound to play
+	source.loop = loop;
 	
 	var v = volume || 1.0;
 	//Create a gain node
@@ -23,6 +27,8 @@ Utils.playSound = function(sound_name, volume, time){
 	//NOTE: on older systems, may have to use deprecated noteOn(time);
 	else
 		source.noteOn(t);
+		
+	return source;
 }
 
 function readTextFile(file){

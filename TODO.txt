@@ -1,6 +1,4 @@
-2. Actually pause entirely when tab becomes inactive (float text saying press enter to resume)
-4. loop music
-	-ALLOW MUTING MUSIC AND SOUND
+4. ALLOW MUTING MUSIC AND SOUND
 1. land sound is corrupt
 0. clean up level editor: (and have a seperate web page to the editor from the main game)
 	-export HOUSE option as linkable html thing to share with friends
