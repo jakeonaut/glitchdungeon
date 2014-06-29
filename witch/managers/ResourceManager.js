@@ -101,19 +101,10 @@ ResourceManager.prototype.LoadResources = function(ctx){
 		return;
 	}
 	//Load Sounds
-	this.LoadSound();
-	/*for (var i = 0; i < this.sound_names.length; i++){
+	for (var i = 0; i < this.sound_names.length; i++){
 		var snd = this.sound_names[i];
 		this.loadBuffer(snd_path + snd + ".mp3", snd);
-	}*/
-}
-
-ResourceManager.prototype.LoadSound = function(){
-	if (this.sounds_loaded >= this.sound_names.length)
-		return;
-		
-	var snd = this.sound_names[this.sounds_loaded];
-	this.loadBuffer(snd_path + snd + ".mp3", snd);
+	}
 }
 
 ResourceManager.prototype.loadBuffer = function(url, index) {
@@ -136,7 +127,6 @@ ResourceManager.prototype.loadBuffer = function(url, index) {
         }
         loader[index] = buffer;
 		loader.SoundLoad();
-		loader.LoadSound();
       },
       function(error) {
         console.error('decodeAudioData error', error);

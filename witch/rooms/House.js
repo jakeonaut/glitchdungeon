@@ -1,4 +1,9 @@
 function House(){
+	this.num_deaths = 0;
+	this.spells_cast = 0;
+	this.then = Date.now();
+	this.time = 0;
+
 	this.num_artifacts = 0;
 	this.has_spellbook = false;
 	this.spellbook = [];
@@ -11,7 +16,7 @@ function House(){
 	this.old_room_index_y = 0;
 	
 	this.house_width = 6;
-	this.house_height = 5;
+	this.house_height = 6;
 	this.SetUpRooms();
 	
 	var room = this.rooms[this.room_index_y][this.room_index_x];
@@ -55,6 +60,7 @@ House.prototype.SetUpRooms = function(){
 		}
 		this.rooms.push(row);
 	}
+	//this.rooms[99][99] = Room.Import(path + "99_99.txt");
 }
 
 House.prototype.GetRoom = function(){
@@ -99,6 +105,13 @@ House.prototype.ChangeRoom = function(){
 	}else{
 		Glitch.TransformPlayer(room, room.glitch_type); //this.glitch);
 	}
+	
+	//END CONDITION LOL
+	if (this.room_index_x === 5 && this.room_index_y === 5){
+		Glitch.TransformPlayer(room, Glitch.GREY);
+		this.has_spellbook = false;
+		this.time = Math.floor((Date.now() - this.then) / 1000);
+	}
 }
 
 House.prototype.RandomGlitch = function(){
@@ -106,6 +119,7 @@ House.prototype.RandomGlitch = function(){
 		Utils.playSound("error", master_volume, 0);
 		return;
 	}
+	this.spells_cast++;
 	Utils.playSound("switchglitch", master_volume, 0);
 
 	/*var rindex = Math.floor(Math.random()*this.spellbook.length);
@@ -134,6 +148,9 @@ House.prototype.RandomGlitch = function(){
 }
 
 House.prototype.RevivePlayer = function(){
+	console.log("REVIVE!");
+	this.num_deaths++;
+
 	this.room_index_x = this.checkpoint.room_x;
 	this.room_index_y = this.checkpoint.room_y;
 	this.old_room_index_x = this.room_index_x;

@@ -36,7 +36,9 @@ InputManager.prototype.Update = function(player){
 	
 	
 	//DEBUG TODO DELETE IN RELEASE
-	/*if (this.key_manager.keys_pressed[KeyManager.ENTER]){
-		room_manager.RevivePlayer();
-	}*/
+	if (this.key_manager.keys_pressed[KeyManager.ENTER]){
+		InputManager.RestartGame();
+	}
 }
+
+InputManager.RestartGame = function(){};

@@ -35,7 +35,9 @@ NPC.prototype.Update = function(delta, map){
 	//TALK TO PLAYER AND SUCH
 	if (this.IsRectColliding(map.player, this.x+this.lb-Tile.WIDTH, this.y+this.tb, this.x+this.rb+Tile.WIDTH, this.y+this.bb)){
 		this.talking = true;
-		room.Speak("NPC: "+this.GetText());
+		if (this.npc_id != 19)
+			room.Speak("NPC: "+this.GetText());
+		else room.Speak(this.GetText());
 	}
 	else if (this.talking){
 		this.talking = false;
@@ -72,7 +74,7 @@ NPC.prototype.GetText = function(){
 		case 4:
 			return "press down to\nplace a memory";
 		case 5:
-			return "we are free now";
+			return "are we free now?";
 		case 6:
 			return "dying revives you to\nlast checkpoint\ni'm sorry";
 		case 7:
@@ -89,6 +91,30 @@ NPC.prototype.GetText = function(){
 			return "give up your hope\nbefore you lose it";
 		case 13:
 			return "there is no real escape";
+		case 14:
+			return "i believe in you";
+		case 15:
+			return "nice of you to stop by\nthis is the wrong way";
+		case 16:
+			return "you escaped!\ncongratulations!";
+		case 17:
+			return "we knew you could do it!\nwell i did at least";
+		case 18:
+			return "hip hip hooray!\nyay!!\nyou're the best!";
+		case 19:
+			return 	"deaths: " + room_manager.num_deaths + "\n" +
+					"spells cast: " + room_manager.spells_cast + "\n" +
+					"time: " + room_manager.time + " s";
+		case 20:
+			InputManager.RestartGame = function(){
+				room_manager = new House();
+				room = room_manager.GetRoom();
+
+				console.log("start");
+				//Let's play the game!
+				then = Date.now();
+			}
+			return "thanks for playing :)!\n\npress enter to restart";
 		default:
 			break;
 	}

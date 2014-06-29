@@ -1,6 +1,6 @@
 var level_edit = true;
 var master_volume = 0.5;
-var delta = 0; //this is a little hacky.
+var delta = 18; //this is a little hacky.
 var DNUM = 18;
 
 var GAME_WIDTH=160; //CHANGE TO /2
@@ -60,7 +60,7 @@ var startGame = function(){
 	//Let's play the game!
 	then = Date.now();
 	
-	//Utils.playSound("RoccoW_outOfSight", master_volume, 0);
+	Utils.playSound("RoccoW_outOfSight", master_volume, 0);
 	setInterval(main, 17);
 };
 
@@ -68,7 +68,7 @@ var startGame = function(){
 var main = function(){
 	var now = Date.now();
 	//time variable so we can make the speed right no matter how fast the script
-    delta = now - then;
+    //delta = now - then;
 	
 	update(delta);
 	render();

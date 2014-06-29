@@ -1,17 +1,13 @@
-0. get rid of gravity spell. just keep the wall jump
-	-make the two falling rooms a climbing room
-
 2. Actually pause entirely when tab becomes inactive (float text saying press enter to resume)
 4. loop music
 	-ALLOW MUTING MUSIC AND SOUND
+1. land sound is corrupt
 0. clean up level editor: (and have a seperate web page to the editor from the main game)
 	-export HOUSE option as linkable html thing to share with friends
 	-drop down selector for objects is dynamic to also be for tile type, and npc and item can select dialog and event?
-3. cookies to remember what room you are in and additional necessary stuff??? (the house manager probably)
 
 !!!$$%%%PROBLEMS WITH OTHER BROWSERS::
 	-OPERA:: can't handle loader.audio_context.decodeAudioData in resourceManager
-	-FIREFOX:: "decodeAudioData error" undefined
 	-SAFARI:: I can't find the console but i assume the same problem as above
 	-INTERNET EXPLORER:: BufferLoader: XHR error
 
