@@ -34,7 +34,7 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.original_grav_acc = 0.8;
 	this.float_grav_acc = 0.4;
 	this.grav_acc = this.original_grav_acc;//35.1; //pixels/second
-	this.jump_vel = defaultValue(jump_vel, 4.2);
+	this.jump_vel = defaultValue(jump_vel, 4.5);
 	this.is_jumping = false;
 	this.jump_timer = 0;
 	this.jump_time_limit = 30;
@@ -49,6 +49,8 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.prev_move_state = this.move_state;
 	this.facing = Facing.RIGHT;
 	this.original_facing = this.facing;
+	
+	this.die_to_suffocation = false;
 }
 extend(GameSprite, GameMover);
 
@@ -89,9 +91,40 @@ GameMover.prototype.Update = function(delta, map)
 	this.UpdateAnimationFromState();
 	
 	GameSprite.prototype.Update.call(this, delta, map);
+	
+	this.DieToSuffocation(map);
 }
 
 /*********************PHYSICS AND COLLISION DETECTIONS********************/
+GameMover.prototype.DieToSuffocation = function(map){
+	if (!this.die_to_suffocation) return;
+	this.die_to_suffocation = false;
+
+	var left_tile = Math.floor((this.x + this.lb) / Tile.WIDTH);
+	var right_tile = Math.floor((this.x + this.rb) / Tile.WIDTH);
+	var top_tile = Math.floor((this.y + this.tb) / Tile.HEIGHT);
+	var bottom_tile = Math.floor((this.y + this.bb) / Tile.HEIGHT);
+	
+	//Check all potentially colliding tiles
+	var can_i_breath = false;
+	for (var i = top_tile; i <= bottom_tile; i++){
+		for (var j = left_tile; j <= right_tile; j++){
+			if (!map.isValidTile(i, j)) continue;
+			var tile = map.tiles[i][j];
+			if (tile.collision === Tile.GHOST || tile.collision === Tile.FALLTHROUGH){
+				can_i_breath = true;
+				break;
+			}
+		}
+	}
+	
+	if (!can_i_breath){
+		this.Die();
+	}
+}
+
+GameMover.prototype.Die = function(){}
+
 GameMover.prototype.ApplyPhysics = function(delta, map)
 {
 	var prev_pos = {x: this.x, y: this.y};
@@ -151,7 +184,7 @@ GameMover.prototype.HandleHorizontalCollisions = function(map, left_tile, right_
 			if (!map.isValidTile(i, j)) continue;
 			var tile = map.tiles[i][j];
 			//don't check for collisions if potential tile is "out of bounds" or not solid
-			if (tile.collision != Tile.SOLID) continue;
+			if (tile.collision != Tile.SOLID && tile.collision != Tile.SUPER_SOLID) continue;
 			
 			//Reset floor tile
 			if (floor_tile == null || (tile.y > this.y && Math.abs(tile.x-this.x) < Math.abs(floor_tile.x-this.x))){ 

@@ -15,6 +15,7 @@ Tile.GHOST = -1;
 Tile.SOLID = 0;
 Tile.FALLTHROUGH = 1;
 Tile.KILL_PLAYER = 2;
+Tile.SUPER_SOLID = 3;
 
 function Tile(x, y, collision, slope){
 	GameObject.call(this, x, y, 0, 0, Tile.WIDTH, Tile.HEIGHT);

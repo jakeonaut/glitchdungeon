@@ -1,15 +1,22 @@
 2. Actually pause entirely when tab becomes inactive (float text saying press enter to resume)
 4. loop music
-***cookies to remember what room you are in and additional necessary stuff??? (the house manager probably)
+3. cookies to remember what room you are in and additional necessary stuff??? (the house manager probably)
 5. Every time you glitch the room: increase
 	-the frequency of bg_code creation and distortion
 	-the frequency of misdrawn tiles, 
 	-the frequency of player image glitching (sprite sheet and facing)
 6. along with locked spellbook room, should have a glitch runoff room;
 	-no normalizing after spell casting (all glitch powers)
-7. NEW GAME +:: Collect 25 artifacts after being given the walkthruwalls spell in room 1
 1. ADD DELTA SUPPORT IN ALL UPDATE FUNCTIONS???
-	
+0. clean up level editor:
+	-drop down selector for objects is dynamic to also be for tile type, and npc and item can select dialog and event?
+7. NEW GAME +:: Collect 25 artifacts after being given the walkthruwalls spell in room 1
+
+!!!$$%%%PROBLEMS WITH OTHER BROWSERS::
+	-OPERA:: can't handle loader.audio_context.decodeAudioData in resourceManager
+	-FIREFOX:: "decodeAudioData error" undefined
+	-SAFARI:: I can't find the console but i assume the same problem as above
+	-INTERNET EXPLORER:: BufferLoader: XHR error
 
 
 ***GLITCH JAM 9-30::	code-magick academy where you learn the abilities of other videogame creatures and use it to get to the top of the tower and beat the final boss

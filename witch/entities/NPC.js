@@ -60,17 +60,35 @@ NPC.prototype.UpdateAnimationFromState = function(){
 NPC.prototype.GetText = function(){
 	switch (this.npc_id){
 		case -1:
-			return "hold up to jump higher";
+			return "hold up to jump higher\n\nthere is no escape";
 		case 0:
-			return "you must escape\n the labyrinth";
+			return "you must escape\n the labyrinth\nuse arrow keys";
 		case 1:
 			return "press down to fall\n and to enter doors";
 		case 2:
-			return "it's so lonely here";
+			return "when red, you can\nwalk off cliffs\nwithout falling";
 		case 3:
 			return "press space bar\n to cast a spell";
 		case 4:
 			return "press down to\nplace a memory";
+		case 5:
+			return "we are free now";
+		case 6:
+			return "dying revives you to\nlast checkpoint\ni'm sorry";
+		case 7:
+			return "remember your wits\n\ndeath is inevitable";
+		case 8:
+			return "don't afraid of\nfailure\nits all there is";
+		case 9:
+			return "magick controls\nthe dungeon";
+		case 10:
+			return "GET\nwitch/rooms/rooms/room_2_3.txt\n404 (File not found)";
+		case 11:
+			return "patience is a virtue\n\nthat means nothing here";
+		case 12:
+			return "give up your hope\nbefore you lose it";
+		case 13:
+			return "there is no real escape";
 		default:
 			break;
 	}

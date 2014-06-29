@@ -105,6 +105,9 @@ function LevelEditMouseDown(e){
 				case Tile.SOLID:
 					tile.collision = Tile.SOLID;
 					break;
+				case Tile.SUPER_SOLID:
+					tile.collision = Tile.SUPER_SOLID;
+					break;
 				case Tile.FALLTHROUGH:
 					tile.collision = Tile.FALLTHROUGH;
 					break;
@@ -220,6 +223,11 @@ function ledit_select(box, obj_type){
 			level_edit_object_is_tile = true;
 			level_edit_object = Tile.SOLID;
 			LeditSetTileImage(0, 1);
+			break;
+		case Tile.SUPER_SOLID:
+			level_edit_object_is_tile = true;
+			level_edit_object = Tile.SUPER_SOLID;
+			LeditSetTileImage(1, 1);
 			break;
 		case Tile.FALLTHROUGH:
 			level_edit_object_is_tile = true;

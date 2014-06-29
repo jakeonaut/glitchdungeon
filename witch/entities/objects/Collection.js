@@ -27,7 +27,7 @@ Collection.prototype.Export = function(){
 extend(GameSprite, Collection);
 
 Collection.prototype.Update = function(delta, map){
-	if (this.IsColliding(map.player) && map.player.on_ground){
+	if (this.IsColliding(map.player)){
 		this.delete_me = true;
 		Utils.playSound("pickup", master_volume, 0);
 		room_manager.num_artifacts++;
@@ -61,10 +61,10 @@ Collection.prototype.GetEvent = function(){
 			room_manager.has_spellbook = true;
 			var door = room_manager.rooms[4][2].GetDoor(0);
 			door.locked = true;
-			door.room_x = 0;
-			door.room_y = 2;
-			door.num_artifacts = 7;
-			room_manager.rooms[4][2].entities.push(new NPC(17*Tile.WIDTH, 7*Tile.HEIGHT, 3));
+			door.room_x = 5;
+			door.room_y = 0;
+			door.num_artifacts = 5;
+			room_manager.rooms[4][2].entities.push(new NPC(1*Tile.WIDTH, 7*Tile.HEIGHT, 3));
 			room_manager.rooms[4][2].entities.push(new Checkpoint(this.x, this.y));
 			room_manager.rooms[4][2].bg_code = "switch (Ǥlitch_type){\n\tcase Ǥlitch.ǤREY:\n\t\tbreak;\n\tcあse Ǥlitch.RED:\n\t\tǤlitch.RedTrあnsform(mあp, mあp.plあyer, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.ǤREEN:\n\t\tǤlitch.ǤreenTrあnsform(mあp, mあp.player, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.BLUE:";
 			break;
@@ -73,11 +73,10 @@ Collection.prototype.GetEvent = function(){
 			break;
 		case 2: 
 			room_manager.spellbook.push(Glitch.RED);
-			room_manager.rooms[0][2].entities.push(new NPC(6*Tile.WIDTH, 12*Tile.HEIGHT, 2));
 			break;
 		case 3:
 			room_manager.spellbook.push(Glitch.BLUE);
-			Glitch.TransformPlayer(room, Glitch.BLUE);
+			//Glitch.TransformPlayer(room, Glitch.BLUE);
 			break;
 		case 4:
 			room_manager.spellbook.push(Glitch.GOLD);
@@ -87,7 +86,7 @@ Collection.prototype.GetEvent = function(){
 			break;
 		case 6:
 			room_manager.spellbook.push(Glitch.NEGATIVE);
-			Glitch.TransformPlayer(room, Glitch.NEGATIVE);
+			//Glitch.TransformPlayer(room, Glitch.NEGATIVE);
 			
 			for (var i = 0; i < room_manager.rooms.length; i++){
 				for (var j = 0; j < room_manager.rooms[i].length; j++){
@@ -105,7 +104,7 @@ Collection.prototype.GetEvent = function(){
 			room_manager.rooms[4][4].entities.push(new NPC(8*Tile.WIDTH, 10*Tile.HEIGHT, 4));
 			room_manager.rooms[4][4].entities.push(new NPC(13*Tile.WIDTH, 7*Tile.HEIGHT, 4));
 			
-			Glitch.TransformPlayer(room, Glitch.PINK);
+			//Glitch.TransformPlayer(room, Glitch.PINK);
 			break;
 		default: break;
 	}

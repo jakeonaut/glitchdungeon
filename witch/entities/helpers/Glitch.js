@@ -10,6 +10,8 @@ Glitch.PINK = 7;
 function Glitch(){};
 
 Glitch.TransformPlayer = function(map, glitch_type, normalize, only_visual){
+	if (room_manager && room_manager.glitch_type === Glitch.NEGATIVE)
+		map.player.die_to_suffocation = true;
 	if (room_manager) room_manager.glitch_type = glitch_type;
 	normalize = defaultValue(normalize, true);
 	only_visual = only_visual || false;
@@ -294,6 +296,8 @@ Glitch.GoldTransform = function(map, player, only_visual){
 		
 		this.touching_door = false;
 		this.touching_checkpoint = false;
+		
+		this.DieToSuffocation(map);
 	}
 }
 
@@ -304,6 +308,45 @@ Glitch.NegativeTransform = function(map, player, only_visual){
 		
 	player.HandleHorizontalCollisions = function(map, left_tile, right_tile, top_tile, bottom_tile, q, floor_tile){
 		this.horizontal_collision = false;
+		//Check all potentially colliding tiles
+		for (var i = top_tile; i <= bottom_tile; i++){
+			for (var j = left_tile; j <= right_tile; j++){
+				if (!map.isValidTile(i, j)) continue;
+				var tile = map.tiles[i][j];
+				//don't check for collisions if potential tile is "out of bounds" or not solid
+				if (tile.collision != Tile.SUPER_SOLID) continue;
+				
+				//Reset floor tile
+				if (floor_tile == null || (tile.y > this.y && Math.abs(tile.x-this.x) < Math.abs(floor_tile.x-this.x))){ 
+					floor_tile = tile;
+				}
+				
+				//Check for left collisions
+				if (this.vel.x < 0 && this.IsRectColliding(tile, this.x + this.lb + this.vel.x - 1, 
+				this.y + this.tb + q, this.x + this.lb, this.y + this.bb - q)){
+					//this is a negative slope (don't collide left)
+					if (tile.l_height < tile.r_height){}
+					//okay we're colliding with a solid to our left
+					else{
+						this.vel.x = 0;
+						this.horizontal_collision = true;
+						this.x = tile.x + Tile.WIDTH - this.lb;
+					}
+				}
+				
+				//Check for Right collisions
+				if (this.vel.x > 0 && this.IsRectColliding(tile, this.x + this.rb, this.y + this.tb + q, this.x + this.rb + this.vel.x, this.y + this.bb - q)){
+					//this is a positive slope (don't collide right)
+					if (tile.r_height < tile.l_height){}
+					//okay we're colliding with a solid to our right
+					else{
+						this.vel.x = 0;
+						this.horizontal_collision = true;
+						this.x = tile.x - this.rb;
+					}
+				}
+			}
+		}
 	}
 
 	player.HandleVerticalCollisions = function(map, left_tile, right_tile, top_tile, bottom_tile, q){
@@ -318,7 +361,7 @@ Glitch.NegativeTransform = function(map, player, only_visual){
 				//Check for bottom collisions
 				if (this.vel.y >= 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.bb, this.x + this.rb - q, this.y + this.bb + this.vel.y + 1)){
 					//Don't count bottom collision for fallthrough platforms if we're not at the top of it
-					if (tile.y < this.y + this.bb || (this.pressing_down && !this.touching_door))
+					if (tile.y < this.y + this.bb || (this.pressing_down && !this.touching_door && tile.collision != Tile.SUPER_SOLID))
 						continue;
 					this.vel.y = 0;
 					
@@ -333,6 +376,8 @@ Glitch.NegativeTransform = function(map, player, only_visual){
 			}
 		}
 	}
+	
+	player.DieToSuffocation = function(map){};
 }
 
 Glitch.PinkTransform = function(map, player, only_visual){

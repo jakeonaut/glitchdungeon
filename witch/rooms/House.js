@@ -10,7 +10,7 @@ function House(){
 	this.old_room_index_x = 0;
 	this.old_room_index_y = 0;
 	
-	this.house_width = 5;
+	this.house_width = 6;
 	this.house_height = 5;
 	this.SetUpRooms();
 	
@@ -50,6 +50,7 @@ House.prototype.SetUpRooms = function(){
 	for (var i = 0; i < this.house_height; i++){
 		var row = [];
 		for (var j = 0; j < this.house_width; j++){
+			//console.log(j + ", " + i);
 			row.push(Room.Import(path + j + "_" + i + ".txt"));
 		}
 		this.rooms.push(row);
