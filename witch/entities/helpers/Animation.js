@@ -37,7 +37,7 @@ Animation.prototype.Update = function(delta){
 	this.frame_change = false;
 	this.animation_end = false;
 	
-	this.frame_count++;
+	this.frame_count+=(delta/DNUM);
 	if (this.frame_count >= this.frame_delay){
 		if (this.curr_frame < this.max_frame) this.curr_frame++;
 		if (this.curr_frame >= this.max_frame)

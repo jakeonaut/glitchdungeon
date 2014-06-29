@@ -27,7 +27,7 @@ function ResourceManager(){
 		"player_pink_sheet",
 		"tile_pink_sheet",
 	];
-	this.necessary_images = this.image_names.length;
+	this.necessary_images = 8;
 	this.num_images = this.image_names.length;
 	
 	//SOUND VARIABLE DECLARATION
@@ -43,17 +43,17 @@ function ResourceManager(){
 	}
 	this.sounds_loaded = 0;
 	this.sound_names = [
-		//"RoccoW_outOfSight"
-		"jump"
-		//,"land"
-		//,"LA_Stairs"
-		//,"locked"
-		//,"checkpoint"
-		//,"hurt"
-		//,"pickup"
-		//,"LA_Chest_Open"
-		//,"switchglitch"
-		//,"error"
+		"RoccoW_outOfSight"
+		,"jump"
+		,"land"
+		,"LA_Stairs"
+		,"locked"
+		,"checkpoint"
+		,"hurt"
+		,"pickup"
+		,"LA_Chest_Open"
+		,"switchglitch"
+		,"error"
 	];
 	this.necessary_sounds = 1;
 	this.num_sounds = this.sound_names.length;
@@ -154,6 +154,6 @@ ResourceManager.prototype.loadBuffer = function(url, index) {
 ResourceManager.prototype.CheckLoadedResources = function(){
 	if (this.images_loaded >= this.necessary_images 
 		&& this.sounds_loaded >= this.necessary_sounds){
-		startGame();
+		if (!game_started) startGame();
 	}
 }

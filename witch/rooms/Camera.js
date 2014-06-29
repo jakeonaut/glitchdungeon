@@ -21,7 +21,7 @@ Camera.prototype.Update = function(delta, map){
 			if (this.instant)
 				this.x = (player.x + player.rb + this.x_lim) - this.width;
 			else{
-				this.x += this.speed;
+				this.x += (this.speed) * (delta/DNUM);
 			}
 			
 			if (this.x >= map.MAP_WIDTH * Tile.WIDTH - this.width)
@@ -33,7 +33,7 @@ Camera.prototype.Update = function(delta, map){
 			if (this.instant)
 				this.x = (player.x + player.lb - this.x_lim);
 			else{ 
-				this.x -= this.speed;
+				this.x -= (this.speed) * (delta/DNUM);
 			}
 			
 			if (this.x <= 0) this.x = 0;
@@ -46,7 +46,7 @@ Camera.prototype.Update = function(delta, map){
 			if (this.instant)
 				this.y = (player.y + player.bb + this.y_lim) - this.height;
 			else{
-				this.y += this.speed;
+				this.y += (this.speed) * (delta/DNUM);
 			}
 			
 			if (this.y >= map.MAP_HEIGHT * Tile.HEIGHT - this.height)
@@ -58,7 +58,7 @@ Camera.prototype.Update = function(delta, map){
 			if (this.instant)
 				this.y = (player.y + player.tb - this.y_lim);
 			else{
-				this.y -= this.speed;
+				this.y -= (this.speed) * (delta/DNUM);
 			}
 			
 			if (this.y <= 0) this.y = 0;

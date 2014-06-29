@@ -65,30 +65,30 @@ Room.prototype.isValidTile = function(i, j){
 
 Room.prototype.Update = function(input, delta){
 	input.Update(this.player);
-	this.player.Update(delta/1000, this);
+	this.player.Update(delta, this);
 	this.TryUpdateRoomIfPlayerOffscreen();
-	this.camera.Update(delta/1000, this);
+	this.camera.Update(delta, this);
 	
 	for (var i = this.entities.length-1; i >= 0; i--){
-		this.entities[i].Update(delta/1000, this);
+		this.entities[i].Update(delta, this);
 		if (this.entities[i].delete_me) this.entities.splice(i, 1);
 	}
 	
 	//UPDATE GLITCH SEQUENCE
 	if (room_manager && !room_manager.has_spellbook || !this.can_use_spellbook){
-		this.glitch_time++;
+		this.glitch_time+=(delta/DNUM);
 		
 		if (this.glitch_sequence.length > 1 
 				&& this.glitch_time > this.glitch_time_limit - 60 
 				&& this.glitch_time < this.glitch_time_limit)
 		{		
-			if (this.glitch_time % 20 === 0){
+			if ((~~this.glitch_time) % 20 === 0){
 				var temp_index = this.glitch_index;
 				temp_index++;
 				if (temp_index >= this.glitch_sequence.length)
 					temp_index = 0;
 				Glitch.TransformPlayer(this, this.glitch_sequence[temp_index], false, true);
-			}else if ((this.glitch_time - 10) % 20 === 0){
+			}else if (((~~this.glitch_time) - 10) % 20 === 0){
 				Glitch.TransformPlayer(this, this.glitch_sequence[this.glitch_index], false, true);
 			}
 		}
@@ -168,7 +168,7 @@ Room.prototype.RenderSpeech = function(ctx){
 	var speech_height = 32;
 
 	if (this.spoken_text != null && this.spoken_text.length > 0){
-		this.speech_timer++;
+		this.speech_timer+=(delta/DNUM);
 		if (this.speech_timer > this.speech_time_limit){
 			this.speech_timer = 0;
 			this.Speak(null);

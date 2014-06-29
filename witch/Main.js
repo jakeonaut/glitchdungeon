@@ -1,6 +1,7 @@
 var level_edit = true;
 var master_volume = 0.5;
-var DNUM = 20;
+var delta = 0; //this is a little hacky.
+var DNUM = 18;
 
 var GAME_WIDTH=160; //CHANGE TO /2
 var GAME_HEIGHT=120; //CHANGE TO /2
@@ -10,6 +11,7 @@ var canvas;
 var ctx;
 
 //primitive variables
+var game_started = false;
 var then;
 var fontColor = "rgb(0,0,0)"
 
@@ -48,6 +50,9 @@ var init = function(){
 };
 
 var startGame = function(){
+	if (game_started) return;
+	game_started = true;
+
 	room_manager = new House();
 	room = room_manager.GetRoom();
 
@@ -63,7 +68,7 @@ var startGame = function(){
 var main = function(){
 	var now = Date.now();
 	//time variable so we can make the speed right no matter how fast the script
-    var delta = now - then;
+    delta = now - then;
 	
 	update(delta);
 	render();

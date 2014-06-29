@@ -129,10 +129,10 @@ GameMover.prototype.ApplyPhysics = function(delta, map)
 {
 	var prev_pos = {x: this.x, y: this.y};
 	
-	this.ApplyGravity();
+	this.ApplyGravity(delta);
 	
 	if (!this.horizontal_input) this.MoveStop();
-	this.HandleCollisionsAndMove(map);
+	this.HandleCollisionsAndMove(map, delta);
 	this.horizontal_input = false;
 	
 	if (this.x == prev_pos.x) this.vel.x = 0;
@@ -140,15 +140,15 @@ GameMover.prototype.ApplyPhysics = function(delta, map)
 	this.previous_bottom = this.y + this.bb;
 }
 
-GameMover.prototype.ApplyGravity = function(){
+GameMover.prototype.ApplyGravity = function(delta){
 	if (!this.on_ground){
 		if (this.vel.y < this.terminal_vel)
 		{
-			this.vel.y += this.grav_acc;
+			this.vel.y += (this.grav_acc * (delta/DNUM));
 			if (this.vel.y > this.terminal_vel) 
 				this.vel.y = this.terminal_vel;
 		}else if (this.vel.y > this.terminal_vel){
-			this.vel.y -= this.grav_acc;
+			this.vel.y -= (this.grav_acc * (delta/DNUM));
 			if (this.vel.y < this.terminal_vel)
 				this.vel.y = this.terminal_vel;
 		}
@@ -156,6 +156,9 @@ GameMover.prototype.ApplyGravity = function(){
 }
 
 GameMover.prototype.HandleCollisionsAndMove = function(map){
+	this.vel.x *= (delta/DNUM);
+	this.vel.y *= (delta/DNUM);
+
 	var left_tile = Math.floor((this.x + this.lb + this.vel.x - 1) / Tile.WIDTH);
 	var right_tile = Math.ceil((this.x + this.rb + this.vel.x + 1) / Tile.WIDTH);
 	var top_tile = Math.floor((this.y + this.tb + this.vel.y - 1) / Tile.HEIGHT);
@@ -173,7 +176,9 @@ GameMover.prototype.HandleCollisionsAndMove = function(map){
 	this.HandleVerticalCollisions(map, left_tile, right_tile, top_tile, bottom_tile, q_vert);
 	this.y += this.vel.y;
 	if (this.vel.y != 0) this.played_land_sound = false;
-	this.CompensateForSlopes(this.was_on_ground, floor_tile);
+	
+	this.vel.x /= (delta/DNUM);
+	this.vel.y /= (delta/DNUM);
 }
 
 GameMover.prototype.HandleHorizontalCollisions = function(map, left_tile, right_tile, top_tile, bottom_tile, q, floor_tile){
@@ -253,22 +258,6 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 	}
 }
 
-GameMover.prototype.CompensateForSlopes = function(was_on_ground, floor_tile){
-	//if the bottom center of mover is touching the floor
-	if (this.vel.y >= 0 && was_on_ground && floor_tile != null && this.IsRectColliding(floor_tile, this.x + this.rb/2 - 2, this.y + this.bb, this.x + this.rb / 2 + 2, this.y + this.bb + 1)){
-		if (floor_tile.r_height > floor_tile.l_height){ //negative slope
-			y = floor_tile.y + floor_tile.l_height + ((this.x - floor_tile.x) * (floor_tile.r_height - floor_tile.l_height)/Tile.HEIGHT) - this.bb;
-			this.y++;
-			this.on_ground = true;
-		}
-		else if (floor_tile.r_height < floor_tile.l_height){ //positive slope
-			this.y = floor_tile.y + floor_tile.r_height + ((floor_tile.x - this.x) * (floor_tile.l_height - floor_tile.r_height) / Tile.HEIGHT) - this.bb;
-			this.y++;
-			this.on_ground = true;
-		}
-	}
-}
-
 /******************RENDER AND ANIMATION FUNCTIONS***********************/
 GameMover.prototype.UpdateAnimationFromState = function(){
 	switch (this.move_state){
@@ -324,16 +313,16 @@ GameMover.prototype.Move = function(mult){
 	else{ acc = this.air_run_acc; }
 	
 	if (Math.abs(this.vel.x) < this.max_run_vel){
-		this.vel.x += acc * mult;
+		this.vel.x += (acc * mult) * (delta/DNUM);
 		this.CorrectVelocity(mult);
 	}
 	else if (Math.abs(this.vel.x) > this.max_run_vel){
-		this.vel.x -= acc * mult;
+		this.vel.x -= (acc * mult) * (delta/DNUM);
 		if (Math.abs(this.vel.x) < this.max_run_vel)
 			this.vel.x = this.max_run_vel * mult;
 	}
 	else if (Math.abs(this.vel.x) == this.max_run_vel && this.vel.x != this.max_run_vel * mult){
-		this.vel.x += acc * mult;
+		this.vel.x += (acc * mult) * (delta/DNUM);
 	}
 }
 
@@ -341,19 +330,19 @@ GameMover.prototype.MoveStop = function(){
 	this.mult = 0;
 	if (this.on_ground){
 		if (this.vel.x > 0){
-			this.vel.x -= this.gnd_run_dec;
+			this.vel.x -= (this.gnd_run_dec) * (delta/DNUM);
 			if (this.vel.x < 0) this.vel.x = 0;
 		}else if (this.vel.x < 0){
-			this.vel.x += this.gnd_run_dec;
+			this.vel.x += (this.gnd_run_dec) * (delta/DNUM);
 			if (this.vel.x > 0) this.vel.x = 0;
 		}
 		this.move_state = MoveState.STANDING;
 	}else{
 		if (this.vel.x > 0){
-			this.vel.x -= this.air_run_dec;
+			this.vel.x -= (this.air_run_dec) * (delta/DNUM);
 			if (this.vel.x < 0) this.vel.x = 0;
 		}else if (this.vel.x < 0){
-			this.vel.x += this.air_run_dec;
+			this.vel.x += (this.air_run_dec) * (delta/DNUM);
 			if (this.vel.x > 0) this.vel.x = 0;
 		}
 	}
@@ -362,24 +351,6 @@ GameMover.prototype.MoveStop = function(){
 GameMover.prototype.CorrectVelocity = function(mult){
 	if (Math.abs(this.vel.x) > this.max_run_vel)
 		this.vel.x = this.max_run_vel * mult;
-}
-
-GameMover.prototype.NudgeLeft = function(gnd_speed, air_speed){
-	this.Nudge(-1, gnd_speed, air_speed);
-}
-
-GameMover.prototype.NudgeRight = function(gnd_speed, air_speed){	
-	this.Nudge(1, gnd_speed, air_speed);
-}
-
-GameMover.prototype.Nudge = function(mult, gnd_speed, air_speed){
-	if (this.on_ground){
-		this.vel.x += gnd_speed * mult;
-		this.move_state = MoveState.RUNNING;
-	}else{
-		this.vel.x += air_speed * mult;
-	}
-	CorrectVelocity(mult);
 }
 
 GameMover.prototype.StartJump = function(){
@@ -394,14 +365,14 @@ GameMover.prototype.StartJump = function(){
 
 GameMover.prototype.Jump = function(){
 	if (this.is_jumping){
-		this.jump_timer++;
+		this.jump_timer+=(delta/DNUM);
 		if (this.jump_timer >= this.jump_time_limit){
 			this.jump_timer = 0;
 			this.is_jumping = false;
 			this.grav_acc = this.original_grav_acc;
 		}else{
 			this.grav_acc = this.float_grav_acc;
-			this.vel.y += -this.jump_vel * ((this.jump_time_limit - (this.jump_timer/2)) / (this.jump_time_limit * 60));
+			this.vel.y += (-this.jump_vel * ((this.jump_time_limit - (this.jump_timer/2)) / (this.jump_time_limit * 60))) * (delta/DNUM);
 		}
 	}
 }

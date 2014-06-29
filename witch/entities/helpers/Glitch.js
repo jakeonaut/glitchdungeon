@@ -82,6 +82,9 @@ Glitch.RedTransform = function(map, player, only_visual){
 	map.tilesheet_name = "tile_red_sheet";
 			
 	player.HandleCollisionsAndMove = function(map){
+		this.vel.x *= (delta/DNUM);
+		this.vel.y *= (delta/DNUM);
+	
 		var left_tile = Math.floor((this.x + this.lb + this.vel.x) / Tile.WIDTH);
 		var right_tile = Math.ceil((this.x + this.rb + this.vel.x) / Tile.WIDTH);
 		var top_tile = Math.floor((this.y + this.tb + this.vel.y) / Tile.HEIGHT);
@@ -99,7 +102,9 @@ Glitch.RedTransform = function(map, player, only_visual){
 		this.HandleVerticalCollisions(map, left_tile, right_tile, top_tile, bottom_tile, q_vert);
 		this.y += this.vel.y;
 		if (this.vel.y != 0) this.played_land_sound = false;
-		this.CompensateForSlopes(this.was_on_ground, floor_tile);
+		
+		this.vel.x /= (delta/DNUM);
+		this.vel.y /= (delta/DNUM);
 	}
 }
 
@@ -134,15 +139,15 @@ Glitch.GreenTransform = function(map, player, only_visual){
 		else{ acc = this.air_run_acc; }
 		
 		if (Math.abs(this.vel.x) < this.max_run_vel){
-			this.vel.x += acc * mult;
+			this.vel.x += (acc * mult) * (delta/DNUM);
 			this.CorrectVelocity(mult);
 		}
 		else if (Math.abs(this.vel.x) > this.max_run_vel){
-			this.vel.x -= acc * mult;
+			this.vel.x -= (acc * mult) * (delta/DNUM);
 			if (Math.abs(this.vel.x) < this.max_run_vel)
 				this.vel.x = this.max_run_vel * mult;
 		}else if (Math.abs(this.vel.x) == this.max_run_vel && this.vel.x != this.max_run_vel * mult){
-			this.vel.x += acc * mult;
+			this.vel.x += (acc * mult) * (delta/DNUM);
 		}
 	}
 }
@@ -154,11 +159,11 @@ Glitch.ZeroTransform = function(map, player, only_visual){
 	
 	player.DieToSpikesAndStuff = function(){}
 	
-	player.Render = function(ctx, camera){
+	/*player.Render = function(ctx, camera){
 		ctx.globalCompositeOperation = "lighter";
 		GameMover.prototype.Render.call(this, ctx, camera);
 		ctx.globalCompositeOperation = "source-over";
-	}
+	}*/
 }
 
 Glitch.BlueTransform = function(map, player, only_visual){
@@ -174,11 +179,11 @@ Glitch.BlueTransform = function(map, player, only_visual){
 		if (!this.on_ground){
 			if (this.vel.y > -this.terminal_vel)
 			{
-				this.vel.y -= this.grav_acc;
+				this.vel.y -= (this.grav_acc) * (delta/DNUM);
 				if (this.vel.y < -this.terminal_vel) 
 					this.vel.y = -this.terminal_vel;
 			}else if (this.vel.y < -this.terminal_vel){
-				this.vel.y += this.grav_acc;
+				this.vel.y += (this.grav_acc) * (delta/DNUM);
 				if (this.vel.y > -this.terminal_vel)
 					this.vel.y = -this.terminal_vel;
 			}
@@ -233,14 +238,14 @@ Glitch.BlueTransform = function(map, player, only_visual){
 
 	player.Jump = function(){
 		if (this.is_jumping){
-			this.jump_timer++;
+			this.jump_timer+=(delta/DNUM);
 			if (this.jump_timer >= this.jump_time_limit){
 				this.jump_timer = 0;
 				this.is_jumping = false;
 				this.grav_acc = this.original_grav_acc;
 			}else{
 				this.grav_acc = this.float_grav_acc;
-				this.vel.y += this.jump_vel * ((this.jump_time_limit - (this.jump_timer/2)) / (this.jump_time_limit * 60));
+				this.vel.y += (this.jump_vel * ((this.jump_time_limit - (this.jump_timer/2)) / (this.jump_time_limit * 60))) * (delta/DNUM);
 			}
 		}
 	}
@@ -252,6 +257,9 @@ Glitch.GoldTransform = function(map, player, only_visual){
 	map.tilesheet_name = "tile_gold_sheet";
 	
 	player.HandleCollisionsAndMove = function(map){
+		this.vel.x *= (delta/DNUM);
+		this.vel.y *= (delta/DNUM);
+	
 		var left_tile = Math.floor((this.x + this.lb + this.vel.x - 1) / Tile.WIDTH);
 		var right_tile = Math.ceil((this.x + this.rb + this.vel.x + 1) / Tile.WIDTH);
 		var top_tile = Math.floor((this.y + this.tb + this.vel.y - 1) / Tile.HEIGHT);
@@ -273,7 +281,9 @@ Glitch.GoldTransform = function(map, player, only_visual){
 		this.HandleVerticalCollisions(map, left_tile, right_tile, top_tile, bottom_tile, q_vert);
 		this.y += this.vel.y;
 		if (this.vel.y != 0) this.played_land_sound = false;
-		this.CompensateForSlopes(this.was_on_ground, floor_tile);
+		
+		this.vel.x /= (delta/DNUM);
+		this.vel.y /= (delta/DNUM);
 	}
 	
 	player.Update = function(delta, map)
