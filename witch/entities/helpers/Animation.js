@@ -33,8 +33,7 @@ Animation.prototype.Change = function(rax, ray, mf){
 	}
 }
 
-Animation.prototype.Update = function(gameTime){
-	//TODO:: This should do something with gameTime???
+Animation.prototype.Update = function(delta){
 	this.frame_change = false;
 	this.animation_end = false;
 	

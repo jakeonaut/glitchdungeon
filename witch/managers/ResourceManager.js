@@ -6,30 +6,28 @@ function ResourceManager(){
 	//IMAGE VARIABLE DECLARATION
 	this.images_loaded = 0;
 	this.image_names = [
-		"bg_image",
 		"player_grey_sheet",
-		"player_red_sheet",
-		"player_green_sheet",
-		"player_blue_sheet",
-		//"player_cyan_sheet",
-		"player_gold_sheet",
-		"player_pink_sheet",
-		"player_zero_sheet",
-		"player_negative_sheet",
-		"npc_sheet",
-		"enemy_sheet",
-		"collection_sheet",
-		"obj_sheet",
 		"tile_grey_sheet",
-		"tile_red_sheet",
+		"npc_sheet",
+		"obj_sheet",
+		"player_green_sheet",
 		"tile_green_sheet",
-		"tile_blue_sheet",
-		//"tile_cyan_sheet",
-		"tile_gold_sheet",
-		"tile_pink_sheet",
+		"collection_sheet",
+		"player_red_sheet",
+		"tile_red_sheet",
+		"enemy_sheet",
+		"player_zero_sheet",
 		"tile_zero_sheet",
-		"tile_negative_sheet"
+		"player_gold_sheet",
+		"tile_gold_sheet",
+		"player_blue_sheet",
+		"tile_blue_sheet",
+		"player_negative_sheet",
+		"tile_negative_sheet",
+		"player_pink_sheet",
+		"tile_pink_sheet",
 	];
+	this.necessary_images = this.image_names.length;
 	this.num_images = this.image_names.length;
 	
 	//SOUND VARIABLE DECLARATION
@@ -39,23 +37,25 @@ function ResourceManager(){
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
 		this.audio_context = new AudioContext();
 	}catch(e){
+		console.log(e);
 		this.audio_context = null;
 		this.play_sound = false;
 	}
 	this.sounds_loaded = 0;
 	this.sound_names = [
-		"RoccoW_outOfSight"
-		,"jump"
-		,"land"
-		,"pickup"
-		,"checkpoint"
-		,"hurt"
-		,"LA_Stairs"
-		,"LA_Chest_Open"
-		,"locked"
-		,"switchglitch"
-		,"error"
+		//"RoccoW_outOfSight"
+		"jump"
+		//,"land"
+		//,"LA_Stairs"
+		//,"locked"
+		//,"checkpoint"
+		//,"hurt"
+		//,"pickup"
+		//,"LA_Chest_Open"
+		//,"switchglitch"
+		//,"error"
 	];
+	this.necessary_sounds = 1;
 	this.num_sounds = this.sound_names.length;
 }
 
@@ -96,11 +96,24 @@ ResourceManager.prototype.LoadResources = function(ctx){
 		this[img].src = img_path + img + ".png";
 	}
 	
+	if (this.audio_context === null){ 
+		this.sounds_loaded = this.snd_names.length;
+		return;
+	}
 	//Load Sounds
-	for (var i = 0; i < this.sound_names.length; i++){
+	this.LoadSound();
+	/*for (var i = 0; i < this.sound_names.length; i++){
 		var snd = this.sound_names[i];
 		this.loadBuffer(snd_path + snd + ".mp3", snd);
-	}
+	}*/
+}
+
+ResourceManager.prototype.LoadSound = function(){
+	if (this.sounds_loaded >= this.sound_names.length)
+		return;
+		
+	var snd = this.sound_names[this.sounds_loaded];
+	this.loadBuffer(snd_path + snd + ".mp3", snd);
 }
 
 ResourceManager.prototype.loadBuffer = function(url, index) {
@@ -112,6 +125,7 @@ ResourceManager.prototype.loadBuffer = function(url, index) {
   var loader = this;
 
   request.onload = function() {
+  
     // Asynchronously decode the audio file data in request.response
     loader.audio_context.decodeAudioData(
       request.response,
@@ -122,6 +136,7 @@ ResourceManager.prototype.loadBuffer = function(url, index) {
         }
         loader[index] = buffer;
 		loader.SoundLoad();
+		loader.LoadSound();
       },
       function(error) {
         console.error('decodeAudioData error', error);
@@ -137,7 +152,8 @@ ResourceManager.prototype.loadBuffer = function(url, index) {
 }
 
 ResourceManager.prototype.CheckLoadedResources = function(){
-	if (this.images_loaded >= this.num_images && this.sounds_loaded >= this.num_sounds){
+	if (this.images_loaded >= this.necessary_images 
+		&& this.sounds_loaded >= this.necessary_sounds){
 		startGame();
 	}
 }

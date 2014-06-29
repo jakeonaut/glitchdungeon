@@ -1,5 +1,5 @@
-@font-face { font-family: pixelFont; src: url('witch/assets/04B_03.eot'); }
-@font-face { font-family: pixelFont; src: url('witch/assets/04B_03.ttf'); }
+@font-face { font-family: pixelFont; src: url('assets/04B_03.eot'); }
+@font-face { font-family: pixelFont; src: url('assets/04B_03.ttf'); }
 body { 
 	background: #000000; 
 	color:#ffffff; 

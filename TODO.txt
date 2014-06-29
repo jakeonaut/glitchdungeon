@@ -1,16 +1,14 @@
+0. get rid of gravity spell. just keep the wall jump
+	-make the two falling rooms a climbing room
+
 2. Actually pause entirely when tab becomes inactive (float text saying press enter to resume)
 4. loop music
-3. cookies to remember what room you are in and additional necessary stuff??? (the house manager probably)
-5. Every time you glitch the room: increase
-	-the frequency of bg_code creation and distortion
-	-the frequency of misdrawn tiles, 
-	-the frequency of player image glitching (sprite sheet and facing)
-6. along with locked spellbook room, should have a glitch runoff room;
-	-no normalizing after spell casting (all glitch powers)
+	-ALLOW MUTING MUSIC AND SOUND
 1. ADD DELTA SUPPORT IN ALL UPDATE FUNCTIONS???
-0. clean up level editor:
+0. clean up level editor: (and have a seperate web page to the editor from the main game)
+	-export HOUSE option as linkable html thing to share with friends
 	-drop down selector for objects is dynamic to also be for tile type, and npc and item can select dialog and event?
-7. NEW GAME +:: Collect 25 artifacts after being given the walkthruwalls spell in room 1
+3. cookies to remember what room you are in and additional necessary stuff??? (the house manager probably)
 
 !!!$$%%%PROBLEMS WITH OTHER BROWSERS::
 	-OPERA:: can't handle loader.audio_context.decodeAudioData in resourceManager
