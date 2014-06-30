@@ -48,11 +48,11 @@ function ResourceManager(){
 	}
 	this.sounds_loaded = 0;
 	this.sound_names = [
-		"RoccoW_outOfSight"
-		,"jump"
+		"jump"
 		,"land"
 		,"LA_Stairs"
 		,"locked"
+		,"RoccoW_outOfSight"
 		,"checkpoint"
 		,"hurt"
 		,"pickup"
@@ -110,11 +110,17 @@ ResourceManager.prototype.LoadResources = function(ctx){
 		this.sounds_loaded = this.sound_names.length;
 		return;
 	}
+	this.LoadNextSound();
 	//Load Sounds
-	for (var i = 0; i < this.sound_names.length; i++){
+/*	for (var i = 0; i < this.sound_names.length; i++){
 		var snd = this.sound_names[i];
 		this.loadBuffer(snd_path + snd + ".mp3", snd);
-	}
+	}*/
+}
+
+ResourceManager.prototype.LoadNextSound = function(){
+	var snd = this.sound_names[this.sounds_loaded];
+	this.loadBuffer(snd_path + snd + ".mp3", snd);
 }
 
 ResourceManager.prototype.loadBuffer = function(url, index) {
@@ -137,6 +143,8 @@ ResourceManager.prototype.loadBuffer = function(url, index) {
         }
         loader[index] = buffer;
 		loader.SoundLoad();
+		//Force sequential sound loading
+		loader.LoadNextSound();
       },
       function(error) {
         console.error('decodeAudioData error', error);

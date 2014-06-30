@@ -1,4 +1,3 @@
-0. first song won't play if game loaded before it does (often)
 1. land sound is corrupt in not chrome
 2. clean up level editor: (and have a seperate web page to the editor from the main game)
 	-export HOUSE option as linkable html thing to share with friends
