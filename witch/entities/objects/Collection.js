@@ -102,6 +102,12 @@ Collection.prototype.GetEvent = function(){
 				}
 			}
 			
+			room.player.y = 3*Tile.HEIGHT;
+			room.tiles[5][11].collision = Tile.SOLID;
+			room.tiles[5][11].tileset_x = 0;
+			room.tiles[5][12].collision = Tile.SOLID;
+			room.tiles[5][12].tileset_x = 0;
+			
 			bg_name = "TomWoxom_North";
 			stopMusic();
 			startMusic();

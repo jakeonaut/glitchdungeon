@@ -19,6 +19,7 @@ function House(){
 	this.house_width = 6;
 	this.house_height = 6;
 	this.SetUpRooms();
+	this.rooms[2][4].entities.push(new Collection(11*Tile.WIDTH, 3*Tile.HEIGHT, 6));
 	
 	var room = this.rooms[this.room_index_y][this.room_index_x];
 	this.checkpoint = {

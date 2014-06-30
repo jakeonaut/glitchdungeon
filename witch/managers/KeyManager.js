@@ -23,7 +23,7 @@ KeyManager.D = 68;
 KeyManager.X = 88;
 KeyManager.Z = 90;
 
-KeyManager.NUMBERS = [49, 50, 51, 52, 53];
+KeyManager.NUMBERS = [49, 50, 51, 52, 53, 54, 55];
 
 
 KeyManager.prototype.KeyDown = function(e){
