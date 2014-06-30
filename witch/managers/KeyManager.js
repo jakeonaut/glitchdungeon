@@ -12,6 +12,7 @@ KeyManager.RIGHT = 39;
 KeyManager.DOWN = 40;
 KeyManager.ENTER = 13;
 KeyManager.SPACE = 32;
+KeyManager.H = 72;
 KeyManager.Q = 81;
 KeyManager.W = 87;
 KeyManager.E = 69;

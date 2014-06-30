@@ -8,6 +8,7 @@ function ResourceManager(){
 	this.image_names = [
 		"soundButtons",
 		"player_grey_sheet",
+		"hat_grey_sheet",
 		"tile_grey_sheet",
 		"npc_sheet",
 		"obj_sheet",
@@ -119,6 +120,8 @@ ResourceManager.prototype.LoadResources = function(ctx){
 }
 
 ResourceManager.prototype.LoadNextSound = function(){
+	if (this.sounds_loaded >= this.sound_names.length) return;
+
 	var snd = this.sound_names[this.sounds_loaded];
 	this.loadBuffer(snd_path + snd + ".mp3", snd);
 }

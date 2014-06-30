@@ -108,6 +108,7 @@ NPC.prototype.GetText = function(){
 		case 20:
 			InputManager.RestartGame = function(){
 				room_manager = new House();
+				room_manager.beat_game = true;
 				room = room_manager.GetRoom();
 
 				console.log("start");

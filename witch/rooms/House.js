@@ -3,6 +3,7 @@ function House(){
 	this.spells_cast = 0;
 	this.then = Date.now();
 	this.time = 0;
+	this.beat_game = false;
 
 	this.num_artifacts = 0;
 	this.has_spellbook = false;

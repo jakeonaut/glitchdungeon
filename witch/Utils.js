@@ -8,7 +8,7 @@ Utils.playSound = function(sound_name, volume, time, loop){
 	//if the bg music isn't loaded, give it a second
 	if (loop){
 		if (resource_manager[sound_name] === undefined || resource_manager[sound_name] === null){
-			window.setTimeout(function(){Utils.playSound(sound_name, volume, time, loop);}, 100);
+			window.setTimeout(function(){bg_music = Utils.playSound(sound_name, volume, time, loop);}, 100);
 			return;
 		}
 	}

@@ -28,7 +28,7 @@ function Room(){
 
 Room.prototype.CreateEntities = function(){
 	this.player = new Player(GAME_WIDTH/2, GAME_HEIGHT-Tile.HEIGHT-16);
-	this.entities = [];
+	this.entities = [new Hat(this.player.x, this.player.y-8)];
 }
 
 Room.prototype.InitializeTiles = function(){
@@ -321,7 +321,7 @@ Room.prototype.Import = function(room){
 	Glitch.TransformPlayer(this, this.glitch_type);
 	
 	//import entities
-	this.entities = [];
+	this.entities = [new Hat(this.player.x, this.player.y-8)];
 	if (room.entities){
 		for (var i = 0; i < room.entities.length; i++){
 			var entity = eval("new " + room.entities[i].type + "();");
