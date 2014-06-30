@@ -1,12 +1,8 @@
-1. land sound is corrupt
-0. clean up level editor: (and have a seperate web page to the editor from the main game)
+0. first song won't play if game loaded before it does (often)
+1. land sound is corrupt in not chrome
+2. clean up level editor: (and have a seperate web page to the editor from the main game)
 	-export HOUSE option as linkable html thing to share with friends
 	-drop down selector for objects is dynamic to also be for tile type, and npc and item can select dialog and event?
-
-!!!$$%%%PROBLEMS WITH OTHER BROWSERS::
-	-OPERA:: can't handle loader.audio_context.decodeAudioData in resourceManager
-	-SAFARI:: I can't find the console but i assume the same problem as above
-	-INTERNET EXPLORER:: BufferLoader: XHR error
 
 
 ***GLITCH JAM 9-30::	code-magick academy where you learn the abilities of other videogame creatures and use it to get to the top of the tower and beat the final boss
