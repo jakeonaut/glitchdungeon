@@ -68,7 +68,9 @@ var startGame = function(){
 	//Let's play the game!
 	then = Date.now();
 	
-	bg_music = Utils.playSound(bg_name, master_volume, 0, true);
+	bg_name = "RoccoW_outOfSight";
+	stopMusic();
+	startMusic();
 	setInterval(main, 17);
 };
 
@@ -83,7 +85,7 @@ var startSound = function(){
 
 var stopMusic = function(){
 	resource_manager.play_music = false;
-	if (bg_music !== null){
+	if (bg_music !== null && bg_music !== undefined){
 		bg_music.stop();
 		bg_music = null;
 	}
@@ -93,7 +95,7 @@ var startMusic = function(){
 	if (!resource_manager.can_play_sound) return;
 	resource_manager.play_music = true;
 
-	if (bg_name !== null){
+	if (bg_name !== null && bg_name !== undefined){
 		bg_music = Utils.playSound(bg_name, master_volume, 0, true);
 	}
 }

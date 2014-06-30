@@ -106,11 +106,22 @@ House.prototype.ChangeRoom = function(){
 		Glitch.TransformPlayer(room, room.glitch_type); //this.glitch);
 	}
 	
+	var temp_bg_name = "Rolemusic_deathOnTheBattlefield";
+	if (this.room_index_x === 5 && this.room_index_y === 0 && bg_name !== temp_bg_name){
+		bg_name = temp_bg_name;
+		stopMusic();
+		startMusic();
+	}
+	
 	//END CONDITION LOL
 	if (this.room_index_x === 5 && this.room_index_y === 5){
 		Glitch.TransformPlayer(room, Glitch.GREY);
 		this.has_spellbook = false;
-		this.time = Math.floor((Date.now() - this.then) / 1000);
+		this.time = Math.floor(((Date.now() - this.then) / 1000) / 60);
+		
+		bg_name = "RoccoW_iveGotNothing";
+		stopMusic();
+		startMusic();
 	}
 }
 

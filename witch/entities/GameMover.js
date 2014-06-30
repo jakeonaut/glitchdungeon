@@ -233,10 +233,13 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 			//don't check for collisions if potential tile is "out of bounds" or not solid
 			if (tile.collision == Tile.GHOST || tile.collision == Tile.KILL_PLAYER) continue;
 			
+			var old_y = this.y;
+			var top_collision = false;
 			//Check for top collisions
 			if (this.vel.y < 0 && tile.collision != Tile.FALLTHROUGH && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
 				this.vel.y = 0;
 				this.y = tile.y + Tile.HEIGHT - this.tb;
+				top_collision = true;
 			}
 			
 			//Check for bottom collisions
@@ -252,7 +255,8 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 				this.vel.y = 0;
 				this.on_ground = true;
 				this.has_double_jumped = false;
-				this.y = tile.y - this.bb;
+				if (top_collision) this.y = old_y
+				else this.y = tile.y - this.bb;
 			}
 		}
 	}

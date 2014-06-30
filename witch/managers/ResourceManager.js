@@ -6,6 +6,7 @@ function ResourceManager(){
 	//IMAGE VARIABLE DECLARATION
 	this.images_loaded = 0;
 	this.image_names = [
+		"soundButtons",
 		"player_grey_sheet",
 		"tile_grey_sheet",
 		"npc_sheet",
@@ -25,10 +26,9 @@ function ResourceManager(){
 		"player_negative_sheet",
 		"tile_negative_sheet",
 		"player_pink_sheet",
-		"tile_pink_sheet",
-		"soundButtons"
+		"tile_pink_sheet"
 	];
-	this.necessary_images = 8;
+	this.necessary_images = 9;
 	this.num_images = this.image_names.length;
 	
 	//SOUND VARIABLE DECLARATION
@@ -58,27 +58,31 @@ function ResourceManager(){
 		,"pickup"
 		,"LA_Chest_Open"
 		,"switchglitch"
+		,"lhommeEraseForm"
+		,"Rolemusic_deathOnTheBattlefield"
 		,"error"
+		,"TomWoxom_North"
+		,"RoccoW_iveGotNothing"
 	];
-	if (!this.can_play_sound) this.necessary_sounds = 0;
-	else this.necessary_sounds = 1;
+	this.necessary_sounds = 0;
 	this.num_sounds = this.sound_names.length;
 }
 
 ResourceManager.prototype.DisplayLoadScreen = function(){
 	ctx.canvas.width = GAME_WIDTH*VIEW_SCALE;
 	ctx.canvas.height = GAME_HEIGHT*VIEW_SCALE;
-	ctx.scale(VIEW_SCALE,VIEW_SCALE);
+	ctx.scale(2,2);
 	
 	//Display the LOADING... screen
 	ctx.fillStyle = "rgb(0, 0, 0)";
-	ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+	ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 	
 	ctx.fillStyle = "rgb(255,255,255)";
 	//ctx.font = "24px pixelFont";
 	ctx.textAlign = "left";
 	ctx.textBaseline = "top";
-	ctx.fillText("LOADING...", 134, GAME_HEIGHT/2-4);
+	ctx.fillText("LOADING GAME...", 134, GAME_HEIGHT/2+25);
+	ctx.fillText("PLEASE WAIT :)", 134, GAME_HEIGHT/2+80);
 }
 
 ResourceManager.prototype.ImageLoad = function(){ 
@@ -103,7 +107,7 @@ ResourceManager.prototype.LoadResources = function(ctx){
 	}
 	
 	if (this.audio_context === null || !this.can_play_sound){ 
-		this.sounds_loaded = this.snd_names.length;
+		this.sounds_loaded = this.sound_names.length;
 		return;
 	}
 	//Load Sounds

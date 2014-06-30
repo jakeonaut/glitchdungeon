@@ -155,7 +155,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room.player.x = 0 + Tile.WIDTH/2 - room.player.lb;
 	}
 	
-	$("house_coordinates").innerHTML = room_manager.room_index_x + " " + room_manager.room_index_y;
+	if (level_edit) $("house_coordinates").innerHTML = room_manager.room_index_x + " " + room_manager.room_index_y;
 }
 
 Room.prototype.Speak = function(text, speech_time){

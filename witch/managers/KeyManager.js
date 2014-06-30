@@ -19,6 +19,10 @@ KeyManager.R = 82;
 KeyManager.A = 65;
 KeyManager.S = 83;
 KeyManager.D = 68;
+KeyManager.X = 88;
+KeyManager.Z = 90;
+
+KeyManager.NUMBERS = [49, 50, 51, 52, 53];
 
 
 KeyManager.prototype.KeyDown = function(e){

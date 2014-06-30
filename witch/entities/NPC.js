@@ -62,7 +62,7 @@ NPC.prototype.UpdateAnimationFromState = function(){
 NPC.prototype.GetText = function(){
 	switch (this.npc_id){
 		case -1:
-			return "hold up to jump higher\n\nthere is no escape";
+			return "hold up or Z to jump higher\n\nthere is no escape";
 		case 0:
 			return "you must escape\n the labyrinth\nuse arrow keys";
 		case 1:
@@ -70,7 +70,7 @@ NPC.prototype.GetText = function(){
 		case 2:
 			return "when red, you can\nwalk off cliffs\nwithout falling";
 		case 3:
-			return "press space bar\n to cast a spell";
+			return "press space bar or numbers\n to cast a spell";
 		case 4:
 			return "press down to\nplace a memory";
 		case 5:
@@ -104,7 +104,7 @@ NPC.prototype.GetText = function(){
 		case 19:
 			return 	"deaths: " + room_manager.num_deaths + "\n" +
 					"spells cast: " + room_manager.spells_cast + "\n" +
-					"time: " + room_manager.time + " s";
+					"time: " + room_manager.time + " min";
 		case 20:
 			InputManager.RestartGame = function(){
 				room_manager = new House();
@@ -114,9 +114,15 @@ NPC.prototype.GetText = function(){
 				//Let's play the game!
 				then = Date.now();
 				
+				bg_name = "RoccoW_outOfSight";
+				stopMusic();
+				startMusic();
+				
 				InputManager.RestartGame = function(){}
 			}
 			return "thanks for playing :)!\n\npress enter to restart";
+		case 99:
+			return "go back to the beginning";
 		default:
 			break;
 	}

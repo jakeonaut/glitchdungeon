@@ -199,6 +199,9 @@ Glitch.BlueTransform = function(map, player, only_visual){
 				//don't check for collisions if potential tile is "out of bounds" or not solid
 				if (tile.collision == Tile.GHOST || tile.collision == Tile.KILL_PLAYER) continue;
 				
+				var top_collision = false;
+				var old_y = this.y;
+				
 				//Check for top collisions
 				if (this.vel.y <= 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
 					//Don't count bottom collision for fallthrough platforms if we're not at the top of it
@@ -212,6 +215,7 @@ Glitch.BlueTransform = function(map, player, only_visual){
 						Utils.playSound("land");
 						this.played_land_sound = true;
 					}
+					top_collision = true;
 					this.on_ground = true;
 					this.has_double_jumped = false;
 				}
@@ -219,7 +223,8 @@ Glitch.BlueTransform = function(map, player, only_visual){
 				//Check for bottom collisions
 				if (this.vel.y > 0 && tile.collision != Tile.FALLTHROUGH && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.bb, this.x + this.rb - q, this.y + this.bb + this.vel.y + 1)){
 					this.vel.y = 0;
-					this.y = tile.y - this.bb;
+					if (top_collision) this.y = old_y
+					else this.y = tile.y - this.bb;
 				}
 			}
 		}

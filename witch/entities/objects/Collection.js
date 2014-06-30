@@ -59,14 +59,18 @@ Collection.prototype.GetEvent = function(){
 	switch (this.collection_id){
 		case 0:
 			room_manager.has_spellbook = true;
-			var door = room_manager.rooms[4][2].GetDoor(0);
-			door.locked = true;
-			door.room_x = 5;
-			door.room_y = 0;
-			door.num_artifacts = 5;
+			//var door = room_manager.rooms[4][2].GetDoor(0);
+			//door.locked = true;
+			//door.room_x = 5;
+			//door.room_y = 0;
+			//door.num_artifacts = 5;
 			room_manager.rooms[4][2].entities.push(new NPC(1*Tile.WIDTH, 7*Tile.HEIGHT, 3));
 			room_manager.rooms[4][2].entities.push(new Checkpoint(this.x, this.y));
 			room_manager.rooms[4][2].bg_code = "switch (Ǥlitch_type){\n\tcase Ǥlitch.ǤREY:\n\t\tbreak;\n\tcあse Ǥlitch.RED:\n\t\tǤlitch.RedTrあnsform(mあp, mあp.plあyer, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.ǤREEN:\n\t\tǤlitch.ǤreenTrあnsform(mあp, mあp.player, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.BLUE:";
+			room_manager.spellbook = [Glitch.GREEN, Glitch.RED];
+			bg_name = "lhommeEraseForm";
+			stopMusic();
+			startMusic();
 			break;
 		case 1:
 			room_manager.spellbook.push(Glitch.GREEN);
@@ -97,6 +101,10 @@ Collection.prototype.GetEvent = function(){
 					}
 				}
 			}
+			
+			bg_name = "TomWoxom_North";
+			stopMusic();
+			startMusic();
 			break;
 		case 7:
 			room_manager.spellbook.push(Glitch.PINK);

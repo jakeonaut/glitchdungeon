@@ -1,4 +1,3 @@
-4. ALLOW MUTING MUSIC AND SOUND
 1. land sound is corrupt
 0. clean up level editor: (and have a seperate web page to the editor from the main game)
 	-export HOUSE option as linkable html thing to share with friends
@@ -15,3 +14,10 @@
 
 
 -tilesets from kid icarus, adventure island, that weird game with the desert and trees, super mario, megaman, 
+
+-music from http://freemusicarchive.org/
+	-by RoccoW: Out of Sight, Into the Mind (http://freemusicarchive.org/music/RoccoW/~/RoccoW_-_Out_of_Sight_Into_the_Mind)
+	-by L'homme Manete: Erase Form (http://freemusicarchive.org/music/Lhomme_Manete/Gaming_Sessions/02_l_homme_manete_-_erase_form)
+	-Rolemusic: Death on the battlefield (http://freemusicarchive.org/music/Rolemusic/gigs_n_contest/rolemusic_-_gigs_n_contest_-_05_Death_on_the_battlefield)
+	-Tom Woxom: North (http://freemusicarchive.org/music/Tom_Woxom/GLEICHTAKT/11_TOM_WOXOM_-_NORTH)
+	-by RoccoW: I've Got Nothing (http://freemusicarchive.org/music/RoccoW/Weeklybeats_2014/Weeklybeats_5_-Ive_Got_Nothing_1969)
