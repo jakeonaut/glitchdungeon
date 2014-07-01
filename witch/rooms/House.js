@@ -122,8 +122,12 @@ House.prototype.ChangeRoom = function(){
 		this.time = Math.floor(((Date.now() - this.then) / 1000) / 60);
 		
 		bg_name = "RoccoW_iveGotNothing";
-		stopMusic();
-		startMusic();
+		if (resource_manager.play_music){
+			stopMusic();	
+			startMusic();
+		}
+		
+		room.ChangeSize(320, 120);
 	}
 }
 
@@ -161,7 +165,6 @@ House.prototype.RandomGlitch = function(){
 }
 
 House.prototype.RevivePlayer = function(){
-	console.log("REVIVE!");
 	this.num_deaths++;
 
 	this.room_index_x = this.checkpoint.room_x;

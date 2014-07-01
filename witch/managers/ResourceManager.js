@@ -53,15 +53,15 @@ function ResourceManager(){
 		,"land"
 		,"LA_Stairs"
 		,"locked"
-		,"RoccoW_outOfSight"
 		,"checkpoint"
 		,"hurt"
 		,"pickup"
 		,"LA_Chest_Open"
 		,"switchglitch"
+		,"error"
+		,"RoccoW_outOfSight"
 		,"lhommeEraseForm"
 		,"Rolemusic_deathOnTheBattlefield"
-		,"error"
 		,"TomWoxom_North"
 		,"RoccoW_iveGotNothing"
 	];
@@ -156,7 +156,7 @@ ResourceManager.prototype.loadBuffer = function(url, index) {
   }
 
   request.onerror = function() {
-    alert('BufferLoader: XHR error');
+    console.log('BufferLoader: XHR error');
   }
 
   request.send();

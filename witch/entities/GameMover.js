@@ -28,6 +28,7 @@ function GameMover(x, y, lb, tb, rb, bb, img_name, max_run_vel, jump_vel, termin
 	this.pressing_down = false;
 	this.pressed_down = false;
 	this.has_double_jumped = false;
+	this.stuck_in_wall = false;
 	
 	this.vel = {x: 0, y: 0};
 	
@@ -79,25 +80,28 @@ GameMover.prototype.ResetPosition = function(){
 /**????????????????????????????????????????????????????????????*/
 GameMover.prototype.Update = function(delta, map)
 {
-	this.ApplyPhysics(delta, map);
-	this.prev_x = this.x;
-	this.prev_y = this.y;
-	if (!this.on_ground){
-		if (!this.was_on_ground)
-			this.pressed_down = false;
-		if (this.vel.y < 0) this.move_state = MoveState.JUMPING;
-		else this.move_state = MoveState.FALLING;
+	this.DieToSuffocation(map);
+	
+	if (!this.stuck_in_wall){
+		this.ApplyPhysics(delta, map);
+		this.prev_x = this.x;
+		this.prev_y = this.y;
+		if (!this.on_ground){
+			if (!this.was_on_ground)
+				this.pressed_down = false;
+			if (this.vel.y < 0) this.move_state = MoveState.JUMPING;
+			else this.move_state = MoveState.FALLING;
+		}
 	}
 	this.UpdateAnimationFromState();
 	
 	GameSprite.prototype.Update.call(this, delta, map);
-	
-	this.DieToSuffocation(map);
 }
 
 /*********************PHYSICS AND COLLISION DETECTIONS********************/
 GameMover.prototype.DieToSuffocation = function(map){
 	if (!this.die_to_suffocation) return;
+	console.log("let's try to die :)!");
 	this.die_to_suffocation = false;
 
 	var left_tile = Math.floor((this.x + this.lb) / Tile.WIDTH);
@@ -106,20 +110,63 @@ GameMover.prototype.DieToSuffocation = function(map){
 	var bottom_tile = Math.floor((this.y + this.bb) / Tile.HEIGHT);
 	
 	//Check all potentially colliding tiles
-	var can_i_breath = false;
+	var q = 3;
+	var dead = false;
+	var top_collision = false;
+	var bottom_collision = false;
+	var left_collision = false;
+	var right_collision = false;
+	
 	for (var i = top_tile; i <= bottom_tile; i++){
 		for (var j = left_tile; j <= right_tile; j++){
 			if (!map.isValidTile(i, j)) continue;
 			var tile = map.tiles[i][j];
 			if (tile.collision === Tile.GHOST || tile.collision === Tile.FALLTHROUGH){
-				can_i_breath = true;
-				break;
+				continue;
+			}
+			
+			//left collisions
+			if (this.IsRectColliding(tile, this.x + this.lb,  this.y + this.tb + q, this.x + this.lb, this.y + this.bb - q)){
+				left_collision = true;
+				if (right_collision){
+					dead = true;
+					break;
+				}
+			}
+			//right collisions
+			if (this.IsRectColliding(tile, this.x + this.rb, this.y + this.tb + q, this.x + this.rb, this.y + this.bb - q)){
+				right_collision = true;
+				if (left_collision){
+					dead = true;
+					break;
+				}
+			}
+			
+			//top collisions
+			if (tile.collision != Tile.FALLTHROUGH && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb, this.x + this.rb - q, this.y + this.tb)){
+				top_collision = true;
+				if (bottom_collision){
+					dead = true;
+					break;
+				}
+			}
+			
+			//bottom collisions
+			if (this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.bb, this.x + this.rb - q, this.y + this.bb)){
+				bottom_collision = true;
+				if (top_collision){
+					dead = true;
+					break;
+				}
 			}
 		}
+		if (dead) break;
 	}
+	console.log("dead: " + dead + ", left: " + left_collision + ", right: " + right_collision + ", top: " + top_collision + ", bottom: " + bottom_collision);
 	
-	if (!can_i_breath){
-		this.Die();
+	if (dead){ 
+		this.stuck_in_wall = true;
+		//this.Die();
 	}
 }
 
@@ -210,7 +257,7 @@ GameMover.prototype.HandleHorizontalCollisions = function(map, left_tile, right_
 			}
 			
 			//Check for Right collisions
-			if (this.vel.x > 0 && this.IsRectColliding(tile, this.x + this.rb, this.y + this.tb + q, this.x + this.rb + this.vel.x, this.y + this.bb - q)){
+			if (this.vel.x > 0 && this.IsRectColliding(tile, this.x + this.rb, this.y + this.tb + q, this.x + this.rb + this.vel.x + 1, this.y + this.bb - q)){
 				//this is a positive slope (don't collide right)
 				if (tile.r_height < tile.l_height){}
 				//okay we're colliding with a solid to our right
@@ -232,14 +279,10 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 			var tile = map.tiles[i][j];
 			//don't check for collisions if potential tile is "out of bounds" or not solid
 			if (tile.collision == Tile.GHOST || tile.collision == Tile.KILL_PLAYER) continue;
-			
-			var old_y = this.y;
-			var top_collision = false;
 			//Check for top collisions
-			if (this.vel.y < 0 && tile.collision != Tile.FALLTHROUGH && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
+			if (this.vel.y <= 0 && tile.collision != Tile.FALLTHROUGH && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
 				this.vel.y = 0;
-				this.y = tile.y + Tile.HEIGHT - this.tb;
-				top_collision = true;
+				new_y = tile.y + Tile.HEIGHT - this.tb;
 			}
 			
 			//Check for bottom collisions
@@ -255,8 +298,7 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 				this.vel.y = 0;
 				this.on_ground = true;
 				this.has_double_jumped = false;
-				if (top_collision) this.y = old_y
-				else this.y = tile.y - this.bb;
+				this.y = tile.y - this.bb;
 			}
 		}
 	}

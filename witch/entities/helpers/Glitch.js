@@ -7,11 +7,18 @@ Glitch.GOLD = 5;
 Glitch.NEGATIVE = 6;
 Glitch.PINK = 7;
 
+Glitch.PREVIOUS = 0;
+
 function Glitch(){};
 
 Glitch.TransformPlayer = function(map, glitch_type, normalize, only_visual){
-	if (room_manager && room_manager.glitch_type === Glitch.NEGATIVE)
-		map.player.die_to_suffocation = true;
+	var die_to_suffocation = false;
+	if (Glitch.PREVIOUS === Glitch.NEGATIVE){
+		die_to_suffocation = true;
+	}
+	Glitch.PREVIOUS = glitch_type;
+	if (glitch_type === Glitch.NEGATIVE)
+		map.player.stuck_in_wall = false;
 	if (room_manager) room_manager.glitch_type = glitch_type;
 	normalize = defaultValue(normalize, true);
 	only_visual = only_visual || false;
@@ -24,7 +31,10 @@ Glitch.TransformPlayer = function(map, glitch_type, normalize, only_visual){
 		var jump_timer = map.player.jump_timer;
 		var jump_time_limit = map.player.jump_time_limit;
 		var on_ground = map.player.on_ground;
+		var stuck_in_wall = map.player.stuck_in_wall;
 		map.player = new Player(map.player.x, map.player.y);
+		map.player.die_to_suffocation = die_to_suffocation;
+		map.player.stuck_in_wall = stuck_in_wall;
 		map.player.facing = facing;
 		map.player.vel = vel;
 		map.player.is_jumping = is_jumping;
@@ -294,16 +304,19 @@ Glitch.GoldTransform = function(map, player, only_visual){
 	player.Update = function(delta, map)
 	{
 		this.DieToSpikesAndStuff(map);
+		this.DieToSuffocation(map);
 		
-		this.ApplyPhysics(delta, map);
-		this.prev_x = this.x;
-		this.prev_y = this.y;
-		if (!this.on_ground){
-			if (!this.was_on_ground)
-				this.pressed_down = false;
-			if (!this.horizontal_collision){
-				if (this.vel.y < 0) this.move_state = MoveState.JUMPING;
-				else this.move_state = MoveState.FALLING;
+		if (!this.stuck_in_wall){
+			this.ApplyPhysics(delta, map);
+			this.prev_x = this.x;
+			this.prev_y = this.y;
+			if (!this.on_ground){
+				if (!this.was_on_ground)
+					this.pressed_down = false;
+				if (!this.horizontal_collision){
+					if (this.vel.y < 0) this.move_state = MoveState.JUMPING;
+					else this.move_state = MoveState.FALLING;
+				}
 			}
 		}
 		this.UpdateAnimationFromState();
@@ -311,8 +324,6 @@ Glitch.GoldTransform = function(map, player, only_visual){
 		
 		this.touching_door = false;
 		this.touching_checkpoint = false;
-		
-		this.DieToSuffocation(map);
 	}
 }
 
@@ -350,7 +361,7 @@ Glitch.NegativeTransform = function(map, player, only_visual){
 				}
 				
 				//Check for Right collisions
-				if (this.vel.x > 0 && this.IsRectColliding(tile, this.x + this.rb, this.y + this.tb + q, this.x + this.rb + this.vel.x, this.y + this.bb - q)){
+				if (this.vel.x > 0 && this.IsRectColliding(tile, this.x + this.rb, this.y + this.tb + q, this.x + this.rb + this.vel.x + 1, this.y + this.bb - q)){
 					//this is a positive slope (don't collide right)
 					if (tile.r_height < tile.l_height){}
 					//okay we're colliding with a solid to our right

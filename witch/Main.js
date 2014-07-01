@@ -40,9 +40,9 @@ var init = function(){
 	window.onkeydown = key_manager.KeyDown.bind(key_manager);
 	window.onkeyup = key_manager.KeyUp.bind(key_manager);
 	if (level_edit){
-		canvas.onmousedown = LevelEditMouseDown;
+		canvas.onmousedown = function(e){LevelEditMouseDown(e); SoundMouseDown(e)}
 		canvas.onmousemove = LevelEditMouseMove;
-		canvas.onmouseup = LevelEditMouseUp;
+		canvas.onmouseup = function(e){ LevelEditMouseUp(e); SoundMouseUp(e); }
 		$("tileset_canvas").onmousedown = TileSetMouseDown;
 	}else{
 		canvas.onmousedown = SoundMouseDown;
@@ -108,8 +108,6 @@ var SoundMouseUp = function(e){
 	
 	var x = (e.clientX - box.left) / 2;
 	var y = (e.clientY - box.top) / 2;
-	
-	console.log(x + ", " + y);
 	
 	if (x >= 4 && x <= 20){
 		if (y >= 4 && y <= 20){
