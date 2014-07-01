@@ -67,6 +67,8 @@ Collection.prototype.GetEvent = function(){
 			room_manager.rooms[4][2].entities.push(new NPC(1*Tile.WIDTH, 7*Tile.HEIGHT, 3));
 			room_manager.rooms[4][2].entities.push(new Checkpoint(this.x, this.y));
 			room_manager.rooms[4][2].bg_code = "switch (Ǥlitch_type){\n\tcase Ǥlitch.ǤREY:\n\t\tbreak;\n\tcあse Ǥlitch.RED:\n\t\tǤlitch.RedTrあnsform(mあp, mあp.plあyer, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.ǤREEN:\n\t\tǤlitch.ǤreenTrあnsform(mあp, mあp.player, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.BLUE:";
+			room_manager.rooms[0][1] = Room.Import("witch/rooms/rooms/room_1_0_glitched.txt");
+			room_manager.rooms[0][0] = Room.Import("witch/rooms/rooms/room_0_0_glitched.txt");
 			room_manager.spellbook = [Glitch.GREEN, Glitch.RED];
 			bg_name = "lhommeEraseForm";
 			if (resource_manager.play_music){
@@ -109,6 +111,10 @@ Collection.prototype.GetEvent = function(){
 			room.tiles[5][11].tileset_x = 0;
 			room.tiles[5][12].collision = Tile.SOLID;
 			room.tiles[5][12].tileset_x = 0;
+			
+			room_manager.rooms[4][3] = Room.Import("witch/rooms/rooms/room_3_4_glitched.txt");
+			room_manager.rooms[3][3] = Room.Import("witch/rooms/rooms/room_3_3_glitched.txt");
+			room_manager.rooms[2][2] = Room.Import("witch/rooms/rooms/room_2_2_glitched.txt");
 			
 			bg_name = "TomWoxom_North";
 			if (resource_manager.play_music){

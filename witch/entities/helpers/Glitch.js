@@ -213,7 +213,7 @@ Glitch.BlueTransform = function(map, player, only_visual){
 				var old_y = this.y;
 				
 				//Check for top collisions
-				if (this.vel.y <= 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
+				if (this.vel.y < 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
 					//Don't count bottom collision for fallthrough platforms if we're not at the top of it
 					if (tile.collision == Tile.FALLTHROUGH && (tile.y + Tile.HEIGHT > this.y || this.pressing_down))
 						continue;
@@ -383,6 +383,12 @@ Glitch.NegativeTransform = function(map, player, only_visual){
 				var tile = map.tiles[i][j];
 				//don't check for collisions if potential tile is "out of bounds" or not solid
 				if (tile.collision == Tile.GHOST) continue;
+				
+				//Check for top collisions
+				if (this.vel.y <= 0 && tile.collision === Tile.SUPER_SOLID && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
+					this.vel.y = 0;
+					new_y = tile.y + Tile.HEIGHT - this.tb;
+				}
 					
 				//Check for bottom collisions
 				if (this.vel.y >= 0 && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.bb, this.x + this.rb - q, this.y + this.bb + this.vel.y + 1)){

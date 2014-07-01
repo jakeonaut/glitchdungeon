@@ -280,7 +280,7 @@ GameMover.prototype.HandleVerticalCollisions = function(map, left_tile, right_ti
 			//don't check for collisions if potential tile is "out of bounds" or not solid
 			if (tile.collision == Tile.GHOST || tile.collision == Tile.KILL_PLAYER) continue;
 			//Check for top collisions
-			if (this.vel.y <= 0 && tile.collision != Tile.FALLTHROUGH && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
+			if (this.vel.y < 0 && tile.collision != Tile.FALLTHROUGH && this.IsRectColliding(tile, this.x + this.lb + q, this.y + this.tb + this.vel.y - 1, this.x + this.rb - q, this.y + this.tb)){
 				this.vel.y = 0;
 				new_y = tile.y + Tile.HEIGHT - this.tb;
 			}
