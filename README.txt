@@ -1,5 +1,3 @@
-curses hexes spells enchanting forme change
+Javascript/HTML5 Platformer Challenge adventure w/ a custom level editor.
 
-little witch academia + majora's mask + metroidvania + harry potter & chamber of secrets inspired game + hamtaro ham hams unite
-
-different houses/departments/wings of the magic academy have different rules and themes (like adventure time thief town && kaiba worlds)
+Weild code-manipulating spells to escape the glitch dungeon and become a true witch!

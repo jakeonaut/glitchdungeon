@@ -67,9 +67,10 @@ Collection.prototype.GetEvent = function(){
 			room_manager.rooms[4][2].entities.push(new NPC(1*Tile.WIDTH, 7*Tile.HEIGHT, 3));
 			room_manager.rooms[4][2].entities.push(new Checkpoint(this.x, this.y));
 			room_manager.rooms[4][2].bg_code = "switch (Ǥlitch_type){\n\tcase Ǥlitch.ǤREY:\n\t\tbreak;\n\tcあse Ǥlitch.RED:\n\t\tǤlitch.RedTrあnsform(mあp, mあp.plあyer, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.ǤREEN:\n\t\tǤlitch.ǤreenTrあnsform(mあp, mあp.player, normあlize);\n\t\tbreあk;\n\tcase Ǥlitch.BLUE:";
-			room_manager.rooms[0][1] = Room.Import("witch/rooms/rooms/room_1_0_glitched.txt");
-			room_manager.rooms[0][0] = Room.Import("witch/rooms/rooms/room_0_0_glitched.txt");
-			room_manager.spellbook = [Glitch.GREEN, Glitch.RED];
+			room_manager.rooms[0][1].Import(room_manager.glitched_rooms[0][1].Export());
+			room_manager.rooms[0][0].Import(room_manager.glitched_rooms[0][0].Export());
+			
+			//room_manager.spellbook = [Glitch.GREEN, Glitch.RED];
 			bg_name = "lhommeEraseForm";
 			if (resource_manager.play_music){
 				stopMusic();	
@@ -77,24 +78,44 @@ Collection.prototype.GetEvent = function(){
 			}
 			break;
 		case 1:
-			room_manager.spellbook.push(Glitch.GREEN);
+			if (room_manager.spellbook.indexOf(Glitch.GREEN) < 0)
+				room_manager.spellbook.push(Glitch.GREEN);
 			break;
 		case 2: 
-			room_manager.spellbook.push(Glitch.RED);
+			if (room_manager.spellbook.indexOf(Glitch.RED) < 0)
+				room_manager.spellbook.push(Glitch.RED);	
 			break;
 		case 3:
-			room_manager.spellbook.push(Glitch.BLUE);
+			if (room_manager.spellbook.indexOf(Glitch.BLUE) < 0)
+				room_manager.spellbook.push(Glitch.BLUE);
 			//Glitch.TransformPlayer(room, Glitch.BLUE);
 			break;
 		case 4:
-			room_manager.spellbook.push(Glitch.GOLD);
+			if (room_manager.spellbook.indexOf(Glitch.GOLD) < 0)
+				room_manager.spellbook.push(Glitch.GOLD);
 			break;
 		case 5:
-			room_manager.spellbook.push(Glitch.ZERO);
+			if (room_manager.spellbook.indexOf(Glitch.ZERO) < 0)
+				room_manager.spellbook.push(Glitch.ZERO);
 			break;
 		case 6:
-			room_manager.spellbook.push(Glitch.NEGATIVE);
+			if (!room_manager.beat_game)
+				Trophy.GiveTrophy(Trophy.POWERS);
+		
+			if (room_manager.spellbook.indexOf(Glitch.NEGATIVE) < 0)
+				room_manager.spellbook.push(Glitch.NEGATIVE);
 			//Glitch.TransformPlayer(room, Glitch.NEGATIVE);
+			
+			room.player.y = 3*Tile.HEIGHT;
+			room.tiles[5][11].collision = Tile.SOLID;
+			room.tiles[5][11].tileset_x = 0;
+			room.tiles[5][12].collision = Tile.SOLID;
+			room.tiles[5][12].tileset_x = 0;
+			
+			room_manager.rooms[5][0].Import(room_manager.glitched_rooms[5][0].Export());
+			room_manager.rooms[4][3].Import(room_manager.glitched_rooms[4][3].Export());
+			room_manager.rooms[3][3].Import(room_manager.glitched_rooms[3][3].Export());
+			room_manager.rooms[2][2].Import(room_manager.glitched_rooms[2][2].Export());
 			
 			for (var i = 0; i < room_manager.rooms.length; i++){
 				for (var j = 0; j < room_manager.rooms[i].length; j++){
@@ -106,15 +127,12 @@ Collection.prototype.GetEvent = function(){
 				}
 			}
 			
-			room.player.y = 3*Tile.HEIGHT;
-			room.tiles[5][11].collision = Tile.SOLID;
-			room.tiles[5][11].tileset_x = 0;
-			room.tiles[5][12].collision = Tile.SOLID;
-			room.tiles[5][12].tileset_x = 0;
-			
-			room_manager.rooms[4][3] = Room.Import("witch/rooms/rooms/room_3_4_glitched.txt");
-			room_manager.rooms[3][3] = Room.Import("witch/rooms/rooms/room_3_3_glitched.txt");
-			room_manager.rooms[2][2] = Room.Import("witch/rooms/rooms/room_2_2_glitched.txt");
+			var door = room_manager.rooms[0][1].GetDoor(2, null);
+			door.room_x = 2;
+			door.room_y = 0;
+			door = room_manager.rooms[0][1].GetDoor(0, null);
+			door.room_x = 1;
+			door.room_y = 0;
 			
 			bg_name = "TomWoxom_North";
 			if (resource_manager.play_music){
@@ -123,10 +141,13 @@ Collection.prototype.GetEvent = function(){
 			}
 			break;
 		case 7:
-			room_manager.spellbook.push(Glitch.PINK);
-			room_manager.rooms[4][4].entities.push(new NPC(4*Tile.WIDTH, 4*Tile.HEIGHT, 4));
-			room_manager.rooms[4][4].entities.push(new NPC(8*Tile.WIDTH, 10*Tile.HEIGHT, 4));
-			room_manager.rooms[4][4].entities.push(new NPC(13*Tile.WIDTH, 7*Tile.HEIGHT, 4));
+			Trophy.GiveTrophy(Trophy.SECRET);
+		
+			if (room_manager.spellbook.indexOf(Glitch.PINK) < 0)
+				room_manager.spellbook.push(Glitch.PINK);
+			room_manager.rooms[5][0].entities.push(new NPC(4*Tile.WIDTH, 3*Tile.HEIGHT, 21));
+			room_manager.rooms[5][0].entities.push(new NPC(8*Tile.WIDTH, 3*Tile.HEIGHT, 4));
+			room_manager.rooms[5][0].entities.push(new NPC(13*Tile.WIDTH, 3*Tile.HEIGHT, 15));
 			
 			//Glitch.TransformPlayer(room, Glitch.PINK);
 			break;

@@ -300,6 +300,17 @@ Room.prototype.Export = function(){
 	};
 }
 
+Room.ImportAsync = function(file_name, callback){
+	readTextFileAsync(file_name, function(obj_str){
+		var room = new Room();
+		var obj_str = readTextFile(file_name);
+		if (obj_str !== null && obj_str !== ""){
+			room.Import(JSON.parse(obj_str));
+		}
+		callback(room);
+	});
+}
+
 Room.Import = function(file_name){
 	var room = new Room();
 	var obj_str = readTextFile(file_name);

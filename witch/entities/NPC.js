@@ -102,26 +102,18 @@ NPC.prototype.GetText = function(){
 		case 18:
 			return "hip hip hooray!\nyay!!\nyou're the best!";
 		case 19:
+			if (room_manager.num_deaths === 2)
+				Trophy.GiveTrophy(Trophy.DEATH);
 			return 	"deaths: " + room_manager.num_deaths + "\n" +
 					"spells cast: " + room_manager.spells_cast + "\n" +
 					"time: " + room_manager.time + " min";
 		case 20:
-			InputManager.RestartGame = function(){
-				room_manager = new House();
-				room_manager.beat_game = true;
-				room = room_manager.GetRoom();
-
-				console.log("start");
-				//Let's play the game!
-				then = Date.now();
-				
-				bg_name = "RoccoW_outOfSight";
-				stopMusic();
-				startMusic();
-				
-				InputManager.RestartGame = function(){}
-			}
-			return "thanks for playing :)!\n\npress enter to restart";
+			if (!room_manager.beat_game)
+				Trophy.GiveTrophy(Trophy.HAT);
+			room_manager.beat_game = true;
+			return "thanks for playing :)!\n\npress shift+r to restart";
+		case 21:
+			return "IT'S A SECRET\nTO EVERYBODY.";
 		case 99:
 			return "go back to the beginning";
 		default:

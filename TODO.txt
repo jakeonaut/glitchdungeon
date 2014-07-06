@@ -1,18 +1,13 @@
-1. land sound is corrupt in not chrome
-2. clean up level editor: (and have a seperate web page to the editor from the main game)
+1. default to audio objects if the audiocontext is taking a long time to load the songs
+2. land sound is corrupt in not chrome
+3. clean up level editor: (and have a seperate web page to the editor from the main game)
 	-export HOUSE option as linkable html thing to share with friends
 	-drop down selector for objects is dynamic to also be for tile type, and npc and item can select dialog and event?
-
-
-***GLITCH JAM 9-30::	code-magick academy where you learn the abilities of other videogame creatures and use it to get to the top of the tower and beat the final boss
-
-
-
--tilesets from kid icarus, adventure island, that weird game with the desert and trees, super mario, megaman, 
-
--music from http://freemusicarchive.org/
-	-by RoccoW: Out of Sight, Into the Mind (http://freemusicarchive.org/music/RoccoW/~/RoccoW_-_Out_of_Sight_Into_the_Mind)
-	-by L'homme Manete: Erase Form (http://freemusicarchive.org/music/Lhomme_Manete/Gaming_Sessions/02_l_homme_manete_-_erase_form)
-	-Rolemusic: Death on the battlefield (http://freemusicarchive.org/music/Rolemusic/gigs_n_contest/rolemusic_-_gigs_n_contest_-_05_Death_on_the_battlefield)
-	-Tom Woxom: North (http://freemusicarchive.org/music/Tom_Woxom/GLEICHTAKT/11_TOM_WOXOM_-_NORTH)
-	-by RoccoW: I've Got Nothing (http://freemusicarchive.org/music/RoccoW/Weeklybeats_2014/Weeklybeats_5_-Ive_Got_Nothing_1969)
+4. Future of Glitch Dungeon::
+	-If ever to make an expanded version, here are some things:
+		1. introduce secret spells as normal spells
+		2. Make more use out of death to checkpoint mechanism for travel with above
+		3. Make more nonlinear and allow much more sequence breaking
+		4. AS left right cycling through spells
+		5. Gaining a new spell alters the world (like glitched rooms)
+		6. Collect the sword in glitch dungeon 2

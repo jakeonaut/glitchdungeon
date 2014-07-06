@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>glitch dungeon</title>
+<link rel="stylesheet" type="text/css" href="witch/style.css"/>
+
+<!--Load all the scripts to be used-->
+<script type="text/javascript" src="witch/Utils.js"></script>
+<script type="text/javascript" src="witch/md5.js"></script>
+<script type="text/javascript" src="witch/managers/KeyManager.js"></script>
+<script type="text/javascript" src="witch/managers/InputManager.js"></script>
+<script type="text/javascript" src="witch/managers/ResourceManager.js"></script>
+<script type="text/javascript" src="witch/managers/LevelEditManager.js"></script>
+<script type="text/javascript" src="witch/GJAPI.js"></script>
+<script type="text/javascript" src="witch/Main.js"></script>
+
+<!--House and Rooms-->
+<script type="text/javascript" src="witch/rooms/House.js"></script>
+<script type="text/javascript" src="witch/rooms/Room.js"></script>
+<script type="text/javascript" src="witch/rooms/Camera.js"></script>
+
+<!--Entities-->
+<script type="text/javascript" src="witch/entities/GameObject.js"></script>
+<script type="text/javascript" src="witch/entities/helpers/Animation.js"></script>
+<script type="text/javascript" src="witch/entities/GameSprite.js"></script>
+<script type="text/javascript" src="witch/entities/GameMover.js"></script>
+<script type="text/javascript" src="witch/entities/Tile.js"></script>
+<script type="text/javascript" src="witch/entities/Enemy.js"></script>
+<script type="text/javascript" src="witch/entities/NPC.js"></script>
+<script type="text/javascript" src="witch/entities/Player.js"></script>
+<script type="text/javascript" src="witch/entities/Hat.js"></script>
+<script type="text/javascript" src="witch/entities/helpers/Glitch.js"></script>
+
+<!--Objects-->
+<script type="text/javascript" src="witch/entities/objects/Door.js"></script>
+<script type="text/javascript" src="witch/entities/objects/Checkpoint.js"></script>
+<script type="text/javascript" src="witch/entities/objects/Collection.js"></script>
+
+<script type="text/javascript">
+	level_edit = true;
+</script>
+
+</head>
+<body>
+    <center>
+	  <table>
+		<tr>
+		<td>
+			<div id="level_edit_objects" style="display:none;">
+				<div id="player_object" class="object_box" style="background: url('witch/assets/images/player_grey_sheet.png');" onclick="ledit_select(this, 'player');">&nbsp;</div>
+				<div id="npc_object" class="object_box" style="background:url('witch/assets/images/npc_sheet.png');" onclick="ledit_select(this,&quot;new NPC(0, 0, parseInt(prompt('id')))&quot;)">&nbsp;</div>
+				<div id="collection_object" class="object_box" style="background:url('witch/assets/images/collection_sheet.png');" onclick="ledit_select(this,&quot;new Collection(0, 0, parseInt(prompt('id')))&quot;)">&nbsp;</div>
+				<div id="object_object" class="object_box" style="background: url('witch/assets/images/obj_sheet.png');" onclick="ledit_select(this, ledit_getSelected('object_options'));">&nbsp;</div>
+				<div id="enemy_object" class="object_box" style="background:url('witch/assets/images/enemy_sheet.png');" onclick="ledit_select(this,&quot;new Enemy(0, 0, parseInt(prompt('type')))&quot;)">&nbsp;</div>
+				
+				
+				<div id="tile_solid" class="object_box" style="background-color: #ff00ff;" onclick="ledit_select(this, Tile.SOLID);">&nbsp;</div>
+				<div id="tile_fallthrough" class="object_box" style="background-color: #00ffff;" onclick="ledit_select(this, Tile.FALLTHROUGH);">&nbsp;</div>
+				<div id="tile_kill" class="object_box" style="background-color: #ff0000;" onclick="ledit_select(this, Tile.KILL_PLAYER);">&nbsp;</div>
+				<div id="tile_ghost" class="object_box" onclick="ledit_select(this, Tile.GHOST);">&nbsp;</div>
+				<div id="tile_super_solid" class="object_box" style="background-color: #ffffff;" onclick="ledit_select(this, Tile.SUPER_SOLID);">&nbsp;</div>
+			</div>
+		</td>
+		<td>
+			<b>Glitch Dungeon</b><br/><br/>
+			<canvas id="game_canvas" class="centerMe" oncontextmenu="return false;"></canvas>
+		</td>
+		</tr>
+	  </table>
+	  <canvas id="tileset_canvas" style="display:none;position:absolute;right:10px;top:10px;background:#aaaaaa url('witch/assets/images/tile_grey_sheet.png')" class="centerMe" oncontextmenu="return false;"></canvas>
+	  <div id="etc_options" style="display:none;">
+	  <div id="house_coordinates" style="position:absolute;right:10px;top:110px;">
+		0 0
+	  </div>
+	  <select id="glitch_options" style="position:absolute;right:10px;top:140px;">
+		<option value="Glitch.GREY">NONE</option>
+		<option value="Glitch.GREEN">FEATHER</option>
+		<option value="Glitch.RED">FLOOR</option>
+		<option value="Glitch.ZERO">INVIS</option>
+		<option value="Glitch.GOLD">WALL</option>
+		<option value="Glitch.PINK">MEMORY</option>
+		<option value="Glitch.BLUE">GRAVITY</option>
+		<option value="Glitch.NEGATIVE">WALKTHRUWALLS</option>
+	  </select>
+	  <input type="submit" value="change" style="position:absolute;right:50px;top:164px;" onclick="ledit_change_glitch()"/>
+	  <input type="submit" value="add" style="position:absolute;right:10px;top:164px;" onclick="ledit_add_glitch()"/>
+	  <select id="object_options" style="position:absolute;right:10px;top:196px;">
+		<option value="new Door(0, 0, parseInt(prompt('room x')), parseInt(prompt('room y')), parseInt(prompt('door id')))">Door</option>
+		<option value="new Door(0, 0, parseInt(prompt('room x')), parseInt(prompt('room y')), parseInt(prompt('door id')), true, parseInt(prompt('num artifacts')))">Door (Lock)</option>
+		<option value="new Checkpoint(0, 0)">CheckPoint</option>
+	  </select>
+	  </div>
+	  
+      <div id="level_edit_buttons" style="display:none;">
+		<div style="position: absolute; left: 10px;">
+			width: <input type="text" id="room_width" value="320"/><br/>
+			heght: <input type="text" id="room_height" value="240"/><br/>
+			<input type="submit" value="change size" onclick="ledit_change_room_size();"/>
+		</div>
+		<input type="submit" value="export" onclick="ledit_export();"/>
+		<input type="submit" value="import" onclick="ledit_import();"/>
+		<input type="submit" value="reset room" onclick="ledit_reset();"/>
+		<input type="submit" value="reset house" onclick="ledit_reset_house();"/>
+		<br/><br/><textarea id="level_edit_export_text"></textarea>
+	  </div>
+    </center>
+    <!--Player for the background music-->
+    <div id="bgMusicPlayer">
+    <!--<embed src="goblin/sounds/firedraft2.wav" autostart="true" loop="true" hidden="true">-->
+    </div>
+</body>
+</html>

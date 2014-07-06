@@ -5,6 +5,7 @@ var DNUM = 18;
 
 var bg_music = null;
 var bg_name = "RoccoW_outOfSight";
+var tryToPlay = null;
 
 var GAME_WIDTH=160; //CHANGE TO /2
 var GAME_HEIGHT=120; //CHANGE TO /2
@@ -85,6 +86,8 @@ var startSound = function(){
 
 var stopMusic = function(){
 	resource_manager.play_music = false;
+	window.clearInterval(tryToPlay);
+	tryToPlay = null;
 	if (bg_music !== null && bg_music !== undefined){
 		bg_music.stop();
 		bg_music = null;
@@ -180,3 +183,53 @@ var render = function(){
 };
 
 window.onload=init;
+
+//SECRET TROPHIES!!!
+var Trophy = function(){};
+Trophy.POWERS = 0;
+Trophy.HAT = 1;
+Trophy.DEATH = 2;
+Trophy.SECRET = 3;
+Trophy.GiveTrophy = function(trophy){
+	var username = Utils.gup("gjapi_username");
+	var user_token = Utils.gup("gjapi_token");
+	if (username === null || username === '')
+		return;
+	console.log(username + ", " + user_token);
+	
+	//This stuff is contextual to my game jolt game, so 
+	//if you're making a game in game jolt, the achievement token
+	//for your game should be able to be used here
+	var game_id = GJAPI.game_id;
+
+	var url = "http://gamejolt.com/api/game/v1/trophies/add-achieved/?game_id="+game_id+"&username="+username+
+				"&user_token="+user_token;
+	switch (trophy){
+		case Trophy.POWERS:
+			url += "&trophy_id=9184";
+			console.log("9184");
+			break;
+		case Trophy.HAT:	
+			url += "&trophy_id=9185";
+			console.log("9185");
+			break;
+		case Trophy.DEATH:
+			url += "&trophy_id=9187";
+			console.log("9187");
+			break;
+		case Trophy.SECRET:
+			url += "&trophy_id=9186";
+			console.log("9186");
+			break;
+		default: break;
+	}
+	
+	//TODO:: BEFORE COMMITTING TO GIT, ADD THIS SOMEWHERE ELSE AND HIDE IT!!!
+	var signature = url + GJAPI.private_token;
+	signature = md5(signature);
+	
+	var xmlhttp = new XMLHttpRequest();
+	var url = url + "&signature=" + signature;
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+}

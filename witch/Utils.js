@@ -1,6 +1,13 @@
 function Utils(){}
 
+Utils.gup = function(name){
+	//http://stackoverflow.com/questions/8460265/get-a-variable-from-url-parameter-using-javascript
+	name = RegExp ('[?&]' + name.replace (/([[\]])/, '\\$1') + '=([^&#]*)');
+	return (window.location.href.match (name) || ['', ''])[1];
+}
+
 Utils.playSound = function(sound_name, volume, time, loop){
+	tryToPlay = null;
 	loop = defaultValue(loop, false);
 
 	if (!resource_manager.can_play_sound || (!resource_manager.play_sound || (!resource_manager.play_music && loop))) 
@@ -8,7 +15,7 @@ Utils.playSound = function(sound_name, volume, time, loop){
 	//if the bg music isn't loaded, give it a second
 	if (loop){
 		if (resource_manager[sound_name] === undefined || resource_manager[sound_name] === null){
-			window.setTimeout(function(){bg_music = Utils.playSound(sound_name, volume, time, loop);}, 100);
+			tryToPlay = window.setTimeout(function(){bg_music = Utils.playSound(sound_name, volume, time, loop);}, 100);
 			return;
 		}
 	}
@@ -57,9 +64,29 @@ function readTextFile(file){
 		}
 		rawFile.send(null);
 	}catch(e){
-		
+		console.log(e);
 	}
 	return text;
+}
+
+function readTextFileAsync(file, callback){
+	var rawFile = new XMLHttpRequest();
+	try{
+		rawFile.open("GET", file, false);
+		rawFile.onreadystatechange = function ()
+		{
+			if(rawFile.readyState === 4)
+			{
+				if(rawFile.status === 200 || rawFile.status == 0)
+				{
+					callback(rawFile.responseText);
+				}
+			}
+		}
+		rawFile.send(null);
+	}catch(e){
+		
+	}
 }
 
 //http://stackoverflow.com/questions/3808808/how-to-get-element-by-class-in-javascript

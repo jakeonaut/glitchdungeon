@@ -52,10 +52,25 @@ InputManager.prototype.Update = function(player){
 	}
 	
 	
-	//DEBUG TODO DELETE IN RELEASE
-	if (this.key_manager.keys_pressed[KeyManager.ENTER]){
+	//Restart the game
+	if ((this.key_manager.keys_pressed[KeyManager.SHIFT] && this.key_manager.keys_down[KeyManager.R]) || (this.key_manager.keys_down[KeyManager.SHIFT] && this.key_manager.keys_pressed[KeyManager.R])){
 		InputManager.RestartGame();
 	}
 }
 
-InputManager.RestartGame = function(){};
+InputManager.RestartGame = function(){
+	room_manager.Restart();
+	room = room_manager.GetRoom();
+
+	console.log("start");
+	//Let's play the game!
+	then = Date.now();
+	
+	bg_name = "RoccoW_outOfSight";
+	if (resource_manager.play_music){
+		stopMusic();
+		startMusic();
+	}
+	
+	//InputManager.RestartGame = function(){}
+}
