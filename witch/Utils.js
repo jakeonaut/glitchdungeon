@@ -72,7 +72,7 @@ function readTextFile(file){
 function readTextFileAsync(file, callback){
 	var rawFile = new XMLHttpRequest();
 	try{
-		rawFile.open("GET", file, false);
+		rawFile.open("GET", file, true);
 		rawFile.onreadystatechange = function ()
 		{
 			if(rawFile.readyState === 4)

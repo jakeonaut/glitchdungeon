@@ -102,14 +102,23 @@ NPC.prototype.GetText = function(){
 		case 18:
 			return "hip hip hooray!\nyay!!\nyou're the best!";
 		case 19:
-			if (room_manager.num_deaths === 2)
-				Trophy.GiveTrophy(Trophy.DEATH);
+			if (!room_manager.submitted){
+				if (room_manager.num_deaths === 2)
+					Trophy.GiveTrophy(Trophy.DEATH);
+					Trophy.AddScore(room_manager.num_deaths + " deaths", room_manager.num_deaths, 31465);
+				Trophy.AddScore(room_manager.spells_cast + " spells", room_manager.spells_cast, 31464);
+				Trophy.AddScore(room_manager.time + " min", room_manager.time, 29967);
+				room_manager.submitted = true;
+			}
+				
 			return 	"deaths: " + room_manager.num_deaths + "\n" +
 					"spells cast: " + room_manager.spells_cast + "\n" +
 					"time: " + room_manager.time + " min";
 		case 20:
-			if (!room_manager.beat_game)
+			if (!room_manager.beat_game){
 				Trophy.GiveTrophy(Trophy.HAT);
+				Utils.playSound("pickup", master_volume, 0);
+			}
 			room_manager.beat_game = true;
 			return "thanks for playing :)!\n\npress shift+r to restart";
 		case 21:

@@ -6,6 +6,7 @@ var DNUM = 18;
 var bg_music = null;
 var bg_name = "RoccoW_outOfSight";
 var tryToPlay = null;
+var click_to_start = false;
 
 var GAME_WIDTH=160; //CHANGE TO /2
 var GAME_HEIGHT=120; //CHANGE TO /2
@@ -17,7 +18,7 @@ var ctx;
 //primitive variables
 var game_started = false;
 var then;
-var fontColor = "rgb(0,0,0)"
+var fontColor = "rgb(0,0,0)";
 
 //managers
 var room_manager;
@@ -28,6 +29,7 @@ var resource_manager;
 var room;
 
 var init = function(){
+	if (level_edit) InitLevelEdit();
 	console.log("init");
 	
 	canvas = $("game_canvas");
@@ -35,6 +37,8 @@ var init = function(){
 	canvas.width = GAME_WIDTH;
 	canvas.height = GAME_HEIGHT;
 	ctx = canvas.getContext("2d");
+	set_textRenderContext(ctx);
+	click_to_start = false;
 	
 	//Handle keyboard controls
 	key_manager = new KeyManager();
@@ -51,28 +55,30 @@ var init = function(){
 	}
 	
 	input_manager = new InputManager(key_manager);
-	if (level_edit) InitLevelEdit();
 	
 	//When load resources is finished, it will trigger startGame
-	resource_manager = new ResourceManager();
-	resource_manager.LoadResources(ctx);
+	setTimeout(function(){
+		resource_manager = new ResourceManager();
+		resource_manager.LoadResources(ctx);
+	}, 1);
 };
 
 var startGame = function(){
 	if (game_started) return;
 	game_started = true;
 
-	room_manager = new House();
-	room = room_manager.GetRoom();
-
-	console.log("start");
-	//Let's play the game!
-	then = Date.now();
-	
-	bg_name = "RoccoW_outOfSight";
-	stopMusic();
-	startMusic();
-	setInterval(main, 17);
+	room_manager = new House(function(){
+		room = room_manager.GetRoom();
+		
+		//Let's play the game!
+		console.log("start");
+		then = Date.now();
+		
+		bg_name = "RoccoW_outOfSight";
+		stopMusic();
+		startMusic();
+		setInterval(main, 17);
+	}.bind(this));
 };
 
 var stopSound = function(){
@@ -107,6 +113,7 @@ var SoundMouseDown = function(){
 }
 
 var SoundMouseUp = function(e){
+	click_to_start = true;
 	var box = canvas.getBoundingClientRect();
 	
 	var x = (e.clientX - box.left) / 2;
@@ -137,8 +144,25 @@ var main = function(){
 	//time variable so we can make the speed right no matter how fast the script
     //delta = now - then;
 	
-	update(delta);
-	render();
+	if (click_to_start){
+		update(delta);
+		render();
+	}else{		
+		//Erase screen
+		ctx.fillStyle = "#000000";
+		ctx.fillRect(0, 0, GAME_WIDTH*VIEW_SCALE, GAME_HEIGHT*VIEW_SCALE);
+		
+		//draw the game
+		sharpen(ctx);
+		
+		ctx.fillStyle = "rgb(255,255,255)";
+		//ctx.font = "24px pixelFont";
+		ctx.textAlign = "center";
+		ctx.textBaseline = "top";
+		ctx.fillText("WARNING: FLASHING ITEMS", 134, GAME_HEIGHT/2+25);
+		ctx.fillText("SCREEN MAY RAPIDLY CHANGE COLOR", 134, GAME_HEIGHT/2+49);
+		ctx.fillText("CLICK TO START", 134, GAME_HEIGHT/2+80);
+	}
 	then = now;
 }
 
@@ -182,7 +206,7 @@ var render = function(){
 	);
 };
 
-window.onload=init;
+window.onload= function(){setTimeout(init, 0);}
 
 //SECRET TROPHIES!!!
 var Trophy = function(){};
@@ -223,6 +247,30 @@ Trophy.GiveTrophy = function(trophy){
 			break;
 		default: break;
 	}
+	
+	//TODO:: BEFORE COMMITTING TO GIT, ADD THIS SOMEWHERE ELSE AND HIDE IT!!!
+	var signature = url + GJAPI.private_token;
+	signature = md5(signature);
+	
+	var xmlhttp = new XMLHttpRequest();
+	var url = url + "&signature=" + signature;
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+}
+
+Trophy.AddScore = function(score, sort, table_id){
+	var username = Utils.gup("gjapi_username");
+	var user_token = Utils.gup("gjapi_token");
+	if (username === null || username === '')
+		return;
+	console.log(username + ", " + user_token);
+	
+	//This stuff is contextual to my game jolt game, so 
+	//if you're making a game in game jolt, the achievement token
+	//for your game should be able to be used here
+	var game_id = GJAPI.game_id;
+	
+	var url = "http://gamejolt.com/api/game/v1/scores/add/?game_id="+game_id+"&username="+username+"&user_token="+user_token+"&score="+score+"&sort="+sort+"&table_id="+table_id;
 	
 	//TODO:: BEFORE COMMITTING TO GIT, ADD THIS SOMEWHERE ELSE AND HIDE IT!!!
 	var signature = url + GJAPI.private_token;

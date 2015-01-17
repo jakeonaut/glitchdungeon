@@ -13,6 +13,7 @@ KeyManager.DOWN = 40;
 KeyManager.ENTER = 13;
 KeyManager.SPACE = 32;
 KeyManager.SHIFT = 16;
+KeyManager.ESC = 27;
 KeyManager.H = 72;
 KeyManager.Q = 81;
 KeyManager.W = 87;
@@ -24,6 +25,7 @@ KeyManager.S = 83;
 KeyManager.D = 68;
 KeyManager.X = 88;
 KeyManager.Z = 90;
+KeyManager.DEL = 46;
 
 KeyManager.NUMBERS = [49, 50, 51, 52, 53, 54, 55];
 

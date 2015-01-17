@@ -10,8 +10,8 @@ function ResourceManager(){
 		"player_grey_sheet",
 		"hat_grey_sheet",
 		"tile_grey_sheet",
-		"npc_sheet",
-		"obj_sheet",
+		"npc_sheet"
+		,"obj_sheet",
 		"player_green_sheet",
 		"tile_green_sheet",
 		"collection_sheet",
@@ -101,29 +101,28 @@ ResourceManager.prototype.LoadResources = function(ctx){
 
 	//Load Images
 	for (var i = 0; i < this.image_names.length; i++){
-		var img = this.image_names[i];
-		this[img] = new Image();
-		this[img].onload = this.ImageLoad.bind(this);
-		this[img].src = img_path + img + ".png";
+		var timeoutCallback = (function(self, img){
+			self[img] = new Image();
+			self[img].onload = self.ImageLoad();
+			self[img].src = img_path + img + ".png";
+		})(this, this.image_names[i]);
+		
+		setTimeout(timeoutCallback, 0);
 	}
 	
 	if (this.audio_context === null || !this.can_play_sound){ 
 		this.sounds_loaded = this.sound_names.length;
 		return;
 	}
-	this.LoadNextSound();
 	//Load Sounds
-/*	for (var i = 0; i < this.sound_names.length; i++){
-		var snd = this.sound_names[i];
-		this.loadBuffer(snd_path + snd + ".mp3", snd);
-	}*/
-}
-
-ResourceManager.prototype.LoadNextSound = function(){
-	if (this.sounds_loaded >= this.sound_names.length) return;
-
-	var snd = this.sound_names[this.sounds_loaded];
-	this.loadBuffer(snd_path + snd + ".mp3", snd);
+	for (var i = 0; i < this.sound_names.length; i++){
+		var timeoutCallback = (function(self){
+			var snd = self.sound_names[i];
+			self.loadBuffer(snd_path + snd + ".mp3", snd);
+		})(this);
+		
+		setTimeout(timeoutCallback, 0);
+	}
 }
 
 ResourceManager.prototype.loadBuffer = function(url, index) {
@@ -147,7 +146,7 @@ ResourceManager.prototype.loadBuffer = function(url, index) {
         loader[index] = buffer;
 		loader.SoundLoad();
 		//Force sequential sound loading
-		loader.LoadNextSound();
+		//setTimeout(loader.LoadNextSound.bind(loader), 0);
       },
       function(error) {
         console.error('decodeAudioData error', error);

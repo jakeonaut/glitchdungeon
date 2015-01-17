@@ -126,9 +126,9 @@ Glitch.GreenTransform = function(map, player, only_visual){
 	map.tilesheet_name = "tile_green_sheet";
 	
 	player.gnd_run_acc = player.max_run_vel/10.0;
-	player.gnd_run_dec = player.max_run_vel/100.0;
+	player.gnd_run_dec = player.max_run_vel/30.0;
 	player.air_run_acc = player.max_run_vel/10.0;
-	player.air_run_dec = player.max_run_vel/100.0;
+	player.air_run_dec = player.max_run_vel/30.0;
 	
 	player.terminal_vel = 1.0;
 	player.original_grav_acc = 0.2;

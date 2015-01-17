@@ -118,7 +118,9 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		
 		room_manager.ChangeRoom();
 		
-		room.player.x = (this.player.x / (this.MAP_WIDTH * Tile.WIDTH)) * room.MAP_WIDTH * Tile.WIDTH;
+		room.player.x = this.player.x;
+		if (room.player.x <= 8) room.player.x+=8;
+		if (room.player.x >= room.MAP_WIDTH * Tile.WIDTH -8) room.player.x -= 8;
 		room.player.y = room.MAP_HEIGHT * Tile.HEIGHT - Tile.HEIGHT - room.player.bb;
 	}
 	//OFFSCREEN BOTTOM
@@ -128,7 +130,9 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		
 		room_manager.ChangeRoom();
 		
-		room.player.x = (this.player.x / (this.MAP_WIDTH * Tile.WIDTH)) * room.MAP_WIDTH * Tile.WIDTH;
+		room.player.x = this.player.x;
+		if (room.player.x <= 8) room.player.x+=8;
+		if (room.player.x >= room.MAP_WIDTH * Tile.WIDTH -8) room.player.x -= 8;
 		room.player.y = 0 + Tile.HEIGHT/2 + room.player.tb;
 	}
 	
@@ -140,7 +144,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room.player.facing = Facing.LEFT;
 		room_manager.ChangeRoom();
 		
-		room.player.y = (this.player.y / (this.MAP_HEIGHT * Tile.HEIGHT)) * room.MAP_HEIGHT * Tile.HEIGHT;
+		room.player.y = this.player.y;
 		room.player.x = room.MAP_WIDTH * Tile.WIDTH - Tile.WIDTH/2 - room.player.rb;
 	}
 	//OFFSCREEN RIGHT
@@ -151,7 +155,7 @@ Room.prototype.TryUpdateRoomIfPlayerOffscreen = function(){
 		room.player.facing = Facing.RIGHT;
 		room_manager.ChangeRoom();
 		
-		room.player.y = (this.player.y / (this.MAP_HEIGHT * Tile.HEIGHT)) * room.MAP_HEIGHT * Tile.HEIGHT;
+		room.player.y = this.player.y;
 		room.player.x = 0 + Tile.WIDTH/2 - room.player.lb;
 	}
 	
@@ -187,9 +191,14 @@ Room.prototype.RenderSpeech = function(ctx){
 		var fs = 8;
 		ctx.font = fs + "px pixelFont";
 		ctx.fillStyle = "#ffffff";
+		ctx.strokeStyle = "#ffffff";
 		var texts = this.spoken_text.split("\n");
 		for (var i = 0; i < texts.length; i++){
-			ctx.fillText(texts[i], Tile.WIDTH*2, h + (fs*i)+GAME_HEIGHT+(Tile.HEIGHT/2)-speech_height, GAME_WIDTH-(Tile.WIDTH*2), fs);
+			if (!(/^((?!chrome).)*safari/i.test(navigator.userAgent))){
+				ctx.fillText(texts[i], Tile.WIDTH*2, h + (fs*i)+GAME_HEIGHT+(Tile.HEIGHT/2)-speech_height, GAME_WIDTH-(Tile.WIDTH*2), fs);
+			}else if (check_textRenderContext(ctx)){
+				ctx.strokeText(texts[i], Tile.WIDTH*2, h + (fs*i)+GAME_HEIGHT+(Tile.HEIGHT/2)-speech_height - 8, fs-2);
+			}
 		}
 	}
 }
@@ -211,9 +220,16 @@ Room.prototype.Render = function(ctx, level_edit){
 	var fs = 4;
 	ctx.font = fs + "px monospace";
 	ctx.fillStyle = "#ffffff";
+	ctx.strokeStyle = "#ffffff";
 	var texts = this.bg_code.split("\n");
-	for (var i = 0; i < texts.length; i++){
-		ctx.fillText(texts[i], 16, fs*i, GAME_WIDTH-32, fs*i);
+	if (!(/^((?!chrome).)*safari/i.test(navigator.userAgent))){
+		for (var i = 0; i < texts.length; i++){
+			ctx.fillText(texts[i], 16, fs*i, GAME_WIDTH-32, fs*i);
+		}
+	}else if (check_textRenderContext(ctx)){
+		for (var i = 0; i < texts.length; i++){
+			ctx.strokeText(texts[i], 16, fs*i-8, fs);
+		}
 	}
 
 	//DRAW THE TILES OF THE ROOM
@@ -303,7 +319,6 @@ Room.prototype.Export = function(){
 Room.ImportAsync = function(file_name, callback){
 	readTextFileAsync(file_name, function(obj_str){
 		var room = new Room();
-		var obj_str = readTextFile(file_name);
 		if (obj_str !== null && obj_str !== ""){
 			room.Import(JSON.parse(obj_str));
 		}

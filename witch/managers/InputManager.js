@@ -34,6 +34,11 @@ InputManager.prototype.Update = function(player){
 		//}
 	}
 	
+	if (this.key_manager.keys_pressed[KeyManager.DEL]){
+		if (bg_name !== "RoccoW_iveGotNothing")
+			player.Die();
+	}
+	
 	if (this.key_manager.keys_pressed[KeyManager.H]){
 		room_manager.beat_game = !room_manager.beat_game;
 		if (room_manager.beat_game)
@@ -49,6 +54,16 @@ InputManager.prototype.Update = function(player){
 			if (room_manager.glitch_index === i-1)
 				room_manager.glitch_index = temp;
 		}
+	}
+	
+	if (this.key_manager.keys_pressed[KeyManager.A] && room_manager.has_spellbook){
+		room_manager.glitch_index-=2;
+		if (room_manager.glitch_index < 0)
+			room_manager.glitch_index = room_manager.spellbook.length + room_manager.glitch_index;
+		room_manager.RandomGlitch();
+	}
+	if (this.key_manager.keys_pressed[KeyManager.S] && room_manager.has_spellbook){
+		room_manager.RandomGlitch();
 	}
 	
 	
