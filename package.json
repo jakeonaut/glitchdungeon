@@ -1,0 +1,17 @@
+{
+	"name": "glitch dungeon",
+	"version": "2.0.1",
+	"description": "The original glitch dungeon adventure game.",
+	"main": "index.html",
+	"window": {
+		"title": "glitch dungeon",
+		"icon": "link.png",
+		"toolbar": true,
+		"width": 643,
+		"min_width": 643,
+		"max_width": 643,
+		"height": 522,
+		"min_height": 522,
+		"max_height": 522
+	}
+}

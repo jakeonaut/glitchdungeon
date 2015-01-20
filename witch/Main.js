@@ -272,7 +272,6 @@ Trophy.AddScore = function(score, sort, table_id){
 	
 	var url = "http://gamejolt.com/api/game/v1/scores/add/?game_id="+game_id+"&username="+username+"&user_token="+user_token+"&score="+score+"&sort="+sort+"&table_id="+table_id;
 	
-	//TODO:: BEFORE COMMITTING TO GIT, ADD THIS SOMEWHERE ELSE AND HIDE IT!!!
 	var signature = url + GJAPI.private_token;
 	signature = md5(signature);
 	
