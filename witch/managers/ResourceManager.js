@@ -118,7 +118,7 @@ ResourceManager.prototype.LoadResources = function(ctx){
 	for (var i = 0; i < this.sound_names.length; i++){
 		var timeoutCallback = (function(self){
 			var snd = self.sound_names[i];
-			self.loadBuffer(snd_path + snd + ".mp3", snd);
+			self.loadBuffer(snd_path + snd + ".wav", snd);
 		})(this);
 		
 		setTimeout(timeoutCallback, 0);

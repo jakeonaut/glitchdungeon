@@ -219,7 +219,7 @@ Trophy.GiveTrophy = function(trophy){
 	var user_token = Utils.gup("gjapi_token");
 	if (username === null || username === '')
 		return;
-	console.log(username + ", " + user_token);
+	console.log(username + ", ");// + user_token);
 	
 	//This stuff is contextual to my game jolt game, so 
 	//if you're making a game in game jolt, the achievement token
