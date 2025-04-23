@@ -1,5 +1,6 @@
 function Hat(x, y){
 	GameMover.call(this, x, y, 2, 1, 14, 16, "hat_grey_sheet");
+  this.dog_mode = true;
 	this.type = "Hat";
 	this.animation.frame_height = 16;
 	
@@ -7,6 +8,7 @@ function Hat(x, y){
 }
 
 Hat.prototype.Import = function(obj){
+  obj.img_name = "hat_grey_sheet";
 	GameMover.prototype.Import.call(this, obj);
 }
 
@@ -19,7 +21,7 @@ Hat.prototype.Update = function(delta, map){
 	//GameMover.prototype.Update.call(this, delta, map);
 	
 	this.x = map.player.x-1;
-	this.y = map.player.y-6;
+	this.y = map.player.y-7;
 	this.facing = map.player.facing;
 	if (this.facing === Facing.LEFT)
 		this.x += 2;

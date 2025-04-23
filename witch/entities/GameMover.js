@@ -101,7 +101,7 @@ GameMover.prototype.Update = function(delta, map)
 /*********************PHYSICS AND COLLISION DETECTIONS********************/
 GameMover.prototype.DieToSuffocation = function(map){
 	if (!this.die_to_suffocation) return;
-	console.log("let's try to die :)!");
+	// console.log("let's try to die :)!");
 	this.die_to_suffocation = false;
 
 	var left_tile = Math.floor((this.x + this.lb) / Tile.WIDTH);
@@ -162,7 +162,7 @@ GameMover.prototype.DieToSuffocation = function(map){
 		}
 		if (dead) break;
 	}
-	console.log("dead: " + dead + ", left: " + left_collision + ", right: " + right_collision + ", top: " + top_collision + ", bottom: " + bottom_collision);
+	// console.log("dead: " + dead + ", left: " + left_collision + ", right: " + right_collision + ", top: " + top_collision + ", bottom: " + bottom_collision);
 	
 	if (dead){ 
 		this.stuck_in_wall = true;
@@ -401,7 +401,7 @@ GameMover.prototype.CorrectVelocity = function(mult){
 
 GameMover.prototype.StartJump = function(){
 	if (this.on_ground){
-		Utils.playSound("jump");
+		Utils.playSound("jump", 0.4);
 		this.vel.y = -this.jump_vel;
 		this.is_jumping = true;
 		this.jump_timer = 0;

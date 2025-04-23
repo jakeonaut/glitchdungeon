@@ -3,7 +3,7 @@ function Checkpoint(x, y){
 	this.type = "Checkpoint";
 	
 	this.active = false;
-	this.animation.Change(2, 0, 1);
+	this.animation.Change(2, 1, 1);
 	this.lex = 1;
 	
 	this.z_index = 9;
@@ -23,6 +23,7 @@ Checkpoint.prototype.Update = function(delta, map){
 				room_y: room_manager.room_index_y,
 				facing: room.player.facing
 			}
+			room_manager.TrySaveGame();
 			Utils.playSound("checkpoint", master_volume, 0);
 			this.active = true;
 			this.animation.Change(this.lex, 0, 2);

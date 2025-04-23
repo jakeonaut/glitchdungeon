@@ -64,7 +64,7 @@ NPC.prototype.GetText = function(){
 		case -1:
 			return "hold up or Z to jump higher\n\nthere is no escape";
 		case 0:
-			return "you must escape\n the labyrinth\nuse arrow keys";
+			return "you must escape\n the dungeon\nuse arrow keys";
 		case 1:
 			return "press down to fall\n and to enter doors";
 		case 2:
@@ -78,7 +78,7 @@ NPC.prototype.GetText = function(){
 		case 6:
 			return "dying revives you to\nlast checkpoint\ni'm sorry";
 		case 7:
-			return "remember your wits\n\ndeath is inevitable";
+      return "remember your wits\n\ndeath is inevitable";
 		case 8:
 			return "don't afraid of\nfailure\nits all there is";
 		case 9:
@@ -88,15 +88,15 @@ NPC.prototype.GetText = function(){
 		case 11:
 			return "patience is a virtue\n\nthat means nothing here";
 		case 12:
-			return "give up your hope\nbefore you lose it";
+			return "try using \"1\", \"2\", \"3\", \"4\"\nkeys to change spells";
 		case 13:
-			return "there is no real escape";
+			return "there is no real escape..";
 		case 14:
 			return "i believe in you";
 		case 15:
 			return "nice of you to stop by\nthis is the wrong way";
 		case 16:
-			return "you escaped!\ncongratulations!";
+			return "you did it :)!\ncongratulations!";
 		case 17:
 			return "we knew you could do it!\nwell i did at least";
 		case 18:
@@ -104,10 +104,18 @@ NPC.prototype.GetText = function(){
 		case 19:
 			if (!room_manager.submitted){
 				if (room_manager.num_deaths === 2)
-					Trophy.GiveTrophy(Trophy.DEATH);
-					Trophy.AddScore(room_manager.num_deaths + " deaths", room_manager.num_deaths, 31465);
-				Trophy.AddScore(room_manager.spells_cast + " spells", room_manager.spells_cast, 31464);
-				Trophy.AddScore(room_manager.time + " min", room_manager.time, 29967);
+					Trophy.GiveTrophy(Trophy.DEATH).then(() => {
+            // TODO(jaketrower): we don't care about result for now.
+          });
+					Trophy.AddScore(room_manager.num_deaths + " deaths", room_manager.num_deaths, 31465).then(() => {
+            // TODO(jaketrower): we don't care about result for now.
+          });
+				Trophy.AddScore(room_manager.spells_cast + " spells", room_manager.spells_cast, 31464).then(() => {
+          // TODO(jaketrower): we don't care about result for now.
+        });
+				Trophy.AddScore(room_manager.time + " min", room_manager.time, 29967).then(() => {
+          // TODO(jaketrower): we don't care about result for now.
+        });
 				room_manager.submitted = true;
 			}
 				

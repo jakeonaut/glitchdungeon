@@ -83,7 +83,7 @@ Glitch.TransformPlayer = function(map, glitch_type, normalize, only_visual){
 	}
 
 	map.player.y += oldbb - map.player.bb;
-	map.player.image = eval("resource_manager." + map.player.img_name);
+	map.player.image = resource_manager[map.player.img_name];
 }
 extend(GameSprite, Glitch);
 

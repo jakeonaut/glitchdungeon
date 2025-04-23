@@ -1,9 +1,23 @@
 function Utils(){}
 
-Utils.gup = function(name){
-	//http://stackoverflow.com/questions/8460265/get-a-variable-from-url-parameter-using-javascript
-	name = RegExp ('[?&]' + name.replace (/([[\]])/, '\\$1') + '=([^&#]*)');
-	return (window.location.href.match (name) || ['', ''])[1];
+Utils.gup = async function(name){
+  return null;
+  // TODO(jaketrower):
+  // Utils.gup("gjapi_username")
+  // Utils.gup("gjapi_token")
+  
+	// http://stackoverflow.com/questions/8460265/get-a-variable-from-url-parameter-using-javascript
+	// let regexpName = RegExp ('[?&]' + name.replace (/([[\]])/, '\\$1') + '=([^&#]*)');
+  // if (Utils[name]) {
+    // return Utils[name];
+  // } else if (window.location.href.match(regexpName)) {
+    // return new Promise(function(resolve, reject) {
+      // resolve(window.location.href.match(regexpName)[1]);
+    // });
+  // } else {
+    // Utils[name] = await Modal.prompt(`please insert your GameJolt ${name.split("_")[1]}`);
+    // return Utils[name];
+  // }
 }
 
 Utils.playSound = function(sound_name, volume, time, loop){
@@ -64,7 +78,7 @@ function readTextFile(file){
 		}
 		rawFile.send(null);
 	}catch(e){
-		console.log(e);
+		// console.log(e);
 	}
 	return text;
 }

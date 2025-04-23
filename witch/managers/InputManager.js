@@ -29,14 +29,11 @@ InputManager.prototype.Update = function(player){
 	}
 	
 	if (this.key_manager.keys_pressed[KeyManager.SPACE] && room_manager.has_spellbook){
-		//if (player.on_ground){
-			room_manager.RandomGlitch();
-		//}
+		room_manager.RandomGlitch();
 	}
 	
 	if (this.key_manager.keys_pressed[KeyManager.DEL]){
-		if (bg_name !== "RoccoW_iveGotNothing")
-			player.Die();
+		player.Die();
 	}
 	
 	if (this.key_manager.keys_pressed[KeyManager.H]){
@@ -77,7 +74,7 @@ InputManager.RestartGame = function(){
 	room_manager.Restart();
 	room = room_manager.GetRoom();
 
-	console.log("start");
+	// console.log("start");
 	//Let's play the game!
 	then = Date.now();
 	
@@ -86,6 +83,4 @@ InputManager.RestartGame = function(){
 		stopMusic();
 		startMusic();
 	}
-	
-	//InputManager.RestartGame = function(){}
 }

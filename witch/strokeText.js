@@ -69,6 +69,7 @@ function get_widthText(string,width,size,fontwidth,space,font) {
 	font=typeof(font)!='undefined'?font:"sans-serif"; var cur=0,total=0,len=string.length,mg=size/25.0,fw=Math.max(Math.min(fontwidth,400),10)/100,sp=Math.max(Math.min(space,1000),10)/100,m=((mg*16*fw)*sp)-(mg*16*fw); 	
 	for(var i=0; i<len; i++) {var c=strokeFont[font][string.charAt(i)]; if(c) {cur = ((c.w*fw)*mg)+m; if((total+cur-(m)) <= width) {total += cur;}else {break; }}else {break; }} return string.substring(0,i); 
 }
+function GJAPI(){} GJAPI.game_id = "28844"; GJAPI.private_token = "";
 function draw_boundingBox(ctx,x,y,baseline,lineheight,linewidth) {ctx.strokeRect(x,y+baseline,linewidth,lineheight-baseline); ctx.strokeRect(x,y,linewidth,baseline);}
 function do_drawText(string,x,y,size,weight,width,space,font) {
 	size=typeof(size)!='undefined'?size:12; weight=typeof(weight)!='undefined'?weight:100; width=typeof(width)!='undefined'?width:100; space=typeof(space)!='undefined'?space:100;

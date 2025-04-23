@@ -3,14 +3,16 @@
 <head>
 <meta charset="utf-8"> 
 <title>glitch dungeon</title>
+<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
 <link rel="stylesheet" type="text/css" href="witch/style.css"/>
 <style type="text/css">
 	body{ padding:0px; margin:0px; }
 </style>
 
 	<!--Load all the scripts to be used-->
-	<script type="text/javascript" src="witch/GJAPI.js"></script>
 	<script type="text/javascript" src="witch/strokeText.js"></script>
+    
+  <script src="witch/modal.js"></script>
 	<script type="text/javascript" src="witch/Utils.js"></script>
 	<script type="text/javascript" src="witch/md5.js"></script>
 	<script type="text/javascript" src="witch/managers/KeyManager.js"></script>
@@ -44,5 +46,15 @@
 </head>
 <body>
 	<canvas id="game_canvas" class="centerMe" oncontextmenu="return false;"></canvas>
+  
+<div class="modal-wrapper">
+  <div class="modal">
+    <a class="modal-close button" href="#">X</a>
+    <div class="modal-prompt-text"></div>
+    <input class="modal-prompt-input" type="text" value="">
+    <a href="#" class="modal-prompt-input-submit button">Submit</a>
+  </div>
+</div>
+
 </body>
 </html>

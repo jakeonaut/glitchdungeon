@@ -22,7 +22,7 @@ function Tile(x, y, collision, slope){
 	this.type = "Tile";
 	this.collision = defaultValue(collision, Tile.GHOST);
 	if (collision == Tile.KILL_PLAYER) this.kill_player = true;
-	this.slope = slope;
+	this.slope = defaultValue(slope, Slope.FLAT);
 	this.tileset_x = 0;
 	this.tileset_y = 0;
 	
@@ -32,21 +32,29 @@ extend(GameObject, Tile);
 
 Tile.prototype.Import = function(obj){
 	//GameObject.prototype.Import.call(this, obj);
-	this.collision = obj.collision;
-	this.slope = obj.slope;
+	this.collision = defaultValue(obj.c, Tile.GHOST);
+	this.slope = defaultValue(obj.s, Slope.FLAT);
 	this.SetLRHeights();
 	
-	this.tileset_x = obj.tileset_x;
-	this.tileset_y = obj.tileset_y;
+  this.tileset_x = defaultValue(obj.tx, 0);
+	this.tileset_y = defaultValue(obj.ty, 0);
 }
 Tile.prototype.Export = function(){
 	//var obj = GameObject.prototype.Export.call(this);
 	obj = {};
-	obj.collision = this.collision;
-	obj.slope = this.slope;
+  if (this.slope != Tile.GHOST) {
+    obj.c = this.collision;
+  }
+  if (this.slope != Slope.FLAT) {
+    obj.s = this.slope;
+  }
 	
-	obj.tileset_x = this.tileset_x;
-	obj.tileset_y = this.tileset_y;
+  if (this.tileset_x != 0) {
+    obj.tx = this.tileset_x;
+  }
+  if (this.tileset_y != 0) {
+    obj.ty = this.tileset_y;
+  }
 	return obj;
 }
 
@@ -69,7 +77,7 @@ Tile.prototype.SetLRHeights = function(){
 }
 
 Tile.prototype.Render = function(ctx, camera, image){
-	if (image === null || (this.tileset_x == 0 && this.tileset_y == 0)) return;
+	if (image == null || (this.tileset_x == 0 && this.tileset_y == 0)) return;
 	var row = this.tileset_y;
 	var column = this.tileset_x;
 	

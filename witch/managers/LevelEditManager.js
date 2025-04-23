@@ -136,7 +136,7 @@ function LevelEditMouseDown(e){
 			}else{
 				x = tile_x * Tile.WIDTH;
 				y = tile_y * Tile.HEIGHT;
-				var obj = eval(level_edit_object);
+				var obj = JSON.parse(level_edit_object);
 				obj.x = x;
 				obj.y = y;
 				obj.original_x = x;
@@ -164,14 +164,14 @@ function ledit_change_room_size(){
 }
 
 function ledit_change_glitch(){
-	room.glitch_sequence = [eval(ledit_getSelected("glitch_options"))];
+	room.glitch_sequence = [Glitch[ledit_getSelected("glitch_options")]];
 	room.glitch_index = 0;
 	room.glitch_type = room.glitch_sequence[0];
 	Glitch.TransformPlayer(room, room.glitch_type);
 }
 
 function ledit_add_glitch(){
-	room.glitch_sequence.push(eval(ledit_getSelected("glitch_options")));
+	room.glitch_sequence.push(Glitch[ledit_getSelected("glitch_options")]);
 	room.glitch_index = 0;
 	room.glitch_time = 0;
 }
@@ -187,7 +187,7 @@ function ledit_import(){
 			room.Import(JSON.parse(obj_str));
 		}
 	}catch(e){
-		console.log(e);
+		// console.log(e);
 	}
 }
 

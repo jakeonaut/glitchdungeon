@@ -233,7 +233,7 @@ Room.prototype.Render = function(ctx, level_edit){
 	}
 
 	//DRAW THE TILES OF THE ROOM
-	var tile_img = eval("resource_manager." + this.tilesheet_name);
+	var tile_img = resource_manager[this.tilesheet_name];
 	for (var i = 0; i < this.MAP_HEIGHT; i++){ for (var j = 0; j < this.MAP_WIDTH; j++){
 		this.tiles[i][j].Render(ctx, this.camera, tile_img);
 	} }
@@ -350,7 +350,9 @@ Room.prototype.Import = function(room){
 	this.entities = [new Hat(this.player.x, this.player.y-8)];
 	if (room.entities){
 		for (var i = 0; i < room.entities.length; i++){
-			var entity = eval("new " + room.entities[i].type + "();");
+      // I don't think this would work with classes... 
+      // https://stackoverflow.com/questions/496961/call-a-javascript-function-name-using-a-string
+			var entity = new window[room.entities[i].type]();
 			entity.Import(room.entities[i].obj);
 			this.entities.push(entity);
 		}

@@ -57,6 +57,7 @@ Collection.prototype.GetName = function(){
 
 Collection.prototype.GetEvent = function(){
 	switch (this.collection_id){
+		 // TODO(jaketrower): This needs to be saved. e.g. which items has player picked up, and to consume them and activate their events...
 		case 0:
 			room_manager.has_spellbook = true;
 			//var door = room_manager.rooms[4][2].GetDoor(0);
@@ -100,7 +101,9 @@ Collection.prototype.GetEvent = function(){
 			break;
 		case 6:
 			if (!room_manager.beat_game)
-				Trophy.GiveTrophy(Trophy.POWERS);
+				Trophy.GiveTrophy(Trophy.POWERS).then(() => {
+          // TODO(jaketrower): we don't care about result for now.
+        });
 		
 			if (room_manager.spellbook.indexOf(Glitch.NEGATIVE) < 0)
 				room_manager.spellbook.push(Glitch.NEGATIVE);
@@ -141,7 +144,9 @@ Collection.prototype.GetEvent = function(){
 			}
 			break;
 		case 7:
-			Trophy.GiveTrophy(Trophy.SECRET);
+			Trophy.GiveTrophy(Trophy.SECRET).then(() => {
+        // TODO(jaketrower): we don't care about result for now.
+      });
 		
 			if (room_manager.spellbook.indexOf(Glitch.PINK) < 0)
 				room_manager.spellbook.push(Glitch.PINK);
@@ -153,4 +158,5 @@ Collection.prototype.GetEvent = function(){
 			break;
 		default: break;
 	}
+	room_manager.TrySaveGame();
 }

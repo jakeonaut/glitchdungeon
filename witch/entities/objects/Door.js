@@ -89,7 +89,7 @@ Door.prototype.SwitchRooms = function(map){
 	
 	room_manager.ChangeRoom();
 	
-	console.log("door id: " + this.door_id);
+	// console.log("door id: " + this.door_id);
 	var door = room.GetDoor(this.door_id, this);
 	if (door !== null){
 		room.player.x = door.x;

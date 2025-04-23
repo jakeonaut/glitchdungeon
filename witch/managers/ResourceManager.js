@@ -9,6 +9,7 @@ function ResourceManager(){
 		"soundButtons",
 		"player_grey_sheet",
 		"hat_grey_sheet",
+    "dog_hat_sheet",
 		"tile_grey_sheet",
 		"npc_sheet"
 		,"obj_sheet",
@@ -41,7 +42,7 @@ function ResourceManager(){
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
 		this.audio_context = new AudioContext();
 	}catch(e){
-		console.log(e);
+		// console.log(e);
 		this.audio_context = null;
 		this.play_sound = false;
 		this.play_music = false;
@@ -101,13 +102,12 @@ ResourceManager.prototype.LoadResources = function(ctx){
 
 	//Load Images
 	for (var i = 0; i < this.image_names.length; i++){
-		var timeoutCallback = (function(self, img){
-			self[img] = new Image();
-			self[img].onload = self.ImageLoad();
-			self[img].src = img_path + img + ".png";
-		})(this, this.image_names[i]);
-		
-		setTimeout(timeoutCallback, 0);
+    let img = this.image_names[i];
+    setTimeout(() => {
+      this[img] = new Image();
+      this[img].onload = () => { this.ImageLoad(); }
+      this[img].src = `${img_path}${img}.png`;
+    }, 0);
 	}
 	
 	if (this.audio_context === null || !this.can_play_sound){ 
@@ -116,12 +116,10 @@ ResourceManager.prototype.LoadResources = function(ctx){
 	}
 	//Load Sounds
 	for (var i = 0; i < this.sound_names.length; i++){
-		var timeoutCallback = (function(self){
-			var snd = self.sound_names[i];
-			self.loadBuffer(snd_path + snd + ".wav", snd);
-		})(this);
-		
-		setTimeout(timeoutCallback, 0);
+    let snd = this.sound_names[i];
+    setTimeout(() => {
+      this.loadBuffer(`${snd_path}${snd}.mp3`, snd);
+    }, 0);
 	}
 }
 
@@ -155,7 +153,7 @@ ResourceManager.prototype.loadBuffer = function(url, index) {
   }
 
   request.onerror = function() {
-    console.log('BufferLoader: XHR error');
+    // console.log('BufferLoader: XHR error');
   }
 
   request.send();

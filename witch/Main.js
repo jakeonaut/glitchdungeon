@@ -1,4 +1,5 @@
 var level_edit = false;
+var npc_mode = true;
 var master_volume = 0.5;
 var delta = 18; //this is a little hacky.
 var DNUM = 18;
@@ -6,7 +7,7 @@ var DNUM = 18;
 var bg_music = null;
 var bg_name = "RoccoW_outOfSight";
 var tryToPlay = null;
-var click_to_start = false;
+var click_to_start = true;
 
 var GAME_WIDTH=160; //CHANGE TO /2
 var GAME_HEIGHT=120; //CHANGE TO /2
@@ -30,7 +31,7 @@ var room;
 
 var init = function(){
 	if (level_edit) InitLevelEdit();
-	console.log("init");
+	// console.log("init");
 	
 	canvas = $("game_canvas");
 	canvas.tabIndex = 1;
@@ -66,18 +67,23 @@ var init = function(){
 var startGame = function(){
 	if (game_started) return;
 	game_started = true;
+	bg_name = "RoccoW_outOfSight";
 
-	room_manager = new House(function(){
+	room_manager = new House(async function(){
 		room = room_manager.GetRoom();
 		
 		//Let's play the game!
-		console.log("start");
+		// console.log("start");
 		then = Date.now();
-		
-		bg_name = "RoccoW_outOfSight";
+
 		stopMusic();
 		startMusic();
-		setInterval(main, 17);
+    
+    const username = await Utils.gup("gjapi_username");
+    if (username != null && username !== '') {
+      await Utils.gup("gjapi_token");
+    }
+    requestAnimationFrame(gameLoop);
 	}.bind(this));
 };
 
@@ -139,7 +145,7 @@ var SoundMouseUp = function(e){
 }
 
 //main game loop
-var main = function(){
+var gameLoop = function(){
 	var now = Date.now();
 	//time variable so we can make the speed right no matter how fast the script
     //delta = now - then;
@@ -164,6 +170,7 @@ var main = function(){
 		ctx.fillText("CLICK TO START", 134, GAME_HEIGHT/2+80);
 	}
 	then = now;
+  requestAnimationFrame(gameLoop);
 }
 
 var update = function(delta){
@@ -214,12 +221,11 @@ Trophy.POWERS = 0;
 Trophy.HAT = 1;
 Trophy.DEATH = 2;
 Trophy.SECRET = 3;
-Trophy.GiveTrophy = function(trophy){
-	var username = Utils.gup("gjapi_username");
-	var user_token = Utils.gup("gjapi_token");
-	if (username === null || username === '')
-		return;
-	console.log(username + ", ");// + user_token);
+Trophy.GiveTrophy = async function(trophy){
+	var username = await Utils.gup("gjapi_username");
+  if (username == null || username === '') return;
+	var user_token = await Utils.gup("gjapi_token");
+	// console.log(username + ", ");// + user_token);
 	
 	//This stuff is contextual to my game jolt game, so 
 	//if you're making a game in game jolt, the achievement token
@@ -231,19 +237,19 @@ Trophy.GiveTrophy = function(trophy){
 	switch (trophy){
 		case Trophy.POWERS:
 			url += "&trophy_id=9184";
-			console.log("9184");
+			// console.log("9184");
 			break;
 		case Trophy.HAT:	
 			url += "&trophy_id=9185";
-			console.log("9185");
+			// console.log("9185");
 			break;
 		case Trophy.DEATH:
 			url += "&trophy_id=9187";
-			console.log("9187");
+			// console.log("9187");
 			break;
 		case Trophy.SECRET:
 			url += "&trophy_id=9186";
-			console.log("9186");
+			// console.log("9186");
 			break;
 		default: break;
 	}
@@ -258,12 +264,11 @@ Trophy.GiveTrophy = function(trophy){
 	xmlhttp.send();
 }
 
-Trophy.AddScore = function(score, sort, table_id){
-	var username = Utils.gup("gjapi_username");
-	var user_token = Utils.gup("gjapi_token");
-	if (username === null || username === '')
-		return;
-	console.log(username + ", " + user_token);
+Trophy.AddScore = async function(score, sort, table_id){
+	var username = await Utils.gup("gjapi_username");
+  if (username == null || username === '') return;
+	var user_token = await Utils.gup("gjapi_token");
+	// console.log(username + ", " + user_token);
 	
 	//This stuff is contextual to my game jolt game, so 
 	//if you're making a game in game jolt, the achievement token

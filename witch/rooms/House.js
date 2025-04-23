@@ -1,22 +1,22 @@
 function House(callback){
-	this.path = "witch/rooms/rooms/room_";
-	this.num_deaths = 0;
-	this.spells_cast = 0;
+	this.path = "witch/rooms/rooms/room_"; // TODO(jaketrower): This needs to be saved.
+	this.num_deaths = 0; // TODO(jaketrower): This needs to be saved.
+	this.spells_cast = 0; // TODO(jaketrower): This needs to be saved.
 	this.then = Date.now();
 	this.time = 0;
-	this.beat_game = false;
-	this.submitted = false;
+	this.beat_game = false; // TODO(jaketrower): This needs to be saved.
+	this.submitted = false;  // TODO(jaketrower): This needs to be saved. ???
 
-	this.num_artifacts = 0;
-	this.has_spellbook = false;
-	this.spellbook = [];
-	this.glitch_type = Glitch.GREY;
-	this.glitch_index = -1;
+	this.num_artifacts = 0; // TODO(jaketrower): This needs to be saved.
+	this.has_spellbook = false; // TODO(jaketrower): This needs to be saved.
+	this.spellbook = []; // TODO(jaketrower): This needs to be saved.
+	this.glitch_type = Glitch.GREY; // TODO(jaketrower): This needs to be saved.
+	this.glitch_index = -1; // TODO(jaketrower): This needs to be saved.
 
-	this.room_index_x = 0;
-	this.room_index_y = 0;
-	this.old_room_index_x = 0;
-	this.old_room_index_y = 0;
+	this.room_index_x = 0; // TODO(jaketrower): This needs to be saved.
+	this.room_index_y = 0; // TODO(jaketrower): This needs to be saved.
+	this.old_room_index_x = 0; // TODO(jaketrower): This needs to be saved.
+	this.old_room_index_y = 0; // TODO(jaketrower): This needs to be saved.
 	
 	this.house_width = 6;
 	this.house_height = 6;
@@ -70,7 +70,7 @@ House.prototype.LoadNextRoom = function(callback){
 		else self.glitched_rooms[i][j] = room;
 		
 		if (!glitched && self.rooms_loaded >= self.house_height * self.house_width){
-			console.log("done loading");
+			// console.log("done loading");
 			self.FinishedLoading(callback);
 		}
 		
@@ -100,7 +100,7 @@ House.prototype.SetUpRooms = function(){
 	//this.rooms[99][99] = Room.Import(path + "99_99.txt");
 }
 
-House.prototype.FinishedLoading = function(callback){
+House.prototype.FinishedLoading = function(callback) {
 	this.rooms[2][4].entities.push(new Collection(11*Tile.WIDTH, 3*Tile.HEIGHT, 6));
 	this.old_rooms = [];
 	for (var i = 0; i < this.rooms.length; i++){
@@ -120,8 +120,80 @@ House.prototype.FinishedLoading = function(callback){
 	};
 	this.old_checkpoint = null;
 	this.new_checkpoint = null;
+	
+	this.TryLoadGame();
 	callback();
-}
+};
+
+House.prototype.TrySaveGame = function() {
+	window.localStorage.setItem("num_deaths", this.num_deaths);
+	window.localStorage.setItem("spells_cast", this.spells_cast);
+	window.localStorage.setItem("time", this.time);
+	window.localStorage.setItem("then", this.then);
+	window.localStorage.setItem("beat_game", this.beat_game);
+	
+	window.localStorage.setItem("num_artifacts", this.num_artifacts);
+	window.localStorage.setItem("has_spellbook", this.has_spellbook);
+	window.localStorage.setItem("spellbook", JSON.stringify(this.spellbook));
+	window.localStorage.setItem("glitch_type", this.glitch_type);
+	window.localStorage.setItem("glitch_index", this.glitch_index);
+	
+	window.localStorage.setItem("room_index_x", this.room_index_x);
+	window.localStorage.setItem("room_index_y", this.room_index_y);
+	window.localStorage.setItem("old_room_index_x", this.old_room_index_x);
+	window.localStorage.setItem("old_room_index_y", this.old_room_index_y);
+	
+	for (var i = 0; i < this.old_rooms.length; i++){
+		for (var j = 0; j < this.old_rooms[i].length; j++){
+			window.localStorage.setItem(`room_${i}_${j}`, JSON.stringify(this.rooms[i][j].Export()));
+		}
+	}
+	
+	window.localStorage.setItem("checkpoint", JSON.stringify(this.checkpoint));
+	
+	window.localStorage.setItem("bg_name", bg_name);
+};
+
+House.prototype.TryLoadGame = function(callback) {
+	this.num_deaths = window.localStorage.getItem("num_deaths") || 0;
+	this.spells_cast = window.localStorage.getItem("spells_cast") || 0;
+	this.time = window.localStorage.getItem("time") || 0;
+	this.then = window.localStorage.getItem("then") || Date.now();
+	if (window.localStorage.getItem("beat_game")) {
+		this.beat_game =  JSON.parse(window.localStorage.getItem("beat_game"));
+	}
+	
+	this.num_artifacts = window.localStorage.getItem("num_artifacts") || 0;
+	if (window.localStorage.getItem("has_spellbook")) {
+		this.has_spellbook =  JSON.parse(window.localStorage.getItem("has_spellbook"));
+	}
+	if (window.localStorage.getItem("spellbook") != null) {
+		this.spellbook = JSON.parse(window.localStorage.getItem("spellbook"));
+	}
+	this.glitch_type = window.localStorage.getItem("glitch_type") || Glitch.GREY;
+	if (window.localStorage.getItem("glitch_index") != null) {
+		this.glitch_index = window.localStorage.getItem("glitch_index");
+	}
+	
+	this.room_index_x = window.localStorage.getItem("room_index_x") || 0;
+	this.room_index_y = window.localStorage.getItem("room_index_y") || 0;
+	this.old_room_index_x = window.localStorage.getItem("old_room_index_x") || 0;
+	this.old_room_index_y = window.localStorage.getItem("old_room_index_y") || 0;
+	
+	for (var i = 0; i < this.old_rooms.length; i++){
+		for (var j = 0; j < this.old_rooms[i].length; j++){
+			if (window.localStorage.getItem(`room_${i}_${j}`)) {
+				this.rooms[i][j].Import(JSON.parse(window.localStorage.getItem(`room_${i}_${j}`)));
+			}
+		}
+	}
+	
+	if (window.localStorage.getItem("checkpoint")) {
+		this.checkpoint = JSON.parse(window.localStorage.getItem("checkpoint"));
+	}
+	
+	bg_name = window.localStorage.getItem("bg_name") || "RoccoW_outOfSight";
+};
 
 House.prototype.Restart = function(){
 	this.num_deaths = 0;
@@ -184,7 +256,7 @@ House.prototype.Reset = function(){
 }
 
 House.prototype.GetRoom = function(){
-	console.log(this.room_index_x, this.room_index_y);
+	// console.log(this.room_index_x, this.room_index_y);
 	return this.rooms[this.room_index_y][this.room_index_x];
 }
 
@@ -288,6 +360,7 @@ House.prototype.RandomGlitch = function(){
 
 House.prototype.RevivePlayer = function(){
 	this.num_deaths++;
+	this.TrySaveGame();
 
 	this.room_index_x = this.checkpoint.room_x;
 	this.room_index_y = this.checkpoint.room_y;
@@ -304,7 +377,7 @@ House.prototype.RevivePlayer = function(){
 	room.player.y = this.checkpoint.y;
 	room.player.facing = this.checkpoint.facing;
 	room.player.die_to_suffocation = true;
-	console.log("num deaths: " + this.num_deaths);
+	// console.log("num deaths: " + this.num_deaths);
 	room.Speak(null);
 	
 	this.RemoveGlitchedCheckpoint();
