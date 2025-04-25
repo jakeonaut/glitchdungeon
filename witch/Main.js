@@ -3,6 +3,7 @@ var npc_mode = true;
 var master_volume = 0.5;
 var delta = 18; //this is a little hacky.
 var DNUM = 18;
+var FRAME_INTERVAL = 17
 
 var bg_music = null;
 var bg_name = "RoccoW_outOfSight";
@@ -83,7 +84,7 @@ var startGame = function(){
         if (username != null && username !== '') {
             Utils.gup("gjapi_token");
         }
-        setTimeout(gameLoop, 17);
+        requestAnimationFrame(() => gameLoop(FRAME_INTERVAL))
     }.bind(this));
 };
 
@@ -145,32 +146,42 @@ var SoundMouseUp = function(e){
 }
 
 //main game loop
-var gameLoop = function(){
+var gameLoop = function(fpsInterval){
+
     var now = Date.now();
+    var elapsed = now - then
     //time variable so we can make the speed right no matter how fast the script
-    //delta = now - then;
+    // delta = now - then;
+
+    requestAnimationFrame(() => gameLoop(fpsInterval));
     
-    if (click_to_start){
-        update(delta);
-        render();
-    }else{      
-        //Erase screen
-        ctx.fillStyle = "#000000";
-        ctx.fillRect(0, 0, GAME_WIDTH*VIEW_SCALE, GAME_HEIGHT*VIEW_SCALE);
-        
-        //draw the game
-        sharpen(ctx);
-        
-        ctx.fillStyle = "rgb(255,255,255)";
-        //ctx.font = "24px pixelFont";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "top";
-        ctx.fillText("WARNING: FLASHING ITEMS", 134, GAME_HEIGHT/2+25);
-        ctx.fillText("SCREEN MAY RAPIDLY CHANGE COLOR", 134, GAME_HEIGHT/2+49);
-        ctx.fillText("CLICK TO START", 134, GAME_HEIGHT/2+80);
+    if (elapsed > fpsInterval) {
+
+        // Get ready for next frame by setting then=now, but also adjust for your
+        // specified fpsInterval not being a multiple of RAF's interval
+        then = now - (elapsed % fpsInterval);
+        frames++;
+
+        if (click_to_start){
+            update(delta);
+            render();
+        } else {
+            //Erase screen
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(0, 0, GAME_WIDTH*VIEW_SCALE, GAME_HEIGHT*VIEW_SCALE);
+            
+            //draw the game
+            sharpen(ctx);
+            
+            ctx.fillStyle = "rgb(255,255,255)";
+            //ctx.font = "24px pixelFont";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "top";
+            ctx.fillText("WARNING: FLASHING ITEMS", 134, GAME_HEIGHT/2+25);
+            ctx.fillText("SCREEN MAY RAPIDLY CHANGE COLOR", 134, GAME_HEIGHT/2+49);
+            ctx.fillText("CLICK TO START", 134, GAME_HEIGHT/2+80);
+        }
     }
-    then = now;
-    setTimeout(gameLoop, 17);
 }
 
 var update = function(delta){
