@@ -120,12 +120,16 @@ NPC.prototype.GetText = function(){
         });
 				room_manager.submitted = true;
 			}
-			let display_time = new Intl.DurationFormat("en", { style: "narrow" }).format({
+			let duration = {
 				hours: Math.floor(room_manager.time / (1000 * 60 * 60)),
 				minutes: Math.floor(room_manager.time / (1000 * 60) % 60),
 				seconds: Math.floor(room_manager.time / (1000) % 60),
 				milliseconds: room_manager.time % 1000,
-			})
+			}
+			let display_time = (duration.hours ? `${duration.hours}h ` : "")
+				+ ((duration.hours || duration.minutes)  ? `${duration.minutes}m ` : "")
+				+ ((duration.hours || duration.minutes || duration.seconds) ? `${duration.seconds}s ` : "")
+				+ ((duration.hours < 1) ? `${duration.milliseconds}ms` : "")
 			return 	"deaths: " + room_manager.num_deaths + "\n" +
 					"spells cast: " + room_manager.spells_cast + "\n" +
 					"time: " + display_time;
