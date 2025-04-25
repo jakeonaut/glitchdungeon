@@ -3,6 +3,7 @@ function House(callback){
     this.num_deaths = 0; // TODO(jaketrower): This needs to be saved.
     this.spells_cast = 0; // TODO(jaketrower): This needs to be saved.
     this.then = Date.now();
+    this.updates = 0;
     this.time = 0;
     this.beat_game = false; // TODO(jaketrower): This needs to be saved.
     this.submitted = false;  // TODO(jaketrower): This needs to be saved. ???
@@ -129,6 +130,7 @@ House.prototype.TrySaveGame = function() {
     window.localStorage.setItem("num_deaths", this.num_deaths);
     window.localStorage.setItem("spells_cast", this.spells_cast);
     window.localStorage.setItem("time", this.time);
+    window.localStorage.setItem("updates", this.updates);
     window.localStorage.setItem("then", this.then);
     window.localStorage.setItem("beat_game", this.beat_game);
     
@@ -176,6 +178,7 @@ House.prototype.TryLoadGame = function(callback) {
     this.num_deaths = any_solid_tiles ? window.localStorage.getItem("num_deaths") || 0 : 0;
     this.spells_cast = any_solid_tiles ? window.localStorage.getItem("spells_cast") || 0 : 0;
     this.time = any_solid_tiles ? window.localStorage.getItem("time") || 0 : 0;
+    this.updates = any_solid_tiles ? window.localStorage.getItem("updates") || 0 : 0;
     this.then = any_solid_tiles ? window.localStorage.getItem("then") || Date.now() : Date.now();
     if (any_solid_tiles && window.localStorage.getItem("beat_game")) {
         this.beat_game =  JSON.parse(window.localStorage.getItem("beat_game"));
@@ -220,6 +223,7 @@ House.prototype.Restart = function(){
     this.spells_cast = 0;
     this.then = Date.now();
     this.time = 0;
+    this.updates = 0;
     this.submitted = false;
     //this.beat_game = false;
 
@@ -331,7 +335,13 @@ House.prototype.ChangeRoom = function(){
     //END CONDITION LOL
     if (this.room_index_x === 5 && this.room_index_y === 5){
         Glitch.TransformPlayer(room, Glitch.GREY);
-        this.time = Math.round(((((Date.now() - this.then) / 1000) / 60) + 0.00001) * 100) / 100;
+        let real_time = Date.now() - this.then;
+        this.time = this.updates * FRAME_INTERVAL
+        console.log({
+            real_time: real_time,
+            fixed_time: this.time,
+            delta: real_time - this.time
+        })
         
         bg_name = "RoccoW_iveGotNothing";
         if (resource_manager.play_music){

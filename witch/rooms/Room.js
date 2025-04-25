@@ -64,6 +64,7 @@ Room.prototype.isValidTile = function(i, j){
 }
 
 Room.prototype.Update = function(input, delta){
+    room_manager.updates++;
     input.Update(this.player);
     this.player.Update(delta, this);
     this.TryUpdateRoomIfPlayerOffscreen();

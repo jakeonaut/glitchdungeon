@@ -113,15 +113,22 @@ NPC.prototype.GetText = function(){
 				Trophy.AddScore(room_manager.spells_cast + " spells", room_manager.spells_cast, 31464).then(() => {
           // TODO(jaketrower): we don't care about result for now.
         });
-				Trophy.AddScore(room_manager.time + " min", room_manager.time, 29967).then(() => {
+				let oldFormat = Math.round(((((room_manager.time) / 1000) / 60) + 0.00001) * 100) / 100
+				console.log("old time format: " + oldFormat + " min")
+				Trophy.AddScore(oldFormat + " min", oldFormat, 29967).then(() => {
           // TODO(jaketrower): we don't care about result for now.
         });
 				room_manager.submitted = true;
 			}
-				
+			let display_time = new Intl.DurationFormat("en", { style: "narrow" }).format({
+				hours: Math.floor(room_manager.time / (1000 * 60 * 60)),
+				minutes: Math.floor(room_manager.time / (1000 * 60) % 60),
+				seconds: Math.floor(room_manager.time / (1000) % 60),
+				milliseconds: room_manager.time % 1000,
+			})
 			return 	"deaths: " + room_manager.num_deaths + "\n" +
 					"spells cast: " + room_manager.spells_cast + "\n" +
-					"time: " + room_manager.time + " min";
+					"time: " + display_time;
 		case 20:
 			if (!room_manager.beat_game){
 				Trophy.GiveTrophy(Trophy.HAT);
